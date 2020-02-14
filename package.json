@@ -33,6 +33,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.0",
     "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.19.2",
     "datatransfer-files-promise": "^1.2.0",
     "file-saver": "^2.0.0",
     "jquery": "^3.4.1",
