@@ -1,0 +1,16 @@
+#header {
+  display: flex;
+  z-index: 999999;
+  font-family: monospace;
+}
+#header .header-link {
+  flex-grow: 2;
+  text-align: center;
+  text-decoration: none;
+  color: black;
+  height: 25px;
+  padding-top: 12px;
+}
+#header .header-link:hover {
+  background-color: #eee;
+}
