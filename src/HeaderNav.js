@@ -1,22 +1,50 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 
-import './HeaderNav.css'
+import store from 'state/store'
 
+import 'HeaderNav.css'
+
+class HeaderTab extends React.Component {
+  navigateTo = () => {
+    console.log(`Navigating to ${this.props.stepName}`);
+    store.dispatch({
+      type: "CHANGE_STEP",
+      payload: {
+        step: this.props.stepName,
+      }
+    });
+  }
+  render() {
+    return (
+      <a className="header-link" onClick={this.navigateTo}>
+        {this.props.label}
+      </a>
+    );
+  }
+}
 
 class HeaderNav extends React.Component {
-  navigateTo(step) {
-    console.log(`Navigating to {step}`);
+  componentWillMount = () => {
+    console.log(`HeaderNav step: ${this.props.step}`);
   }
 
   render() {
     return (
       <div id="header">
-        <a onClick={this.navigateTo("scraper")} className="header-link">Scraper</a>
-        <a onClick={this.navigateTo("build-extractor")} className="header-link">Build Extractor</a>
-        <a onClick={this.navigateTo("extract")} className="header-link">Extract Data</a>
+        <p>Current step: { this.props.step }</p>
+        <HeaderTab stepName="scraper" label="Scraper" />
+        <HeaderTab stepName="build-extractor" label="Build Extractor" />
+        <HeaderTab stepName="extract" label="Extract Data" />
       </div>
     );
   }
 }
 
-export default HeaderNav;
+function mapStateToProps(state) {
+  const { step } = state;
+  return { step };
+}
+
+export default connect(mapStateToProps, {})(HeaderNav);

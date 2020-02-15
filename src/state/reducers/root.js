@@ -1,10 +1,11 @@
 import { update } from 'state/util';
 
 const initialState = {
-  step: "crawl",
+  step: "scraper",
 };
 
 export const rootReducer = (state, action) => {
+  console.log("rootReducer state:", state, "action:", action);
   if (state === undefined) {
     return initialState;
   }
