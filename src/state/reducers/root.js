@@ -8,12 +8,11 @@ const initialState = {
 export const SCRAPE_STATUS = {
   FAILURE: "FAILURE",
   SUCCESS: "SUCCESS",
-  STARTED: "STARTED",
+  RUNNING: "RUNNING",
   PENDING: "PENDING",
 };
 
 export const rootReducer = (state, action) => {
-  console.log("rootReducer state:", state, "action:", action);
   if (state === undefined) {
     return initialState;
   }
@@ -30,24 +29,15 @@ export const rootReducer = (state, action) => {
         scrape: {
           id: action.payload.id,
           status: SCRAPE_STATUS.PENDING,
-          message: "Trying to start scrape...",
+          message: "Scrape queued, waiting for turn to run...",
         }
       });
-    case "SCRAPE_WAITING":
+    case "SCRAPE_RUNNING":
+      const runningScrapeState = action.payload;
+      runningScrapeState.status = SCRAPE_STATUS.RUNNING;
+      runningScrapeState.message = "Scrape running.";
       return update(state, {
-        scrape: {
-          id: action.payload.id,
-          status: SCRAPE_STATUS.PENDING,
-          message: "Scrape queued.",
-        }
-      });
-    case "SCRAPE_STARTED":
-      return update(state, {
-        scrape: {
-          id: action.payload.id,
-          status: SCRAPE_STATUS.STARTED,
-          message: "Scrape running.",
-        }
+        scrape: runningScrapeState,
       });
     case "SCRAPE_SUCCESSFUL":
       return update(state, {

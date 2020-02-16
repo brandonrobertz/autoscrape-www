@@ -2,6 +2,8 @@ import { call, put, fork, takeLatest, takeEvery, all } from 'redux-saga/effects'
 import objectAssignDeep from "object-assign-deep";
 import * as api from 'api/requests';
 
+import { update } from 'state/util'
+
 const watchers = [];
 
 /**
@@ -78,16 +80,16 @@ function* sleep(time) {
 function* scrapeHandler(action) {
   const base = "SCRAPE"
   const initialResponse = yield call(api.startScrape, action.payload);
-  const data = {
+  let data = {
     id: initialResponse.data,
   };
-  console.log("initialResponse", initialResponse);
   yield put({type: `${base}_PENDING`, payload: data});
   try {
     while (true) {
       const response = yield call(api.pollProgress, data);
-      console.log("response", response);
+      data = update(data, response);
       if (response.message == "SUCCESS") {
+        yield call(api.fetchFilesList, data);
         yield put({type: `${base}_SUCCESS`, payload: data});
         break;
       } else if (response.message == "FAILURE") {
@@ -95,7 +97,8 @@ function* scrapeHandler(action) {
         break;
       }
       yield call(sleep, 2000);
-      yield put({type: `${base}_WAITING`, payload: data});
+      yield put({type: `${base}_RUNNING`, payload: data});
+      yield call(api.pollProgress, data);
     }
   } catch (error) {
     yield put({

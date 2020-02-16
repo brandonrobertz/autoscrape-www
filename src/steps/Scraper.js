@@ -12,8 +12,8 @@ class Scraper extends React.Component {
     this.defaultState = {
       scrapeId: null,
       showAdvanced: false,
-      // autoscrape_fields
-      AS_backend: "requests",
+      // AutoScrape fields
+      AS_backend: "selenium",
       AS_baseurl: "",
       AS_form_submit_wait: "5",
       AS_input: "",
@@ -32,8 +32,8 @@ class Scraper extends React.Component {
       AS_form_match: "",
       AS_save_screenshots: true,
       AS_remote_hub: "",
-      AS_loglevel: "DEBUG",
-      AS_output: "http://flask:5000/receive",
+      AS_loglevel: "INFO",
+      AS_output: "http://localhost:5000/receive",
       AS_disable_style_saving: false,
     };
     this.state = this.defaultState;
@@ -106,12 +106,11 @@ class Scraper extends React.Component {
   toggleMenu = () => {}
 
   reset = () => {
-    console.log("State", this.state);
     this.setState(this.defaultState);
   }
 
   scrapeComplete() {
-    if (this.state.scrapeStatus !== SCRAPE_STATUS.SUCCESS) return;
+    if (this.props.scrape.status !== SCRAPE_STATUS.SUCCESS) return;
     const rows = (
       <tr>
         <th>Filename</th>
@@ -146,17 +145,16 @@ class Scraper extends React.Component {
     );
   }
 
-  scrapeStatus() {
-    if (this.state.scrapeStatus !== SCRAPE_STATUS.STARTED) return;
+  scrapeScreenshot() {
+    if ((this.props.scrape.status !== SCRAPE_STATUS.RUNNING) || !this.props.scrape.data) return;
+    const src = `data:image/png;base64,${this.props.scrape.data}`;
     return (
-      <div id="status">
-        <div id="screenshot">
-          <p id="screenshot-url"></p>
-          <img id="screenshot-img" alt="Current Scraper Screenshot" src="" />
-        </div>
+      <div id="screenshot">
+        <p id="screenshot-url">{this.props.scrape.url}</p>
+        <img id="screenshot-img" alt="Current Scraper Screenshot" src={src} />
       </div>
     );
-  }
+   }
 
   render() {
     return (
@@ -180,6 +178,7 @@ class Scraper extends React.Component {
               <span id="scrape-status">
                 {this.props.scrape.message}
               </span>
+              { this.scrapeScreenshot() }
             </div>
           </div>
           { !this.state.showAdvanced ? null :
@@ -276,7 +275,6 @@ class Scraper extends React.Component {
           }
         </form>
         {  this.scrapeComplete() }
-        {  this.scrapeStatus() }
       </div>
     );
   }
@@ -284,7 +282,6 @@ class Scraper extends React.Component {
 
 function mapStateToProps(state) {
   const { step, scrape } = state;
-  console.log("mapStateToProps scrape", scrape);
   return { step, scrape };
 }
 
