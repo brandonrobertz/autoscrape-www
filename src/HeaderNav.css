@@ -8,12 +8,31 @@
   text-align: center;
   text-decoration: none;
   color: black;
-  height: 25px;
-  padding-top: 12px;
+  height: 40px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 #header .header-link:hover {
   background-color: #eee;
 }
-#header a {
+#header button {
+  font-family: monospace;
+  background-color: white;
+  border: 0;
   cursor: pointer;
+}
+#header .highlighted {
+  -webkit-animation: fadeinout 4s linear forwards;
+  animation: fadeinout 4s linear forwards;
+  animation-iteration-count: 10;
+}
+
+@-webkit-keyframes fadeinout {
+  0%,100% { background-color: white; }
+  50% { background-color: #f6f6ad; }
+}
+
+@keyframes fadeinout {
+  0%,100% { background-color: white; }
+  50% { background-color: #f6f6ad; }
 }

@@ -1,14 +1,17 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 
 import store from 'state/store'
 
 import 'HeaderNav.css'
 
-class HeaderTab extends React.Component {
+function mapStateToProps(state) {
+  const { step, scrape } = state;
+  return { step, scrape };
+}
+
+class _HeaderTab extends React.Component {
   navigateTo = () => {
-    console.log(`Navigating to ${this.props.stepName}`);
     store.dispatch({
       type: "CHANGE_STEP",
       payload: {
@@ -16,20 +19,29 @@ class HeaderTab extends React.Component {
       }
     });
   }
+  getClassNames() {
+    let className = "header-link";
+    // if we're on the scraper page, but we ought to move to
+    // the build extractor phase, highlight the build extractor button
+    if (this.props.stepName === "build-extractor" &&
+        this.props.step === "scraper" &&
+        this.props.scrape.filesList) {
+      className += " highlighted";
+    }
+    return className;
+  }
   render() {
     return (
-      <a className="header-link" onClick={this.navigateTo}>
+      <button className={this.getClassNames()} onClick={this.navigateTo}>
         {this.props.label}
-      </a>
+      </button>
     );
   }
 }
 
-class HeaderNav extends React.Component {
-  componentWillMount = () => {
-    console.log(`HeaderNav step: ${this.props.step}`);
-  }
+const HeaderTab = connect(mapStateToProps, {})(_HeaderTab);
 
+class HeaderNav extends React.Component {
   render() {
     return (
       <div id="header">
@@ -39,11 +51,6 @@ class HeaderNav extends React.Component {
       </div>
     );
   }
-}
-
-function mapStateToProps(state) {
-  const { step } = state;
-  return { step };
 }
 
 export default connect(mapStateToProps, {})(HeaderNav);

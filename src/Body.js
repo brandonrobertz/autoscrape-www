@@ -3,18 +3,20 @@ import { connect } from 'react-redux'
 
 import Scraper from 'steps/Scraper'
 
-import 'HeaderNav.css'
+import 'Body.css'
 
 class Body extends React.Component {
   render() {
     if (this.props.step === "scraper") {
       return (
         <div>
-          <h1>Welcome to AutoScrape Alpha</h1>
-          <p>
-            Feel free to use AutoScrape free! Note that I am logging the usage of
-            AutoScrape here for testing and use-case information gathering purposes.
-          </p>
+          <div id="welcome">
+            <h1>Welcome to AutoScrape Alpha</h1>
+            <p>
+              Feel free to use AutoScrape free! Note that I am logging the usage of
+              AutoScrape here for testing and use-case information gathering purposes.
+            </p>
+          </div>
           <div>
             <Scraper />
           </div>

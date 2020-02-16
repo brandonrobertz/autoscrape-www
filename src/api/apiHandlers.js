@@ -92,15 +92,15 @@ function* scrapeHandler(action) {
     while (true) {
       const response = yield call(api.pollProgress, data);
       data = update(data, response);
-      if (response.message == "SUCCESS") {
+      if (response.message === "SUCCESS") {
         const filesList = yield call(api.fetchFilesList, data);
         yield put({type: `${base}_SUCCESS`, payload: filesList});
         break;
-      } else if (response.message == "FAILURE") {
+      } else if (response.message === "FAILURE") {
         yield put({type: `${base}_FAILED`, payload: data});
         break;
       }
-      yield call(sleep, 2000);
+      yield call(sleep, 5000);
       yield put({type: `${base}_RUNNING`, payload: data});
       yield call(api.pollProgress, data);
     }

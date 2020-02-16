@@ -45,7 +45,7 @@ export const rootReducer = (state, action) => {
           id: action.payload.id,
           filesList: action.payload.data,
           status: SCRAPE_STATUS.SUCCESS,
-          message: "Scrape complete!",
+          message: "Scrape complete! You can now move to the build extractor step, above.",
         }
       });
     case "SCRAPE_CANCELLED":
