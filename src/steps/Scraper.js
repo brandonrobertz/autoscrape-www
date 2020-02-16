@@ -94,7 +94,7 @@ class Scraper extends React.Component {
 
   startScrape = () => {
     store.dispatch({
-      type: "START_SCRAPE_REQUESTED",
+      type: "SCRAPE_REQUESTED",
       payload: this.autoscrapeData(),
     });
   }
@@ -171,16 +171,18 @@ class Scraper extends React.Component {
                 {!this.state.showAdvanced ? '🔧' : '✖'}
               </span>
             </div>
-            <button id="start-scrape" onClick={this.startScrape}>Start</button>
-            <button id="cancel-scrape" onClick={this.stoptScrape}>Cancel</button>
-            <button id="reset-scrape" onClick={this.reset}>Clear Options</button>
+            <div className="scrape-controls">
+              <button id="start-scrape" onClick={this.startScrape}>Start</button>
+              <button id="cancel-scrape" onClick={this.stoptScrape}>Cancel</button>
+              <button id="reset-scrape" onClick={this.reset}>Clear Options</button>
+            </div>
             <div id="scrape-status-wrapper">
               <span id="scrape-status">
                 {this.props.scrape.message}
               </span>
             </div>
           </div>
-          {!this.state.showAdvanced ? null :
+          { !this.state.showAdvanced ? null :
           <div id="sub-controls">
             <div id="sub-controls-menu">
               <span className="small">
@@ -270,7 +272,8 @@ class Scraper extends React.Component {
                   value={this.state.AS_form_match} type="text" />
               </span>
             </div>
-          </div>}
+          </div>
+          }
         </form>
         {  this.scrapeComplete() }
         {  this.scrapeStatus() }

@@ -24,26 +24,45 @@ export const rootReducer = (state, action) => {
         step: action.payload.step,
       });
 
-    case "START_SCRAPE_REQUESTED":
-    case "START_SCRAPE_PENDING":
+    //case "SCRAPE_REQUESTED":
+    case "SCRAPE_PENDING":
       return update(state, {
         scrape: {
+          id: action.payload.id,
           status: SCRAPE_STATUS.PENDING,
           message: "Trying to start scrape...",
         }
       });
-    case "START_SCRAPE_SUCCESSFUL":
+    case "SCRAPE_WAITING":
       return update(state, {
         scrape: {
-          status: SCRAPE_STATUS.SUCCESS,
+          id: action.payload.id,
+          status: SCRAPE_STATUS.PENDING,
           message: "Scrape queued.",
         }
       });
-    case "START_SCRAPE_FAILED":
+    case "SCRAPE_STARTED":
       return update(state, {
         scrape: {
+          id: action.payload.id,
+          status: SCRAPE_STATUS.STARTED,
+          message: "Scrape running.",
+        }
+      });
+    case "SCRAPE_SUCCESSFUL":
+      return update(state, {
+        scrape: {
+          id: action.payload.id,
+          status: SCRAPE_STATUS.SUCCESS,
+          message: "Scrape complete!",
+        }
+      });
+    case "SCRAPE_FAILED":
+      return update(state, {
+        scrape: {
+          id: action.payload.id,
           status: SCRAPE_STATUS.FAILURE,
-          message: "Starting scrape failed.",
+          message: "Scrape failed.",
         }
       });
 

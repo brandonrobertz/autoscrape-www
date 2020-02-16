@@ -71,9 +71,52 @@ const mkHandler = (fn, base, latest=true) => {
   return handler;
 };
 
-export const startScrape = mkHandler(api.startScrape, "START_SCRAPE");
+function* sleep(time) {
+  yield new Promise(resolve => setTimeout(resolve, time));
+}
+
+function* scrapeHandler(action) {
+  const base = "SCRAPE"
+  const initialResponse = yield call(api.startScrape, action.payload);
+  const data = {
+    id: initialResponse.data,
+  };
+  console.log("initialResponse", initialResponse);
+  yield put({type: `${base}_PENDING`, payload: data});
+  try {
+    while (true) {
+      const response = yield call(api.pollProgress, data);
+      console.log("response", response);
+      if (response.message == "SUCCESS") {
+        yield put({type: `${base}_SUCCESS`, payload: data});
+        break;
+      } else if (response.message == "FAILURE") {
+        yield put({type: `${base}_FAILED`, payload: data});
+        break;
+      }
+      yield call(sleep, 2000);
+      yield put({type: `${base}_WAITING`, payload: data});
+    }
+  } catch (error) {
+    yield put({
+      type: `${base}_FAILED`,
+      payload: {
+        message: error.message,
+        data: error.response ? error.response.data : {},
+        code: error.response ? error.response.status : null,
+      }
+    });
+  }
+}
+
+function* watchScrape() {
+  yield takeLatest("SCRAPE_REQUESTED", scrapeHandler);
+}
+
+watchers.push(fork(watchScrape));
+
+//export const startScrape = mkHandler(api.startScrape, "START_SCRAPE");
 export const stopScrape = mkHandler(api.stopScrape, "STOP_SCRAPE");
-export const pollProgress = mkHandler(api.pollProgress, "POLL_PROGRESS");
 export const fetchFile = mkHandler(api.fetchFile, "FETCH_FILE");
 export const fetchFilesList = mkHandler(api.fetchFilesList, "FETCH_FILES_LIST");
 
