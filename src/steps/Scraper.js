@@ -19,7 +19,7 @@ class Scraper extends React.Component {
       AS_input: "",
       AS_save_graph: false,
       AS_load_images: false,
-      AS_maxdepth: "10",
+      AS_maxdepth: "1",
       AS_next_match: "next page",
       AS_leave_host: false,
       AS_show_browser: false,
@@ -93,6 +93,7 @@ class Scraper extends React.Component {
   }
 
   startScrape = () => {
+    this.setState({showAdvanced: false});
     store.dispatch({
       type: "SCRAPE_REQUESTED",
       payload: this.autoscrapeData(),
@@ -111,13 +112,14 @@ class Scraper extends React.Component {
 
   scrapeComplete() {
     if (this.props.scrape.status !== SCRAPE_STATUS.SUCCESS) return;
-    const rows = (
-      <tr>
-        <th>Filename</th>
-        <th>Class</th>
-        <th>Date</th>
-      </tr>
-    );
+
+    const rows = this.props.scrape.data.map((item) => {
+      return (<tr className="file-row">
+        <td data-content="name">{item.name}</td>
+        <td data-content="fileclass">{item.fileclass}</td>
+        <td data-content="timestamp">{item.timestamp}</td>
+      </tr>);
+    });
     return (
       <div id="complete">
         <h2>Scrape Complete</h2>
@@ -156,6 +158,21 @@ class Scraper extends React.Component {
     );
    }
 
+   scrapeStatus() {
+     if (this.props.scrape.status !== SCRAPE_STATUS.PENDING &&
+         this.props.scrape.status !== SCRAPE_STATUS.RUNNING)
+       return;
+
+     return (
+       <div id="status">
+         <span id="scrape-status">
+           {this.props.scrape.message}
+         </span>
+         { this.scrapeScreenshot() }
+       </div>
+     );
+   }
+
   render() {
     return (
       <div id="main">
@@ -174,12 +191,7 @@ class Scraper extends React.Component {
               <button id="cancel-scrape" onClick={this.stoptScrape}>Cancel</button>
               <button id="reset-scrape" onClick={this.reset}>Clear Options</button>
             </div>
-            <div id="scrape-status-wrapper">
-              <span id="scrape-status">
-                {this.props.scrape.message}
-              </span>
-              { this.scrapeScreenshot() }
-            </div>
+            { this.scrapeStatus() }
           </div>
           { !this.state.showAdvanced ? null :
           <div id="sub-controls">
@@ -274,7 +286,7 @@ class Scraper extends React.Component {
           </div>
           }
         </form>
-        {  this.scrapeComplete() }
+        { this.scrapeComplete() }
       </div>
     );
   }

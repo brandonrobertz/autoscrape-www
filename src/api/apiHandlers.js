@@ -89,8 +89,8 @@ function* scrapeHandler(action) {
       const response = yield call(api.pollProgress, data);
       data = update(data, response);
       if (response.message == "SUCCESS") {
-        yield call(api.fetchFilesList, data);
-        yield put({type: `${base}_SUCCESS`, payload: data});
+        const filesList = yield call(api.fetchFilesList, data);
+        yield put({type: `${base}_SUCCESS`, payload: filesList});
         break;
       } else if (response.message == "FAILURE") {
         yield put({type: `${base}_FAILED`, payload: data});

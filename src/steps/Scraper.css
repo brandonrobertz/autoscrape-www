@@ -20,7 +20,7 @@
   color: green;
 }
 
-#scrape-status-wrapper {
+#status {
   text-align: center;
   padding: 20px;
 }
@@ -28,7 +28,7 @@
   text-align: center;
 }
 #status #screenshot-img {
-  width: 100%;
+   max-width: 800px;
 }
 #status #screenshot {
   display: inline-block;

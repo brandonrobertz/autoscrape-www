@@ -39,13 +39,12 @@ export const rootReducer = (state, action) => {
       return update(state, {
         scrape: runningScrapeState,
       });
-    case "SCRAPE_SUCCESSFUL":
+    case "SCRAPE_SUCCESS":
+      const completeScrapeState = action.payload;
+      completeScrapeState.status = SCRAPE_STATUS.SUCCESS;
+      completeScrapeState.message = "Scrape complete!";
       return update(state, {
-        scrape: {
-          id: action.payload.id,
-          status: SCRAPE_STATUS.SUCCESS,
-          message: "Scrape complete!",
-        }
+        scrape: completeScrapeState,
       });
     case "SCRAPE_FAILED":
       return update(state, {
