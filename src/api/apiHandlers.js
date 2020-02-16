@@ -1,4 +1,4 @@
-import { call, put, fork, takeLatest, takeEvery, all } from 'redux-saga/effects';
+import { call, cancelled, put, fork, race, take, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import objectAssignDeep from "object-assign-deep";
 import * as api from 'api/requests';
 
@@ -73,6 +73,10 @@ const mkHandler = (fn, base, latest=true) => {
   return handler;
 };
 
+export const stopScrape = mkHandler(api.stopScrape, "STOP_SCRAPE");
+export const fetchFile = mkHandler(api.fetchFile, "FETCH_FILE");
+export const fetchFilesList = mkHandler(api.fetchFilesList, "FETCH_FILES_LIST");
+
 function* sleep(time) {
   yield new Promise(resolve => setTimeout(resolve, time));
 }
@@ -109,19 +113,23 @@ function* scrapeHandler(action) {
         code: error.response ? error.response.status : null,
       }
     });
+  } finally {
+    if (yield cancelled()) {
+      yield put({type: `${base}_CANCELLED`, payload: data});
+    }
   }
 }
 
 function* watchScrape() {
-  yield takeLatest("SCRAPE_REQUESTED", scrapeHandler);
+  yield takeEvery("SCRAPE_REQUESTED", function* (...args) {
+    yield race({
+      task: call(scrapeHandler, ...args),
+      cancel: take("STOP_SCRAPE_REQUESTED"),
+    });
+  });
 }
 
 watchers.push(fork(watchScrape));
-
-//export const startScrape = mkHandler(api.startScrape, "START_SCRAPE");
-export const stopScrape = mkHandler(api.stopScrape, "STOP_SCRAPE");
-export const fetchFile = mkHandler(api.fetchFile, "FETCH_FILE");
-export const fetchFilesList = mkHandler(api.fetchFilesList, "FETCH_FILES_LIST");
 
 export default function* root() {
   yield all(watchers)

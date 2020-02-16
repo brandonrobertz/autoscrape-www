@@ -58,29 +58,54 @@ class Scraper extends React.Component {
     });
   }
 
-  saveZip = (data) => {
-    const id = this.state.scrapeId;
+  /*
+  saveZip = () => {
+    const id = this.state.scrape.id;
+    const data = this.state.scrape.filesList;
+    if (!id || !data) {
+      console.error("saveZip called without id or data available");
+      return;
+    }
+    const file_ids = data.map(data => data.id);
+    Promise.all(file_ids.map((fid) => {
+      changeStatusText(`Fetching file ID ${fid}`, "pending");
+      return fetchFile(id, fid);
+    }))
+      .then((responses) => {
+        return responses.map((r) => {
+          return {
+            "name": r.data.name,
+            "data": r.data.data
+          };
+        });
+      })
+      .then((files) => {
+        changeStatusText(`${files.length} files downloaded`, "pending");
+        const zip = new JSZip();
+        // const seenFileNames = [];
+        files.forEach((file) => {
+          const filename = `autoscrape-data/${file.name}`;
+          // if (seenFileNames.indexOf(filename) !== -1) {
+          //   console.warn("Skipping already included filename", filename);
+          //   return;
+          // }
+          // seenFileNames.push(filename);
+          changeStatusText(`Zipping ${filename}`, "pending");
+          zip.file(filename, atob(file.data), {binary: true});
+        });
+        return zip.generateAsync({type:"blob"});
+      })
+      .then((blob) => {
+        changeStatusText(`Completing ZIP`, "pending");
+        const now = (new Date()).getTime();
+        changeStatusText(`Zipping complete!`, "complete");
+        saveAs(blob, `autoscrape-data-${now}.zip`);
+      })
+      .catch((err) => {
+        console.error("Overall zip error", err);
+      });
   }
-
-  renderPage = (data, page) => {}
-
-  renderFilesList = (data) => {}
-
-  fetchFilesList = () => {
-    const id = this.state.scrapeId;
-  }
-
-  updateStatus = (data) => {
-    const id = this.state.scrapeId;
-  }
-
-  updateProgress = (progressUrl) => {
-    const id = this.state.scrapeId;
-  }
-
-  pollProgress = () => {
-    const id = this.state.scrapeId;
-  }
+  */
 
   autoscrapeData = () => {
     const data = {};
@@ -101,7 +126,14 @@ class Scraper extends React.Component {
   }
 
   stopScrape = () => {
-    const id = this.state.scrapeId;
+    if (!this.props.scrape || !this.props.scrape.id) return;
+    const id = this.props.scrape.id;
+    store.dispatch({
+      type: "STOP_SCRAPE_REQUESTED",
+      payload: {
+        id: id,
+      }
+    });
   }
 
   toggleMenu = () => {}
@@ -113,8 +145,8 @@ class Scraper extends React.Component {
   scrapeComplete() {
     if (this.props.scrape.status !== SCRAPE_STATUS.SUCCESS) return;
 
-    const rows = this.props.scrape.data.map((item) => {
-      return (<tr className="file-row">
+    const rows = this.props.scrape.filesList.map((item, ix) => {
+      return (<tr key={`file-row-${ix}`} className="file-row">
         <td data-content="name">{item.name}</td>
         <td data-content="fileclass">{item.fileclass}</td>
         <td data-content="timestamp">{item.timestamp}</td>
@@ -159,8 +191,7 @@ class Scraper extends React.Component {
    }
 
    scrapeStatus() {
-     if (this.props.scrape.status !== SCRAPE_STATUS.PENDING &&
-         this.props.scrape.status !== SCRAPE_STATUS.RUNNING)
+     if (!this.props.scrape || !this.props.scrape.message)
        return;
 
      return (
@@ -188,8 +219,8 @@ class Scraper extends React.Component {
             </div>
             <div className="scrape-controls">
               <button id="start-scrape" onClick={this.startScrape}>Start</button>
-              <button id="cancel-scrape" onClick={this.stoptScrape}>Cancel</button>
-              <button id="reset-scrape" onClick={this.reset}>Clear Options</button>
+              <button id="cancel-scrape" onClick={this.stopScrape}>Cancel</button>
+              <button id="reset-scrape" onClick={this.reset}>Reset Options</button>
             </div>
             { this.scrapeStatus() }
           </div>
