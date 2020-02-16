@@ -33,7 +33,6 @@ class HeaderNav extends React.Component {
   render() {
     return (
       <div id="header">
-        <p>Current step: { this.props.step }</p>
         <HeaderTab stepName="scraper" label="Scraper" />
         <HeaderTab stepName="build-extractor" label="Build Extractor" />
         <HeaderTab stepName="extract" label="Extract Data" />

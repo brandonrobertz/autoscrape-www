@@ -27,14 +27,14 @@ const handleError = (error) => {
   }
 };
 
-export const startCrawl = (data) => {
+export const startScrape = (data) => {
   const url = `${apiBase}/start`;
   return axios.post(url, data)
     .then((response) => response.data)
     .catch(handleError);
 };
 
-export const stopCrawl = (data) => {
+export const stopScrape = (data) => {
   const body = data.body;
   const url = `${apiBase}/stop/${data.id}`;
   return axios.post(url, body)
