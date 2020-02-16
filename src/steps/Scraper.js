@@ -1,14 +1,10 @@
 import React from "react"
 import { connect } from 'react-redux'
 
-import 'steps/Scraper.css'
+import store from 'state/store';
+import { SCRAPE_STATUS } from 'state/reducers/root';
 
-const STATUS = {
-  FAILURE: "FAILURE",
-  SUCCESS: "SUCCESS",
-  STARTED: "STARTED",
-  PENDING: "PENDING",
-};
+import 'steps/Scraper.css'
 
 class Scraper extends React.Component {
   constructor(props) {
@@ -16,31 +12,29 @@ class Scraper extends React.Component {
     this.defaultState = {
       scrapeId: null,
       showAdvanced: false,
-      scrapeStatus: null,
-      autoscrape: {
-        backend: "requests",
-        baseurl: "",
-        form_submit_wait: "5",
-        input: "",
-        save_graph: false,
-        load_images: false,
-        maxdepth: "10",
-        next_match: "next page",
-        leave_host: false,
-        show_browser: false,
-        driver: "Firefox",
-        form_submit_natural_click: false,
-        formdepth: "15",
-        link_priority: "",
-        keep_filename: false,
-        ignore_links: "",
-        form_match: "",
-        save_screenshots: true,
-        remote_hub: "",
-        loglevel: "DEBUG",
-        output: "http://flask:5000/receive",
-        disable_style_saving: false,
-      },
+      // autoscrape_fields
+      AS_backend: "requests",
+      AS_baseurl: "",
+      AS_form_submit_wait: "5",
+      AS_input: "",
+      AS_save_graph: false,
+      AS_load_images: false,
+      AS_maxdepth: "10",
+      AS_next_match: "next page",
+      AS_leave_host: false,
+      AS_show_browser: false,
+      AS_driver: "Firefox",
+      AS_form_submit_natural_click: false,
+      AS_formdepth: "15",
+      AS_link_priority: "",
+      AS_keep_filename: false,
+      AS_ignore_links: "",
+      AS_form_match: "",
+      AS_save_screenshots: true,
+      AS_remote_hub: "",
+      AS_loglevel: "DEBUG",
+      AS_output: "http://flask:5000/receive",
+      AS_disable_style_saving: false,
     };
     this.state = this.defaultState;
   }
@@ -58,7 +52,7 @@ class Scraper extends React.Component {
 
   fetchFile = (file_id) => {
     const id = this.state.scrapeId;
-    const url = `${this.state.autoscrape.baseurl}/files/data/${id}/${file_id}`
+    const url = `${this.state.AS_baseurl}/files/data/${id}/${file_id}`
     return fetch(url).then((response) => {
       return response.json();
     });
@@ -88,7 +82,22 @@ class Scraper extends React.Component {
     const id = this.state.scrapeId;
   }
 
-  startScrape = () => {}
+  autoscrapeData = () => {
+    const data = {};
+    Object.keys(this.state).forEach((k) => {
+      if (!k.startsWith("AS_")) return;
+      const stripped = k.replace("AS_", "");
+      data[stripped] = this.state[k];
+    });
+    return data;
+  }
+
+  startScrape = () => {
+    store.dispatch({
+      type: "START_SCRAPE_REQUESTED",
+      payload: this.autoscrapeData(),
+    });
+  }
 
   stopScrape = () => {
     const id = this.state.scrapeId;
@@ -102,7 +111,7 @@ class Scraper extends React.Component {
   }
 
   scrapeComplete() {
-    if (this.state.scrapeStatus !== STATUS.SUCCESS) return;
+    if (this.state.scrapeStatus !== SCRAPE_STATUS.SUCCESS) return;
     const rows = (
       <tr>
         <th>Filename</th>
@@ -138,7 +147,7 @@ class Scraper extends React.Component {
   }
 
   scrapeStatus() {
-    if (this.state.scrapeStatus !== STATUS.STARTED) return;
+    if (this.state.scrapeStatus !== SCRAPE_STATUS.STARTED) return;
     return (
       <div id="status">
         <div id="screenshot">
@@ -154,8 +163,8 @@ class Scraper extends React.Component {
       <div id="main">
         <form onSubmit={this.handleSubmit} onChange={this.handleChange} id="controls">
           <div id="main-controls">
-            <input value={this.state.autoscrape.baseurl} onChange={this.handleChange}
-              name="baseurl" type="text" placeholder="Base URL to scrape..."
+            <input value={this.state.AS_baseurl} onChange={this.handleChange}
+              name="AS_baseurl" type="text" placeholder="Base URL to scrape..."
             />
             <div id="toggle-wrapper">
               <span onClick={this.toggleAdvanced}>
@@ -164,9 +173,11 @@ class Scraper extends React.Component {
             </div>
             <button id="start-scrape" onClick={this.startScrape}>Start</button>
             <button id="cancel-scrape" onClick={this.stoptScrape}>Cancel</button>
-            <button id="reset-scrape" onClick={this.reset}>Reset</button>
+            <button id="reset-scrape" onClick={this.reset}>Clear Options</button>
             <div id="scrape-status-wrapper">
-              <span id="scrape-status"></span>
+              <span id="scrape-status">
+                {this.props.scrape.message}
+              </span>
             </div>
           </div>
           {!this.state.showAdvanced ? null :
@@ -175,9 +186,9 @@ class Scraper extends React.Component {
               <span className="small">
                 scraper backend
                 <select
-                  value={this.state.autoscrape.backend}
+                  value={this.state.AS_backend}
                   onChange={this.handleChange}
-                  name="backend"
+                  name="AS_backend"
                   id="sub-controls-backend"
                 >
                   <option value="requests">Requests</option>
@@ -187,76 +198,76 @@ class Scraper extends React.Component {
               <span className="small">
                 <label htmlFor="form_submit_wait">form_submit_wait</label>
                 <input id="form_submit_wait"
-                  name="form_submit_wait"
+                  name="AS_form_submit_wait"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.form_submit_wait}
+                  value={this.state.AS_form_submit_wait}
                 />
               </span>
               <span className="large">
                 <label htmlFor="input">input</label>
                 <input id="input"
-                  name="input"
-                  value={this.state.autoscrape.input}
+                  name="AS_input"
+                  value={this.state.AS_input}
                   onChange={this.handleChange}
                   type="text" />
               </span>
               <span>
                 <label htmlFor="load_images">load_images</label>
-                <input id="load_images" name="load_images"
+                <input id="load_images" name="AS_load_images"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.load_images} type="checkbox" /> </span>
+                  value={this.state.AS_load_images} type="checkbox" /> </span>
               <span className="small">
                 <label htmlFor="maxdepth">maxdepth</label>
-                <input id="maxdepth" name="maxdepth"
+                <input id="maxdepth" name="AS_maxdepth"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.maxdepth} type="text" />
+                  value={this.state.AS_maxdepth} type="text" />
               </span>
               <span className="medium">
                 <label htmlFor="next_match">next_match</label>
-                <input id="next_match" name="next_match"
+                <input id="next_match" name="AS_next_match"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.next_match} type="text" />
+                  value={this.state.AS_next_match} type="text" />
               </span>
               <span>
                 <label htmlFor="leave_host">leave_host</label>
-                <input id="leave_host" name="leave_host"
+                <input id="leave_host" name="AS_leave_host"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.leave_host} type="checkbox" /> </span>
+                  value={this.state.AS_leave_host} type="checkbox" /> </span>
               <span>
                 <label htmlFor="form_submit_natural_click">form_submit_natural_click</label>
                 <input
                   id="form_submit_natural_click"
-                  name="form_submit_natural_click"
+                  name="AS_form_submit_natural_click"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.form_submit_natural_click}
+                  value={this.state.AS_form_submit_natural_click}
                   type="checkbox"
                 />
               </span>
               <span className="small">
                 <label htmlFor="formdepth">formdepth</label>
-                <input id="formdepth" name="formdepth"
+                <input id="formdepth" name="AS_formdepth"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.formdepth} type="text" />
+                  value={this.state.AS_formdepth} type="text" />
               </span>
               <span>
                 <label htmlFor="link_priority">link_priority</label>
-                <input id="link_priority" name="link_priority"
+                <input id="link_priority" name="AS_link_priority"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.link_priority} type="text"
+                  value={this.state.AS_link_priority} type="text"
                 />
               </span>
               <span>
                 <label htmlFor="ignore_links">ignore_links</label>
-                <input id="ignore_links" name="ignore_links"
+                <input id="ignore_links" name="AS_ignore_links"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.ignore_links} type="text"
+                  value={this.state.AS_ignore_links} type="text"
                 />
               </span>
               <span>
                 <label htmlFor="form_match">form_match</label>
-                <input id="form_match" name="form_match"
+                <input id="form_match" name="AS_form_match"
                   onChange={this.handleChange}
-                  value={this.state.autoscrape.form_match} type="text" />
+                  value={this.state.AS_form_match} type="text" />
               </span>
             </div>
           </div>}
@@ -269,8 +280,9 @@ class Scraper extends React.Component {
 }
 
 function mapStateToProps(state) {
-  const { step } = state;
-  return { step };
+  const { step, scrape } = state;
+  console.log("mapStateToProps scrape", scrape);
+  return { step, scrape };
 }
 
 export default connect(mapStateToProps, {})(Scraper);
