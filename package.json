@@ -6,7 +6,7 @@
   "scripts": {
     "build-hextractor": "git submodule init && git submodule update && cd public/hextractor && npm install && npm run build-prod",
     "start": "react-scripts start",
-    "build": "npm run build-hextractor && react-scripts build",
+    "build": "npm run build-hextractor && cp -f public/hextractor/hext-emscripten.* ./public/ && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -22,10 +22,10 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "datatransfer-files-promise": "^1.2.0",
-    "file-saver": "^2.0.0",
+    "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
-    "jszip": "^3.1.5",
     "object-assign-deep": "^0.4.0",
+    "papaparse": "^5.1.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
     "react-redux": "^7.1.3",

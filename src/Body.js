@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 
 import Scraper from 'steps/Scraper'
 import BuildExtractor from 'steps/BuildExtractor'
+import ExtractData from 'steps/ExtractData'
 
 import 'Body.css'
 
@@ -26,14 +27,7 @@ class Body extends React.Component {
     } else if (this.props.step === "build-extractor") {
       return <BuildExtractor />;
     } else if (this.props.step === "extract") {
-      return (
-        <div>
-          <h1>Extractor</h1>
-          <p>
-            Extract data now.
-          </p>
-        </div>
-      );
+      return <ExtractData />;
     } else {
       return (
         <div>
