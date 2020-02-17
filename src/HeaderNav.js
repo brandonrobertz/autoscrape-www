@@ -6,8 +6,8 @@ import store from 'state/store'
 import 'HeaderNav.css'
 
 function mapStateToProps(state) {
-  const { step, scrape } = state;
-  return { step, scrape };
+  const { step, scrape, hext } = state;
+  return { step, scrape, hext };
 }
 
 class _HeaderTab extends React.Component {
@@ -19,17 +19,31 @@ class _HeaderTab extends React.Component {
       }
     });
   }
+
   getClassNames() {
     let className = "header-link";
-    // if we're on the scraper page, but we ought to move to
-    // the build extractor phase, highlight the build extractor button
-    if (this.props.stepName === "build-extractor" &&
-        this.props.step === "scraper" &&
-        this.props.scrape.filesList) {
+    // point the user to the next step by highlighting
+    // the next step when we have the data needed to
+    // use it. these are in order of precedence, so
+    // the last steps should come higher priorirt, to
+    // avoid pointing people back
+    if (
+      this.props.stepName === "extract" &&
+      this.props.scrape.filesList &&
+      this.props.hext
+    ) {
+      className += " highlighted";
+    }
+    else if (
+      this.props.stepName === "build-extractor" &&
+      this.props.scrape.filesList &&
+      !this.props.hext
+    ) {
       className += " highlighted";
     }
     return className;
   }
+
   render() {
     return (
       <button className={this.getClassNames()} onClick={this.navigateTo}>

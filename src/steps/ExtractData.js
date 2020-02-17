@@ -104,26 +104,11 @@ const fileToText = (file) => {
 }
 
 const extractJSON = (hext, html) => {
-  if (!Module) {
-    return console.warn("No emscripten Hext library found. " +
-      "Not performing additional highlighting.");
-  }
-
-  console.log("extracting",  html.slice(0, 50), "using", hext);
-  const json = Module.ccall(
-    "html2json",
-    "string",
-    ["string", "string"],
-    [hext, html]
-  );
-  console.log("Module ccall response", json);
-  try {
-    return JSON.parse(json);
-  }
-  catch (e) {
-    console.warn ("Unable to extract from file. Skipping.");
-    return null;
-  }
+  const parsedHtml = new Module.Html(html);
+  const rule = new Module.Rule(hext);
+  const results = rule.extract(parsedHtml);
+  console.log("Hext extraction response", results);
+  return results;
 }
 
 const startExtraction = (zip, hext) => {

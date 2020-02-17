@@ -3,6 +3,7 @@ import { update } from 'state/util';
 const initialState = {
   step: "scraper",
   scrape: {},
+  hext: null,
 };
 
 export const SCRAPE_STATUS = {
@@ -23,7 +24,6 @@ export const rootReducer = (state, action) => {
         step: action.payload.step,
       });
 
-    //case "SCRAPE_REQUESTED":
     case "SCRAPE_PENDING":
       return update(state, {
         scrape: {
@@ -63,6 +63,11 @@ export const rootReducer = (state, action) => {
           status: SCRAPE_STATUS.FAILURE,
           message: "Scrape failed.",
         }
+      });
+
+    case "HEXT_RECEIVED":
+      return update(state, {
+        hext: action.payload,
       });
 
     default:
