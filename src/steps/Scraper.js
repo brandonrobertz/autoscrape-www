@@ -13,13 +13,13 @@ class Scraper extends React.Component {
       scrapeId: null,
       showAdvanced: false,
       // AutoScrape fields
-      AS_backend: "selenium",
+      AS_backend: "requests",
       AS_baseurl: "",
       AS_form_submit_wait: "5",
       AS_input: "",
       AS_save_graph: false,
       AS_load_images: false,
-      AS_maxdepth: "1",
+      AS_maxdepth: "0",
       AS_next_match: "next page",
       AS_leave_host: false,
       AS_show_browser: false,
@@ -36,6 +36,7 @@ class Scraper extends React.Component {
       AS_output: "http://localhost:5000/receive",
       AS_disable_style_saving: false,
     };
+    this.baseUrlRef = React.createRef();
     this.state = this.defaultState;
   }
 
@@ -311,6 +312,10 @@ class Scraper extends React.Component {
     );
   }
 
+  componentDidMount() {
+    this.baseUrlRef.current.focus();
+  }
+
   render() {
     return (
       <div id="main">
@@ -318,6 +323,7 @@ class Scraper extends React.Component {
           <div id="main-controls">
             <input value={this.state.AS_baseurl} onChange={this.handleChange}
               name="AS_baseurl" type="text" placeholder="Base URL to scrape..."
+              ref={this.baseUrlRef}
             />
             <div id="toggle-wrapper">
               <span onClick={this.toggleAdvanced}>

@@ -1,0 +1,3 @@
+[submodule "public/hextractor"]
+	path = public/hextractor
+	url = https://github.com/brandonrobertz/hextractor

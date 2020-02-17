@@ -43,7 +43,8 @@ export const rootReducer = (state, action) => {
       return update(state, {
         scrape: {
           id: action.payload.id,
-          filesList: action.payload.data,
+          filesList: action.payload.filesList,
+          documents: action.payload.documents,
           status: SCRAPE_STATUS.SUCCESS,
           message: "Scrape complete! You can now move to the build extractor step, above.",
         }

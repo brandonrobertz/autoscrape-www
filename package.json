@@ -4,9 +4,9 @@
   "description": "Frontend web UI for running AutoScrape and extracting data.",
   "main": "src/index.js",
   "scripts": {
-    "download-hext": "rm -f public/hext-emscripten.js public/hext-emscripten.wasm && wget https://github.com/html-extract/hext-emscripten/releases/download/v0.1.4/hext-emscripten.wasm -P public/ && wget https://github.com/html-extract/hext-emscripten/releases/download/v0.1.4/hext-emscripten.js -P public/",
+    "build-hextractor": "git submodule init && git submodule update && cd public/hextractor && npm install && npm run build-prod",
     "start": "react-scripts start",
-    "build": "npm run download-hext && react-scripts build",
+    "build": "npm run build-hextractor && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

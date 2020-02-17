@@ -94,7 +94,54 @@ function* scrapeHandler(action) {
       data = update(data, response);
       if (response.message === "SUCCESS") {
         const filesList = yield call(api.fetchFilesList, data);
-        yield put({type: `${base}_SUCCESS`, payload: filesList});
+
+        // filename => html, css
+        const htmlAndCSS = {};
+
+        for(let i = 0; i < filesList.data.length; i++) {
+          const fileInfo = filesList.data[i];
+          // skip screenshots/downloads
+          if (fileInfo.fileclass !== "crawl_pages" &&
+              fileInfo.fileclass !== "data_pages")
+              continue;
+
+          // fetch the file data
+          const fid = fileInfo.id;
+          const result = yield call(api.fetchFile, {
+            id: data.id, file_id: fid
+          });
+
+          // extract extension and add to HTML/CSS data
+          const matches = fileInfo.name.match(/(.*)\.([^\\.]{3,})$/);
+          let extension = matches[2];
+          if (extension !== "css") {
+            extension = "html";
+          }
+          let filename = fileInfo.name;
+          // AutoScrape saves CSS as [path].html.css
+          if (fileInfo.name.endsWith(".css")) {
+            filename = matches[1];
+          }
+          if (!htmlAndCSS[filename]) {
+            htmlAndCSS[filename] = {
+              name: filename
+            };
+          }
+          htmlAndCSS[filename][extension] = atob(result.data.data);
+        }
+
+        const documents = Object.keys(htmlAndCSS).map((filename) => {
+          const doc = htmlAndCSS[filename]
+          return {
+            name: filename,
+            html: doc.html,
+            css: doc.css,
+          };
+        });
+
+        data.filesList = filesList.data;
+        data.documents = documents;
+        yield put({type: `${base}_SUCCESS`, payload: data});
         break;
       } else if (response.message === "FAILURE") {
         yield put({type: `${base}_FAILED`, payload: data});
@@ -105,6 +152,7 @@ function* scrapeHandler(action) {
       yield call(api.pollProgress, data);
     }
   } catch (error) {
+    console.error(error);
     yield put({
       type: `${base}_FAILED`,
       payload: {
