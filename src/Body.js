@@ -26,10 +26,10 @@ class Body extends React.Component {
         <button onClick={this.toggleInfo}>[X] Close</button>
         <h1>Welcome to AutoScrape</h1>
         <p>
-          This is a free online interface to <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank">AutoScrape</a>, a web scraping tool capable of crawling and submitting forms on the most annoying JavaScript-heavy websites.
+          This is a free online interface to <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">AutoScrape</a>, a web scraping tool capable of crawling and submitting forms on the most annoying JavaScript-heavy websites.
         </p>
         <p>
-          This is alpha software and is only available for testing purposes. Everything here is logged, but won't be shared publicly. AutoScrape is a project of  <a href="https://artificialinformer.com" target="_blank">Artificial Informer Labs</a>. This web app is ran by <a href="https://bxroberts.org" target="_blank">Brandon Roberts</a>.
+          This is alpha software and is only available for testing purposes. Everything here is logged, but won't be shared publicly. AutoScrape is a project of  <a href="https://artificialinformer.com" target="_blank" rel="noopener noreferrer">Artificial Informer Labs</a>. This web app is ran by <a href="https://bxroberts.org" target="_blank" rel="noopener noreferrer">Brandon Roberts</a>.
         </p>
       </div>
     );
