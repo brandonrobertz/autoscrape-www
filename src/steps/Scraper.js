@@ -20,7 +20,7 @@ class Scraper extends React.Component {
       AS_save_graph: false,
       AS_load_images: false,
       AS_maxdepth: "0",
-      AS_next_match: "next page",
+      AS_next_match: "",
       AS_leave_host: false,
       AS_show_browser: false,
       AS_driver: "Firefox",
@@ -221,8 +221,10 @@ class Scraper extends React.Component {
     return (
       <div id="sub-controls">
         <div id="sub-controls-menu">
-          <span className="small">
-            scraper backend
+          <div>
+            <label htmlFor="AS_backend">
+              Scraper backend
+            </label>
             <select
               value={this.state.AS_backend}
               onChange={this.handleChange}
@@ -232,47 +234,59 @@ class Scraper extends React.Component {
               <option value="requests">Requests</option>
               <option value="selenium">Selenium (Firefox)</option>
             </select>
-          </span>
-          <span className="small">
-            <label htmlFor="form_submit_wait">form_submit_wait</label>
-            <input id="form_submit_wait"
-              name="AS_form_submit_wait"
+          </div>
+
+          <div>
+            <label htmlFor="form_match">Form text</label>
+            <input id="form_match" name="AS_form_match"
               onChange={this.handleChange}
-              value={this.state.AS_form_submit_wait}
-            />
-          </span>
-          <span className="large">
-            <label htmlFor="input">input</label>
+              placeholder="Text can we use to find your form"
+              value={this.state.AS_form_match} type="text" />
+          </div>
+          <div>
+            <label htmlFor="next_match">Next page button text</label>
+            <input id="next_match" name="AS_next_match"
+              onChange={this.handleChange}
+              placeholder="Text can we use to find next page buttons"
+              value={this.state.AS_next_match} type="text" />
+          </div>
+          <div>
+            <label htmlFor="input">Form input plan</label>
             <input id="input"
               name="AS_input"
               value={this.state.AS_input}
               onChange={this.handleChange}
               type="text" />
-          </span>
-          <span>
-            <label htmlFor="load_images">load_images</label>
+          </div>
+
+          <div>
+            <label htmlFor="form_submit_wait">Wait after submit (seconds)</label>
+            <input id="form_submit_wait"
+              name="AS_form_submit_wait"
+              onChange={this.handleChange}
+              value={this.state.AS_form_submit_wait}
+            />
+          </div>
+          <div>
+            <label htmlFor="load_images">Load images?</label>
             <input id="load_images" name="AS_load_images"
               onChange={this.handleChange}
-              value={this.state.AS_load_images} type="checkbox" /> </span>
-          <span className="small">
-            <label htmlFor="maxdepth">maxdepth</label>
+              value={this.state.AS_load_images} type="checkbox" />
+          </div>
+          <div>
+            <label htmlFor="maxdepth">Max click depth</label>
             <input id="maxdepth" name="AS_maxdepth"
               onChange={this.handleChange}
               value={this.state.AS_maxdepth} type="text" />
-          </span>
-          <span className="medium">
-            <label htmlFor="next_match">next_match</label>
-            <input id="next_match" name="AS_next_match"
-              onChange={this.handleChange}
-              value={this.state.AS_next_match} type="text" />
-          </span>
-          <span>
-            <label htmlFor="leave_host">leave_host</label>
+          </div>
+          <div>
+            <label htmlFor="leave_host">Leave host?</label>
             <input id="leave_host" name="AS_leave_host"
               onChange={this.handleChange}
-              value={this.state.AS_leave_host} type="checkbox" /> </span>
-          <span>
-            <label htmlFor="form_submit_natural_click">form_submit_natural_click</label>
+              value={this.state.AS_leave_host} type="checkbox" />
+          </div>
+          <div>
+            <label htmlFor="form_submit_natural_click">Simulate natural click on submit?</label>
             <input
               id="form_submit_natural_click"
               name="AS_form_submit_natural_click"
@@ -280,33 +294,27 @@ class Scraper extends React.Component {
               value={this.state.AS_form_submit_natural_click}
               type="checkbox"
             />
-          </span>
-          <span className="small">
-            <label htmlFor="formdepth">formdepth</label>
+          </div>
+          <div>
+            <label htmlFor="formdepth">Maximum form page depth</label>
             <input id="formdepth" name="AS_formdepth"
               onChange={this.handleChange}
               value={this.state.AS_formdepth} type="text" />
-          </span>
-          <span>
-            <label htmlFor="link_priority">link_priority</label>
+          </div>
+          <div>
+            <label htmlFor="link_priority">Click matching links first</label>
             <input id="link_priority" name="AS_link_priority"
               onChange={this.handleChange}
               value={this.state.AS_link_priority} type="text"
             />
-          </span>
-          <span>
-            <label htmlFor="ignore_links">ignore_links</label>
+          </div>
+          <div>
+            <label htmlFor="ignore_links">Ignore matching links</label>
             <input id="ignore_links" name="AS_ignore_links"
               onChange={this.handleChange}
               value={this.state.AS_ignore_links} type="text"
             />
-          </span>
-          <span>
-            <label htmlFor="form_match">form_match</label>
-            <input id="form_match" name="AS_form_match"
-              onChange={this.handleChange}
-              value={this.state.AS_form_match} type="text" />
-          </span>
+          </div>
         </div>
       </div>
     );
@@ -314,6 +322,21 @@ class Scraper extends React.Component {
 
   componentDidMount() {
     this.baseUrlRef.current.focus();
+  }
+
+  scrapeControls = () => {
+    //<button id="reset-scrape" onClick={this.reset}>Reset Options</button>
+    if (!this.props.scrape || !this.props.scrape.status) {
+      return (
+        <button id="start-scrape" onClick={this.startScrape}>Start</button>
+      );
+    }
+    const status = this.props.scrape.status;
+    if (status === SCRAPE_STATUS.SUCCESS || status === SCRAPE_STATUS.FAILURE) {
+      return <button id="start-scrape" onClick={this.startScrape}>Start</button>
+    } else if (status === SCRAPE_STATUS.RUNNING || status === SCRAPE_STATUS.PENDING) {
+      return <button id="cancel-scrape" onClick={this.stopScrape}>Stop</button>;
+    }
   }
 
   render() {
@@ -329,13 +352,9 @@ class Scraper extends React.Component {
               <span onClick={this.toggleAdvanced}>
                 {!this.state.showAdvanced ? '🔧' : '✖'}
               </span>
+              { this.scrapeControls() }
             </div>
             { this.advancedControls() }
-            <div className="scrape-controls">
-              <button id="start-scrape" onClick={this.startScrape}>Start</button>
-              <button id="cancel-scrape" onClick={this.stopScrape}>Cancel</button>
-              <button id="reset-scrape" onClick={this.reset}>Reset Options</button>
-            </div>
 
             { this.scrapeStatus() }
           </div>
