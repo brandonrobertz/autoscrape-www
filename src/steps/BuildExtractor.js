@@ -66,7 +66,7 @@ class BuildExtractor extends React.Component {
         <div>
           <p>
             You've successfully built a template. Continue to the
-            extract data step above to download your data.
+            download step above to get your data.
           </p>
           { this.showHextControl() }
           { this.state.showHext && <pre>{this.props.hext}</pre> }

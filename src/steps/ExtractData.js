@@ -36,7 +36,7 @@ class ExtractData extends React.Component {
     if (this.props.hext) {
       return (
         <div>
-          <h1>Extract Data</h1>
+          <h1>Download Data</h1>
           <p>
             Select an output format below to get your extracted data.
           </p>

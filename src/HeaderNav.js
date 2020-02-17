@@ -61,7 +61,7 @@ class HeaderNav extends React.Component {
       <div id="header">
         <HeaderTab stepName="scraper" label="Scraper" />
         <HeaderTab stepName="build-extractor" label="Build Extractor" />
-        <HeaderTab stepName="extract" label="Extract Data" />
+        <HeaderTab stepName="extract" label="Download Data" />
       </div>
     );
   }
