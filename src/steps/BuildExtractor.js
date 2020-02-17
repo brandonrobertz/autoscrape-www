@@ -49,13 +49,16 @@ class BuildExtractor extends React.Component {
     </div>);
   }
 
-  renderIframe() {
+  render() {
     if (!this.props.scrape || !this.props.scrape.filesList) {
       return (
-        <p>
-          You haven't scraped any data, yet! Please visit the 'Scraper'
-          step and complete a successful scrape.
-        </p>
+        <div>
+          <h2>This is where you'll build an extractor</h2>
+          <p>
+            You haven't completed a successful scrape, yet. Go back to the
+            scraper section and do that first.
+          </p>
+        </div>
       );
     }
     else if (this.props.hext) {
@@ -76,14 +79,6 @@ class BuildExtractor extends React.Component {
         ref={this.iframeRef}
         src="/hextractor/hextractor.html">
       </iframe>
-    );
-  }
-
-  render() {
-    return (
-      <div>
-        { this.renderIframe() }
-      </div>
     );
   }
 }

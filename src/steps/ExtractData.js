@@ -33,16 +33,38 @@ class ExtractData extends React.Component {
   }
 
   render() {
+    if (this.props.hext) {
+      return (
+        <div>
+          <h1>Extract Data</h1>
+          <p>
+            Select an output format below to get your extracted data.
+          </p>
+          <div>
+            <button onClick={this.downloadJSON}>JSON</button>
+            <button onClick={this.downloadCSV}>Spreadsheet (CSV)</button>
+          </div>
+        </div>
+      );
+    }
+    if (this.props.documents && !this.props.hext) {
+      return (
+        <div>
+          <h2>This is where you'll download your extracted data</h2>
+          <p>
+            You haven't created an extractor, yet! Go back to the 'Build Extractor'
+            step and build one first.
+          </p>
+        </div>
+      );
+    }
     return (
       <div>
-        <h1>Extract Data</h1>
+        <h2>This is where you'll download your extracted data</h2>
         <p>
-          Select an output format below to get your extracted data.
+          You haven't completed a successful scrape, yet. Go back to
+          the scraper section and do that first.
         </p>
-        <div>
-          <button onClick={this.downloadJSON}>JSON</button>
-          <button onClick={this.downloadCSV}>Spreadsheet (CSV)</button>
-        </div>
       </div>
     );
   }
