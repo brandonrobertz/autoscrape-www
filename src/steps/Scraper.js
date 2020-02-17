@@ -168,6 +168,10 @@ class Scraper extends React.Component {
     return (
       <div id="complete">
         <h2>Scrape Complete</h2>
+        <p>
+          A list of all the scraped files are below. You can start extracting data
+          from them by continuing to the build extractor step.
+        </p>
         <div id="files-list-wrapper">
           <table id="files-list">
             <thead>

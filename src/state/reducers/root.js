@@ -35,7 +35,7 @@ export const rootReducer = (state, action) => {
     case "SCRAPE_RUNNING":
       const runningScrapeState = action.payload;
       runningScrapeState.status = SCRAPE_STATUS.RUNNING;
-      runningScrapeState.message = "Scrape running.";
+      runningScrapeState.message = "Scrape running...";
       return update(state, {
         scrape: runningScrapeState,
       });
@@ -46,7 +46,7 @@ export const rootReducer = (state, action) => {
           filesList: action.payload.filesList,
           documents: action.payload.documents,
           status: SCRAPE_STATUS.SUCCESS,
-          message: "Scrape complete! You can now move to the build extractor step, above.",
+          message: "Scrape complete!",
         }
       });
     case "SCRAPE_CANCELLED":

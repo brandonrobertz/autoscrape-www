@@ -1,13 +1,8 @@
 #main-controls {
-  text-align: center;
-  font-size: 16px;
 }
 #main-controls input {
-  width: 50%;
-  font-size: 16px;
 }
 #main-controls button {
-  font-size: 16px;
 }
 
 #controls .pending {
@@ -21,7 +16,6 @@
 }
 
 #status {
-  text-align: center;
   padding: 20px;
 }
 #status #screenshot-url {
@@ -46,16 +40,15 @@
   font-size: 20px;
   cursor: pointer;
   color: #888888;
-  width: 40px;
+  /*width: 40px;*/
   display: inline-block;
 }
 
 #sub-controls {
-  text-align: left;
 }
 #sub-controls-menu span {
   padding: 2px 5px;
-  display: flex-inline;
+  /*display: flex-inline;*/
 }
 #sub-controls-menu {
   font-size: 11px;

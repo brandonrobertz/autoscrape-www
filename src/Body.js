@@ -8,17 +8,38 @@ import ExtractData from 'steps/ExtractData'
 import 'Body.css'
 
 class Body extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showInfo: true,
+    };
+  }
+
+  toggleInfo = () => {
+    this.setState({showInfo: !this.state.showInfo});
+  }
+
+  infoBox = () => {
+    if (!this.state.showInfo) return;
+    return (
+      <div id="welcome">
+        <button onClick={this.toggleInfo}>[X] Close</button>
+        <h1>Welcome to AutoScrape</h1>
+        <p>
+          This is a free online interface to <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank">AutoScrape</a>, a web scraping tool capable of crawling and submitting forms on the most annoying JavaScript-heavy websites.
+        </p>
+        <p>
+          This is alpha software and is only available for testing purposes. Everything here is logged, but won't be shared publicly. AutoScrape is a project of  <a href="https://artificialinformer.com" target="_blank">Artificial Informer Labs</a>. This web app is ran by <a href="https://bxroberts.org" target="_blank">Brandon Roberts</a>.
+        </p>
+      </div>
+    );
+  }
+
   render() {
     if (this.props.step === "scraper") {
       return (
         <div>
-          <div id="welcome">
-            <h1>Welcome to AutoScrape Alpha</h1>
-            <p>
-              Feel free to use AutoScrape free! Note that I am logging the usage of
-              AutoScrape here for testing and use-case information gathering purposes.
-            </p>
-          </div>
+          { this.state.showInfo && this.infoBox() }
           <div>
             <Scraper />
           </div>
