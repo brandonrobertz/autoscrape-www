@@ -19,7 +19,6 @@ class BuildExtractor extends React.Component {
       if (event.data === "waiting") {
         this.sendFilesList(this.props.scrape);
       } else if (event.data.params && event.data.params.hext_template) {
-        console.log("Got hext template", event.data);
         // dispatch hext template
         store.dispatch({
           type: "HEXT_RECEIVED",
