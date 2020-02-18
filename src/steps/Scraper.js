@@ -71,8 +71,12 @@ class Scraper extends React.Component {
     const data = {};
     Object.keys(this.state).forEach((k) => {
       if (!k.startsWith("AS_")) return;
-      const stripped = k.replace("AS_", "");
-      data[stripped] = this.state[k];
+      const name = k.replace("AS_", "");
+      if (name === "AS_ignore_links" || name === "AS_link_priority") {
+        data[name] = this.state[k].replace(",", "|");
+      } else {
+        data[name] = this.state[k];
+      }
     });
     return data;
   }
@@ -153,7 +157,7 @@ class Scraper extends React.Component {
           </table>
         </div>
         { this.filesPageControls() }
-        <div class="next">
+        <div className="next">
           <button type="button" onClick={this.nextStep}>Build Extractor</button>
         </div>
       </div>
@@ -267,7 +271,7 @@ class Scraper extends React.Component {
             <input id="link_priority" name="AS_link_priority"
               onChange={this.handleChange}
               value={this.state.AS_link_priority}
-              placeholder='Link text to click before others, separated by comma (e.g. "Accept, More data")'
+              placeholder='Link text to click before others, separated by comma (e.g. "Accept, More data") Case sensitive.'
               type="text"
             />
             <label htmlFor="link_priority" className="active">
@@ -278,7 +282,7 @@ class Scraper extends React.Component {
             <input id="ignore_links" name="AS_ignore_links"
               onChange={this.handleChange}
               value={this.state.AS_ignore_links}
-              placeholder='Link text to ignore, separated by comma (e.g. "Logout")'
+              placeholder='Link text to ignore, separated by comma (e.g. "Logout"). Case sensitive.'
               type="text"
             />
             <label htmlFor="ignore_links" className="active">
