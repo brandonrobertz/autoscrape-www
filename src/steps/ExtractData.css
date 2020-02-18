@@ -1,0 +1,21 @@
+#extract-data {
+  text-align: center;
+}
+#extract-data p {
+  margin: 50px;
+}
+
+.downloads .csv,
+.downloads .json {
+  font-family: monospace;
+  font-size: 3rem;
+  cursor: pointer;
+  border: 1px dashed #eeeeee;
+  margin: 25px;
+}
+
+.downloads img,
+.downloads img {
+  height: 200px
+}
+

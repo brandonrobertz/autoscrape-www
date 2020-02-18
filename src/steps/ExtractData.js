@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { saveAs } from 'file-saver'
 import Papa from 'papaparse'
 
+import 'steps/ExtractData.css'
+
 class ExtractData extends React.Component {
   extractAll = () => {
     const hext = this.props.hext;
@@ -35,14 +37,18 @@ class ExtractData extends React.Component {
   render() {
     if (this.props.hext) {
       return (
-        <div>
+        <div id="extract-data">
           <h1>Download Data</h1>
           <p>
             Select an output format below to get your extracted data.
           </p>
-          <div>
-            <button onClick={this.downloadJSON}>JSON</button>
-            <button onClick={this.downloadCSV}>Spreadsheet (CSV)</button>
+          <div className="downloads">
+            <span className="json" onClick={this.downloadJSON}>
+              <img src="/json-icon.svg" alt="Download Data (JSON)" />
+            </span>
+            <span className="csv" onClick={this.downloadCSV}>
+              <img src="/csv-icon.svg" alt="Download Spreadsheet (CSV)" />
+            </span>
           </div>
         </div>
       );

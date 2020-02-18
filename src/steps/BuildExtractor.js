@@ -62,13 +62,16 @@ class BuildExtractor extends React.Component {
     }
     else if (this.props.hext) {
       return (
-        <div>
+        <div className="extractor-built-complete row">
+          <h2>Extractor Built</h2>
           <p>
             You've successfully built a template. Continue to the
             download step above to get your data.
           </p>
-          { this.showHextControl() }
-          { this.state.showHext && <pre>{this.props.hext}</pre> }
+          <div className="hext-template">
+            { this.showHextControl() }
+            { this.state.showHext && <pre>{this.props.hext}</pre> }
+          </div>
         </div>
       );
     }
