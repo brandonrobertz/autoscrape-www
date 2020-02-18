@@ -1,5 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
+import M from 'materialize-css';
 
 import store from 'state/store';
 import { SCRAPE_STATUS } from 'state/reducers/root';
@@ -47,7 +48,8 @@ class Scraper extends React.Component {
   // we don't use submit, disable it here
   handleSubmit  = (e) => { e.preventDefault();}
 
-  toggleAdvanced = () => {
+  toggleAdvanced = (e) => {
+    e.preventDefault();
     this.setState({showAdvanced: !this.state.showAdvanced});
   }
 
@@ -58,55 +60,6 @@ class Scraper extends React.Component {
       return response.json();
     });
   }
-
-  /*
-  saveZip = () => {
-    const id = this.state.scrape.id;
-    const data = this.state.scrape.filesList;
-    if (!id || !data) {
-      console.error("saveZip called without id or data available");
-      return;
-    }
-    const file_ids = data.map(data => data.id);
-    Promise.all(file_ids.map((fid) => {
-      changeStatusText(`Fetching file ID ${fid}`, "pending");
-      return fetchFile(id, fid);
-    }))
-      .then((responses) => {
-        return responses.map((r) => {
-          return {
-            "name": r.data.name,
-            "data": r.data.data
-          };
-        });
-      })
-      .then((files) => {
-        changeStatusText(`${files.length} files downloaded`, "pending");
-        const zip = new JSZip();
-        // const seenFileNames = [];
-        files.forEach((file) => {
-          const filename = `autoscrape-data/${file.name}`;
-          // if (seenFileNames.indexOf(filename) !== -1) {
-          //   console.warn("Skipping already included filename", filename);
-          //   return;
-          // }
-          // seenFileNames.push(filename);
-          changeStatusText(`Zipping ${filename}`, "pending");
-          zip.file(filename, atob(file.data), {binary: true});
-        });
-        return zip.generateAsync({type:"blob"});
-      })
-      .then((blob) => {
-        changeStatusText(`Completing ZIP`, "pending");
-        const now = (new Date()).getTime();
-        changeStatusText(`Zipping complete!`, "complete");
-        saveAs(blob, `autoscrape-data-${now}.zip`);
-      })
-      .catch((err) => {
-        console.error("Overall zip error", err);
-      });
-  }
-  */
 
   autoscrapeData = () => {
     const data = {};
@@ -223,108 +176,168 @@ class Scraper extends React.Component {
   advancedControls() {
     if (!this.state.showAdvanced) return;
     return (
-      <div id="sub-controls">
-        <div id="sub-controls-menu">
-          <div>
-            <label htmlFor="AS_backend">
-              Scraper backend
-            </label>
+      <div id="advanced-controls">
+        <h2>AutoScrape Options</h2>
+        <div className="row">
+          <div className="col s12 input-field">
             <select
               value={this.state.AS_backend}
               onChange={this.handleChange}
+              id="AS_backend"
               name="AS_backend"
-              id="sub-controls-backend"
             >
-              <option value="requests">Requests</option>
-              <option value="selenium">Selenium (Firefox)</option>
+              <option value="requests">Requests (fast, but only for basic web pages)</option>
+              <option value="selenium">Selenium (Firefox, slow but can deal with JavaScript)</option>
             </select>
+            <label htmlFor="AS_backend">
+              Scraper backend
+            </label>
           </div>
+        </div>
 
-          <div>
-            <label htmlFor="form_match">Form text</label>
-            <input id="form_match" name="AS_form_match"
-              onChange={this.handleChange}
-              placeholder="Text can we use to find your form"
-              value={this.state.AS_form_match} type="text" />
+        <div className="row">
+          <div className="col s12 input-field section">
+            <h3>Form interaction</h3>
           </div>
-          <div>
-            <label htmlFor="next_match">Next page button text</label>
-            <input id="next_match" name="AS_next_match"
+          <div className="col s12 input-field">
+            <input name="AS_form_match"
+              id="form_match"
+              onChange={this.handleChange}
+              placeholder="Unique text can we use to find your form (e.g. Search candidates here)"
+              value={this.state.AS_form_match} type="text" />
+            <label className="active" htmlFor="form_match">
+              Form text
+            </label>
+          </div>
+          <div className="col s12 input-field">
+            <input name="AS_next_match"
+              id="next_match"
               onChange={this.handleChange}
               placeholder="Text can we use to find next page buttons"
               value={this.state.AS_next_match} type="text" />
+            <label className="active" htmlFor="next_match">
+              Next page button text
+            </label>
           </div>
-          <div>
-            <label htmlFor="input">Form input plan</label>
-            <input id="input"
+          <div className="col s12 input-field">
+            <input
+              id="input"
               name="AS_input"
               value={this.state.AS_input}
               onChange={this.handleChange}
+              placeholder="Use the builder to the right..."
               type="text" />
+            <label className="active" htmlFor="input">
+              Form input plan
+            </label>
           </div>
+        </div>
 
-          <div>
-            <label htmlFor="form_submit_wait">Wait after submit (seconds)</label>
+        <div className="row">
+          <div className="col s12 input-field section">
+            <h3>Link Clicking</h3>
+          </div>
+          <div className="col s12 input-field">
+            <input id="link_priority" name="AS_link_priority"
+              onChange={this.handleChange}
+              value={this.state.AS_link_priority}
+              placeholder='Link text to click before others, separated by comma (e.g. "Accept, More data")'
+              type="text"
+            />
+            <label htmlFor="link_priority" className="active">
+              Click matching link text first
+            </label>
+          </div>
+          <div className="col s12 input-field">
+            <input id="ignore_links" name="AS_ignore_links"
+              onChange={this.handleChange}
+              value={this.state.AS_ignore_links}
+              placeholder='Link text to ignore, separated by comma (e.g. "Logout")'
+              type="text"
+            />
+            <label htmlFor="ignore_links" className="active">
+              Ignore matching links
+            </label>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col s12 input-field section">
+            <h3>miscellaneous Scrape</h3>
+          </div>
+          <div className="col s3 input-field">
             <input id="form_submit_wait"
               name="AS_form_submit_wait"
               onChange={this.handleChange}
+              type="text"
               value={this.state.AS_form_submit_wait}
             />
+            <label className="active" htmlFor="form_submit_wait">Page wait (secs)</label>
           </div>
-          <div>
-            <label htmlFor="load_images">Load images?</label>
-            <input id="load_images" name="AS_load_images"
-              onChange={this.handleChange}
-              value={this.state.AS_load_images} type="checkbox" />
-          </div>
-          <div>
-            <label htmlFor="maxdepth">Max click depth</label>
+          <div className="col s3 input-field">
             <input id="maxdepth" name="AS_maxdepth"
               onChange={this.handleChange}
-              value={this.state.AS_maxdepth} type="text" />
+              value={this.state.AS_maxdepth}
+              className="active"
+              type="text" />
+            <label className="active"
+              htmlFor="maxdepth">Max click depth</label>
           </div>
-          <div>
-            <label htmlFor="leave_host">Leave host?</label>
-            <input id="leave_host" name="AS_leave_host"
-              onChange={this.handleChange}
-              value={this.state.AS_leave_host} type="checkbox" />
-          </div>
-          <div>
-            <label htmlFor="form_submit_natural_click">Simulate natural click on submit?</label>
-            <input
-              id="form_submit_natural_click"
-              name="AS_form_submit_natural_click"
-              onChange={this.handleChange}
-              value={this.state.AS_form_submit_natural_click}
-              type="checkbox"
-            />
-          </div>
-          <div>
-            <label htmlFor="formdepth">Maximum form page depth</label>
+          <div className="col s3 input-field">
             <input id="formdepth" name="AS_formdepth"
               onChange={this.handleChange}
               value={this.state.AS_formdepth} type="text" />
-          </div>
-          <div>
-            <label htmlFor="link_priority">Click matching links first</label>
-            <input id="link_priority" name="AS_link_priority"
-              onChange={this.handleChange}
-              value={this.state.AS_link_priority} type="text"
-            />
-          </div>
-          <div>
-            <label htmlFor="ignore_links">Ignore matching links</label>
-            <input id="ignore_links" name="AS_ignore_links"
-              onChange={this.handleChange}
-              value={this.state.AS_ignore_links} type="text"
-            />
+            <label htmlFor="formdepth" className="active">
+              Maximum form page depth
+            </label>
           </div>
         </div>
+
+
+        <div className="row">
+          <div className="col s2">
+            <label>
+              <input id="leave_host" name="AS_leave_host"
+                onChange={this.handleChange}
+                value={this.state.AS_leave_host}
+                type="checkbox" />
+              <span>Leave host</span>
+            </label>
+          </div>
+          <div className="col s5">
+            <label>
+              <input name="AS_load_images"
+                id="load_images"
+                onChange={this.handleChange}
+                value={this.state.AS_load_images}
+                type="checkbox" />
+              <span>Load images (faster, usually not necessary)</span>
+            </label>
+          </div>
+          <div className="col s5">
+            <label>
+              <input
+                id="form_submit_natural_click"
+                name="AS_form_submit_natural_click"
+                onChange={this.handleChange}
+                value={this.state.AS_form_submit_natural_click}
+                type="checkbox"
+              />
+              <span>Simulate natural click on submit (required for some poorly programmed sites)</span>
+            </label>
+          </div>
+        </div>
+
       </div>
     );
   }
 
+  componentDidUpdate() {
+    M.AutoInit();
+  }
+
   componentDidMount() {
+    M.AutoInit();
     this.baseUrlRef.current.focus();
   }
 
@@ -346,22 +359,29 @@ class Scraper extends React.Component {
   render() {
     return (
       <div id="main">
-        <form onSubmit={this.handleSubmit} onChange={this.handleChange} id="controls">
-          <div id="main-controls">
-            <input value={this.state.AS_baseurl} onChange={this.handleChange}
-              name="AS_baseurl" type="text" placeholder="Base URL to scrape..."
-              ref={this.baseUrlRef}
-            />
-            <div id="toggle-wrapper">
-              <span onClick={this.toggleAdvanced}>
-                {!this.state.showAdvanced ? '🔧' : '✖'}
-              </span>
-              { this.scrapeControls() }
+        <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+          <div id="main-controls" className="row">
+            <div className="col s8">
+              <input value={this.state.AS_baseurl}
+                onChange={this.handleChange}
+                name="AS_baseurl"
+                type="text"
+                required={true}
+                placeholder="Enter a base URL to scrape..."
+                ref={this.baseUrlRef}
+              />
             </div>
-            { this.advancedControls() }
-
-            { this.scrapeStatus() }
+            <div className="col s4">
+              <div id="toggle-wrapper">
+                <button className="advanced"onClick={this.toggleAdvanced}>
+                  {!this.state.showAdvanced ? '🔧' : '✖'}
+                </button>
+                { this.scrapeControls() }
+              </div>
+            </div>
           </div>
+          { this.advancedControls() }
+          { this.scrapeStatus() }
         </form>
         { this.scrapeComplete() }
       </div>

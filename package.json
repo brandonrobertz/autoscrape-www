@@ -24,6 +24,7 @@
     "datatransfer-files-promise": "^1.2.0",
     "file-saver": "^2.0.2",
     "jquery": "^3.4.1",
+    "materialize-css": "^1.0.0-rc.2",
     "object-assign-deep": "^0.4.0",
     "papaparse": "^5.1.1",
     "react": "^16.12.0",

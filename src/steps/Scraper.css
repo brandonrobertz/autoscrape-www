@@ -1,8 +1,5 @@
 #main-controls {
-}
-#main-controls input {
-}
-#main-controls button {
+  max-width: 700px;
 }
 
 #controls .pending {
@@ -13,6 +10,17 @@
 }
 #controls .complete {
   color: green;
+}
+
+#advanced-controls {
+  border: 1px dashed #888888;
+  padding: 10px 30px;
+}
+#main #advanced-controls h2,
+#main #advanced-controls h3 {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 #status {
@@ -34,14 +42,23 @@
 }
 
 #toggle-wrapper {
-  display: inline-block;
+  vertical-align: middle;
+  font-size: 25px;
 }
-#toggle-wrapper span {
-  font-size: 20px;
-  cursor: pointer;
+#toggle-wrapper .advanced {
   color: #888888;
-  /*width: 40px;*/
-  display: inline-block;
+  border: 1px dashed #888888;
+  border-radius: 20px;
+}
+#toggle-wrapper button:hover {
+  background-color: #eeeeee;
+}
+#toggle-wrapper button {
+  height: 3rem;
+  margin: 0 1em;
+  margin: 0 0.5em;
+  background-color: white;
+  border: 1px solid black;
 }
 
 #sub-controls {
@@ -52,15 +69,6 @@
 }
 #sub-controls-menu {
   font-size: 11px;
-}
-#sub-controls-menu .small input {
-  width: 25px;
-}
-#sub-controls-menu .medium input {
-  width: 75px;
-}
-#sub-controls-menu .large input {
-  width: 250px;
 }
 
 #files-list-wrapper {
