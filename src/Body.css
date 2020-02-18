@@ -28,6 +28,8 @@
   cursor: pointer;
   font-family: monospace;
   color: #999999;
+  width: 140px;
+  margin-left: -140px;
 }
 .opened {
   border: 1px dashed #888888;

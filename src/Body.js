@@ -24,7 +24,7 @@ class Body extends React.Component {
       return (
         <div id="welcome" className="closed">
           <button onClick={this.toggleInfo} className="close">
-            Open [^]
+            Open Info [^]
           </button>
           <div className="autoscrape-logo">
             <img src="/autoscraper.png" alt="AutoScrape logo" />
@@ -36,7 +36,7 @@ class Body extends React.Component {
     return (
       <div id="welcome" className="opened">
         <button onClick={this.toggleInfo} className="close">
-          Close [X]
+          Close Info [X]
         </button>
         <h1>Welcome to AutoScrape</h1>
         <p>

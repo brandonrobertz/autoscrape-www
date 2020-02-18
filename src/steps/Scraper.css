@@ -38,6 +38,8 @@
 
 #status {
   padding: 20px;
+  text-align: center;
+  color: #555555;
 }
 #status #screenshot-url {
   text-align: center;
@@ -52,6 +54,12 @@
 #status #files {
   display: inline-block;
   max-width: 30%;
+}
+#complete {
+  font-size: 13px;
+}
+#complete p {
+  text-align: center;
 }
 
 #toggle-wrapper {
