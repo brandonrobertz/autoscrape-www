@@ -255,6 +255,7 @@ span {
 
 .extractor-built-complete p {
   text-align: center;
+  margin: 50px;
 }
 .hext-template {
   text-align: center;
@@ -264,4 +265,8 @@ span {
   border: 1px solid black;
   font-size: 1rem;
   height: 3rem;
+}
+.hext-complete-controls button {
+  padding: 10px;
+  margin: auto 25px;
 }

@@ -69,6 +69,10 @@ export const rootReducer = (state, action) => {
       return update(state, {
         hext: action.payload,
       });
+    case "HEXT_CLEAR_REQUESTED":
+      return update(state, {
+        hext: null,
+      });
 
     default:
       return state;

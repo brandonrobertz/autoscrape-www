@@ -40,7 +40,7 @@ class ExtractData extends React.Component {
         <div id="extract-data">
           <h1>Download Data</h1>
           <p>
-            Select an output format below to get your extracted data.
+            Click an output format below to download your extracted data.
           </p>
           <div className="downloads">
             <span className="json" onClick={this.downloadJSON}>

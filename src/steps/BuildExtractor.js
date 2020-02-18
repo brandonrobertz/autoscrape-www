@@ -34,6 +34,13 @@ class BuildExtractor extends React.Component {
     this.iframeRef.current.contentWindow.postMessage(data, '*');
   }
 
+
+  clearHext = () => {
+    store.dispatch({
+      type: "HEXT_CLEAR_REQUESTED",
+    });
+  }
+
   toggleShowHext = () => {
     this.setState({
       showHext: !this.state.showHext
@@ -41,7 +48,10 @@ class BuildExtractor extends React.Component {
   }
 
   showHextControl() {
-    return (<div>
+    return (<div className="hext-complete-controls">
+      <button onClick={this.clearHext}>
+        Create New Extractor
+      </button>
       <button onClick={this.toggleShowHext}>
         { this.state.showHext ? "Hide extractor" : "Show extractor" }
       </button>
