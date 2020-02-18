@@ -46,10 +46,16 @@ class Scraper extends React.Component {
   }
 
   // we don't use submit, disable it here
-  handleSubmit  = (e) => { e.preventDefault();}
+  handleSubmit  = (e) => {
+    e.preventDefault();
+  }
 
   toggleAdvanced = (e) => {
     e.preventDefault();
+    // don't toggle on enter (detail contains click count)
+    if (e.detail === 0) {
+      return;
+    }
     this.setState({showAdvanced: !this.state.showAdvanced});
   }
 
@@ -89,8 +95,6 @@ class Scraper extends React.Component {
       }
     });
   }
-
-  toggleMenu = () => {}
 
   reset = () => {
     this.setState(this.defaultState);
@@ -345,7 +349,12 @@ class Scraper extends React.Component {
     //<button id="reset-scrape" onClick={this.reset}>Reset Options</button>
     if (!this.props.scrape || !this.props.scrape.status) {
       return (
-        <button id="start-scrape" onClick={this.startScrape}>Start</button>
+        <button
+          id="start-scrape"
+          type="submit"
+          onClick={this.startScrape}>
+          Start
+        </button>
       );
     }
     const status = this.props.scrape.status;
