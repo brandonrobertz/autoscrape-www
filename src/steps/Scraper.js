@@ -112,6 +112,15 @@ class Scraper extends React.Component {
     //);
   }
 
+  nextStep() {
+    store.dispatch({
+      type: "CHANGE_STEP",
+      payload: {
+        step: "build-extractor",
+      }
+    });
+  }
+
   scrapeComplete() {
     if (this.props.scrape.status !== SCRAPE_STATUS.SUCCESS) return;
 
@@ -144,6 +153,9 @@ class Scraper extends React.Component {
           </table>
         </div>
         { this.filesPageControls() }
+        <div class="next">
+          <button type="button" onClick={this.nextStep}>Build Extractor</button>
+        </div>
       </div>
     );
   }

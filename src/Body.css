@@ -12,6 +12,9 @@
   margin: 0 auto;
   padding: 10px;
 }
+#welcome a {
+  cursor: pointer;
+}
 #welcome h1 {
   text-align: center;
 }
@@ -30,7 +33,12 @@
   color: #999999;
   width: 140px;
   margin-left: -140px;
+  margin: 0;
 }
 .opened {
   border: 1px dashed #888888;
+}
+button {
+  cursor: pointer;
+  border-radius: 5px;
 }

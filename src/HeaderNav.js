@@ -21,7 +21,7 @@ class _HeaderTab extends React.Component {
   }
 
   getClassNames() {
-    let className = "header-link";
+    let className = `header-link ${this.props.stepName}`;
     // point the user to the next step by highlighting
     // the next step when we have the data needed to
     // use it. these are in order of precedence, so
@@ -62,6 +62,7 @@ class HeaderNav extends React.Component {
         <HeaderTab stepName="scraper" label="Scraper" />
         <HeaderTab stepName="build-extractor" label="Build Extractor" />
         <HeaderTab stepName="extract" label="Download Data" />
+        <HeaderTab stepName="help-page" label="Help" />
       </div>
     );
   }

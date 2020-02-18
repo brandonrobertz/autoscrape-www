@@ -252,7 +252,7 @@ span {
   border-top-color: #333333;
   border-left-color: #333333;
 }
-
+/* React component styles */
 .extractor-built-complete p {
   text-align: center;
   margin: 50px;
@@ -260,13 +260,5 @@ span {
 .hext-template {
   text-align: center;
 }
-.hext-template button {
-  background-color: white;
-  border: 1px solid black;
-  font-size: 1rem;
-  height: 3rem;
-}
 .hext-complete-controls button {
-  padding: 10px;
-  margin: auto 25px;
 }

@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Scraper from 'steps/Scraper'
 import BuildExtractor from 'steps/BuildExtractor'
 import ExtractData from 'steps/ExtractData'
+import store from 'state/store'
 
 import 'Body.css'
 
@@ -17,6 +18,15 @@ class Body extends React.Component {
 
   toggleInfo = (e) => {
     this.setState({showInfo: !this.state.showInfo});
+  }
+
+  helpPage() {
+    store.dispatch({
+      type: "CHANGE_STEP",
+      payload: {
+        step: "help-page",
+      }
+    });
   }
 
   infoBox = () => {
@@ -40,16 +50,16 @@ class Body extends React.Component {
         </button>
         <h1>Welcome to AutoScrape</h1>
         <p>
-          This is a free online interface to <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">AutoScrape</a>, a web scraping tool capable of crawling and submitting forms on interactive, JavaScript-heavy websites. No programming required.
+          AutoScrape is an <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">open-source</a>, programming-free web scraper for interactive sites.
         </p>
         <p>
-          There are three steps: first crawl a site, optionally adding instructions for how AutoScrape can find and fill out a search form. Then build an extractor and, finally, use it to download extracted JSON or CSV files.
+          This version of AutoScrape is alpha software and is available for a limited time, for testing. Everything scraped will be logged for testing purposes, but not shared publicly. Each scrape session will be limited to 25 pages. For larger scrapes, you can <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">run the code yourself</a>.
         </p>
         <p>
-          This is alpha software and is only available for testing purposes. Everything here is logged, but won't be shared publicly. There is a limit of 50 total pages scraped. For larger scrapes, using AutoScrape with <a href="https://workbenchdata.com/" target="_blank" rel="noopener noreferrer">Workbench</a> is the preferred route.
+          Don't know how to use AutoScrape? There's a <a href="#" target="_blank" rel="noopener noreferrer">30-second walkthrough</a> on YouTube or you can read the <a href="#" onClick={this.helpPage}>help page</a>.
         </p>
         <p>
-          AutoScrape is a project of <a href="https://artificialinformer.com">Artificial Informer Labs</a>. This web app is ran by <a href="https://bxroberts.org" target="_blank" rel="noopener noreferrer">Brandon Roberts</a>.
+          AutoScrape was written by <a href="https://bxroberts.org" target="_blank" rel="noopener noreferrer">Brandon Roberts</a>.
         </p>
       </div>
     );

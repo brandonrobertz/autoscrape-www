@@ -52,15 +52,28 @@ class BuildExtractor extends React.Component {
     });
   }
 
+  nextStep() {
+    store.dispatch({
+      type: "CHANGE_STEP",
+      payload: {
+        step: "extract",
+      }
+    });
+  }
+
+
   showHextControl() {
-    return (<div className="hext-complete-controls">
-      <button onClick={this.clearHext}>
-        Create New Extractor
-      </button>
-      <button onClick={this.toggleShowHext}>
-        { this.state.showHext ? "Hide extractor" : "Show extractor" }
-      </button>
-    </div>);
+    return (
+      <div className="hext-complete-controls">
+        <button onClick={this.clearHext}>
+          Create New Extractor
+        </button>
+        <button onClick={this.toggleShowHext}>
+          { this.state.showHext ? "Hide extractor" : "Show extractor" }
+        </button>
+        <button type="button" onClick={this.nextStep}>Download Data</button>
+      </div>
+    );
   }
 
   render() {
@@ -80,8 +93,8 @@ class BuildExtractor extends React.Component {
         <div className="extractor-built-complete row">
           <h2>Extractor Built</h2>
           <p>
-            You've successfully built a template. Continue to the
-            download step above to get your data.
+            You've successfully built an extractor. Continue to the
+            download tab to get your data.
           </p>
           <div className="hext-template">
             { this.showHextControl() }

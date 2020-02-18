@@ -28,12 +28,13 @@
 }
 #main .advanced {
   color: #888888;
-  border: 1px dashed #888888;
+  color: #888888;
+  border: 0;
   border-radius: 10px;
   background-color: white;
   color: #777777;
-  font-size: 1.2rem;
-  padding: 15px;
+  font-size: 1rem;
+  font-family: monospace;
 }
 
 #status {
@@ -45,7 +46,7 @@
   text-align: center;
 }
 #status #screenshot-img {
-   max-width: 800px;
+  max-width: 800px;
 }
 #status #screenshot {
   display: inline-block;
@@ -61,20 +62,30 @@
 #complete p {
   text-align: center;
 }
+#complete .next {
+  text-align: center;
+}
+
+#main button:hover {
+  background-color: #eeeeee;
+}
+#main button {
+  font-size: 0.9rem;
+  border: 1px solid black;
+  background-color: white;
+  padding: 0.4rem;
+  margin: 30px;
+  min-width: 75px;
+}
 
 #toggle-wrapper {
   vertical-align: middle;
   font-size: 25px;
 }
-#toggle-wrapper button:hover {
-  background-color: #eeeeee;
-}
+
 #toggle-wrapper button {
-  height: 3rem;
   margin: 0 1em;
   margin: 0 0.5em;
-  background-color: white;
-  border: 1px solid black;
 }
 
 #sub-controls {
@@ -87,9 +98,6 @@
   font-size: 11px;
 }
 
-#files-list-wrapper {
-  min-height: 450px;
-}
 #files-list {
   min-width: 800px;
   font-size: 13px;
