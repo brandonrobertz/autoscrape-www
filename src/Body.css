@@ -10,7 +10,7 @@
 #welcome {
   max-width: 800px;
   margin: 0 auto;
-  padding: 10px;
+  padding: 10px 25px;
 }
 #welcome a {
   cursor: pointer;
@@ -23,6 +23,7 @@
 }
 #welcome .autoscrape-logo img {
   height: 150px;
+  margin-left: 100px;
 }
 #welcome .close {
   float: right;
