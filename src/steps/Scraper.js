@@ -360,6 +360,14 @@ class Scraper extends React.Component {
     return (
       <div id="main">
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
+          <div className="row">
+            <div className="advanced-wrapper">
+              <button className="advanced" onClick={this.toggleAdvanced}>
+                {!this.state.showAdvanced ? 'Show Options 🔧' : 'Hide Options ✖'}
+              </button>
+            </div>
+          </div>
+          { this.advancedControls() }
           <div id="main-controls" className="row">
             <div className="col s8">
               <input value={this.state.AS_baseurl}
@@ -373,14 +381,10 @@ class Scraper extends React.Component {
             </div>
             <div className="col s4">
               <div id="toggle-wrapper">
-                <button className="advanced"onClick={this.toggleAdvanced}>
-                  {!this.state.showAdvanced ? '🔧' : '✖'}
-                </button>
                 { this.scrapeControls() }
               </div>
             </div>
           </div>
-          { this.advancedControls() }
           { this.scrapeStatus() }
         </form>
         { this.scrapeComplete() }
