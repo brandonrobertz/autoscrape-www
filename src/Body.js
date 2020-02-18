@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import Scraper from 'steps/Scraper'
 import BuildExtractor from 'steps/BuildExtractor'
 import ExtractData from 'steps/ExtractData'
+import HelpPage from 'steps/HelpPage'
 import store from 'state/store'
 
 import 'Body.css'
@@ -56,7 +57,7 @@ class Body extends React.Component {
           This version of AutoScrape is alpha software and is available for a limited time, for testing. Everything scraped will be logged for testing purposes, but not shared publicly. Each scrape session will be limited to 25 pages. For larger scrapes, you can <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">run the code yourself</a>.
         </p>
         <p>
-          Don't know how to use AutoScrape? There's a <a href="#" target="_blank" rel="noopener noreferrer">30-second walkthrough</a> on YouTube or you can read the <a href="#" onClick={this.helpPage}>help page</a>.
+          Don't know how to use AutoScrape? There's a <a href="https://www.youtube.com/watch?v=D0Mchcf6THE" target="_blank" rel="noopener noreferrer">30-second walkthrough</a> on YouTube or you can read the <a href="#" onClick={this.helpPage}>help page</a>.
         </p>
         <p>
           AutoScrape was written by <a href="https://bxroberts.org" target="_blank" rel="noopener noreferrer">Brandon Roberts</a>.
@@ -79,6 +80,8 @@ class Body extends React.Component {
       return <div id="main"><BuildExtractor /></div>;
     } else if (this.props.step === "extract") {
       return <div id="main"><ExtractData /></div>;
+    } else if (this.props.step === "help-page") {
+      return <div id="main"><HelpPage /></div>;
     } else {
       return (
         <div id="main">

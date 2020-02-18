@@ -191,6 +191,16 @@ class Scraper extends React.Component {
 
   advancedControls() {
     if (!this.state.showAdvanced) return;
+    /**
+     * <div className="col s3 input-field">
+     *   <input id="formdepth" name="AS_formdepth"
+     *     onChange={this.handleChange}
+     *     value={this.state.AS_formdepth} type="text" />
+     *   <label htmlFor="formdepth" className="active">
+     *     Max results pages
+     *   </label>
+     * </div>
+     */
     return (
       <div id="advanced-controls">
         <h2>AutoScrape Options</h2>
@@ -299,16 +309,7 @@ class Scraper extends React.Component {
             <label className="active"
               htmlFor="maxdepth">Max click depth</label>
           </div>
-          <div className="col s3 input-field">
-            <input id="formdepth" name="AS_formdepth"
-              onChange={this.handleChange}
-              value={this.state.AS_formdepth} type="text" />
-            <label htmlFor="formdepth" className="active">
-              Maximum form page depth
-            </label>
-          </div>
         </div>
-
 
         <div className="row">
           <div className="col s2">

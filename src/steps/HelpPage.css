@@ -1,0 +1,4 @@
+#help-page ul > li {
+  list-style-type: square;
+  margin-left: 40px;
+}
