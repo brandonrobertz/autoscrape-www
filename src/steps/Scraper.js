@@ -14,19 +14,19 @@ class Scraper extends React.Component {
       scrapeId: null,
       showAdvanced: false,
       // AutoScrape fields
-      AS_backend: "requests",
+      AS_backend: "selenium",
       AS_baseurl: "",
       AS_form_submit_wait: "5",
       AS_input: "",
       AS_save_graph: false,
       AS_load_images: false,
-      AS_maxdepth: "0",
+      AS_maxdepth: "2",
+      AS_formdepth: "10",
       AS_next_match: "",
       AS_leave_host: false,
       AS_show_browser: false,
       AS_driver: "Firefox",
       AS_form_submit_natural_click: false,
-      AS_formdepth: "15",
       AS_link_priority: "",
       AS_keep_filename: false,
       AS_ignore_links: "",
@@ -271,7 +271,7 @@ class Scraper extends React.Component {
             <input id="link_priority" name="AS_link_priority"
               onChange={this.handleChange}
               value={this.state.AS_link_priority}
-              placeholder='Link text to click before others, separated by comma (e.g. "Accept, More data") Case sensitive.'
+              placeholder='Case-sensitive texts, separated by comma (e.g.: Accept, More data)'
               type="text"
             />
             <label htmlFor="link_priority" className="active">
@@ -282,11 +282,11 @@ class Scraper extends React.Component {
             <input id="ignore_links" name="AS_ignore_links"
               onChange={this.handleChange}
               value={this.state.AS_ignore_links}
-              placeholder='Link text to ignore, separated by comma (e.g. "Logout"). Case sensitive.'
+              placeholder='Case-sensitive texts, separated by comma (e.g.: Logout)'
               type="text"
             />
             <label htmlFor="ignore_links" className="active">
-              Ignore matching links
+              Ignore matching link text
             </label>
           </div>
         </div>
