@@ -206,31 +206,63 @@ class Scraper extends React.Component {
     );
   }
 
+  capitalize(str) {
+    return str.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
+  }
+
+  buildInputDesc(desc) {
+    const typeChars = {
+      "text": "i",
+      "checkbox": "c",
+      "option select": "o",
+    };
+    const fullInputDesc = desc.map((i) => {
+      const typeChr = typeChars[i.type];
+      const ith = Number.parseInt(i.ith.replace(/[^0-9]+/, '')) - 1;
+      let value = i.text;
+      if (i.type === "checkbox") {
+        value = this.capitalize(`${i.check}`);
+      }
+      const code = `${typeChr}:${ith}:${value}`;
+      return code;
+    }).join(";");
+    return fullInputDesc;
+  }
+
   onInputChange(name, event) {
     const nextInput = this.state.currentInput;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     nextInput[name] = value;
     this.setState({
-      currentInput: nextInput
+      currentInput: nextInput,
     });
   }
 
   addInput = () => {
     const inp = Object.assign({}, this.state.currentInput);
+    const nextInputDesc = this.state.inputDesc.concat([inp]);
+    const nextInput = this.buildInputDesc(nextInputDesc);
     this.setState({
-      inputDesc: this.state.inputDesc.concat([inp]),
+      inputDesc: nextInputDesc,
       currentInput: {
         type: "text",
         ith: "",
         text: "",
         check: true,
       },
+      AS_input: nextInput,
     });
   }
 
   removeInput(index) {
+    const nextInputDesc = [
+      ...this.state.inputDesc.slice(0, index),
+      ...this.state.inputDesc.slice(index + 1)
+    ];
+    const nextInput = this.buildInputDesc(nextInputDesc);
     this.setState({
-      inputDesc: this.state.inputDesc.slice(index, 1)
+      inputDesc: nextInputDesc,
+      AS_input: nextInput,
     });
   }
 
@@ -284,6 +316,7 @@ class Scraper extends React.Component {
           <input id="current-input-ith"
             type="text"
             placeholder="1st"
+            value={this.state.currentInput.ith}
             onChange={this.onInputChange.bind(this, "ith")}
           />
         </div>
@@ -307,6 +340,7 @@ class Scraper extends React.Component {
           <input id="current-input-text"
             type="text"
             placeholder="Enter text..."
+            value={this.state.currentInput.text}
             onChange={this.onInputChange.bind(this, "text")}
           />
         </div>
@@ -400,7 +434,10 @@ class Scraper extends React.Component {
             <div
               id="toggle-builder"
               onClick={this.toggleBuilder}>
-              Tell AutoScrape how to fill out search form...
+              { !this.state.showBuilder ?
+                "Tell AutoScrape how to fill out search form..." :
+                "Close form filler builder"
+              }
             </div>
           </div>
           { this.state.showBuilder && this.inputBuilder() }
