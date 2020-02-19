@@ -16,7 +16,7 @@ class Scraper extends React.Component {
       showBuilder: false,
       inputDesc: [],
       currentInput: {
-        type: "text",
+        type: "text input",
         ith: "",
         text: "",
         check: true,
@@ -212,7 +212,7 @@ class Scraper extends React.Component {
 
   buildInputDesc(desc) {
     const typeChars = {
-      "text": "i",
+      "text input": "i",
       "checkbox": "c",
       "option select": "o",
     };
@@ -245,7 +245,7 @@ class Scraper extends React.Component {
     this.setState({
       inputDesc: nextInputDesc,
       currentInput: {
-        type: "text",
+        type: "text input",
         ith: "",
         text: "",
         check: true,
@@ -268,7 +268,7 @@ class Scraper extends React.Component {
 
   inputBuilder() {
     const inputs = this.state.inputDesc.map((i, ix) => {
-      if (i.type === "text") {
+      if (i.type === "text input") {
         return (
           <div key={`input-plan-${ix}`} className="input-desc">
             Type "{i.text}" into { i.ith } text field
@@ -304,7 +304,7 @@ class Scraper extends React.Component {
           <select id="current-input-type"
             onChange={this.onInputChange.bind(this, "type")}
             value={this.state.currentInput.type}>
-            <option value="text">Text input</option>
+            <option value="text input">Text input</option>
             <option value="checkbox">Checkbox</option>
             <option value="option select">Option Selector</option>
           </select>
@@ -331,11 +331,11 @@ class Scraper extends React.Component {
   }
 
   selectorForType(type) {
-    if (type === "text" || type === "option select") {
+    if (type === "text input" || type === "option select") {
       return (
         <div className="col s5 field-input">
           <label htmlFor="current-input-text" className="active">
-            { type === "text" ? "What to fill in" : "Option to select" }
+            { type === "text input" ? "What to fill in" : "Option to select" }
           </label>
           <input id="current-input-text"
             type="text"
