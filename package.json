@@ -5,8 +5,10 @@
   "main": "src/index.js",
   "scripts": {
     "build-hextractor": "git submodule init && git submodule update && cd public/hextractor && npm install && npm run build-prod",
+    "download-hextractor": "wget https://github.com/brandonrobertz/hextractor/raw/master/hextractor.html -P public/hextractor/ && wget https://github.com/brandonrobertz/hextractor/raw/master/hext-emscripten.js -P public/ wget https://github.com/brandonrobertz/hextractor/raw/master/hext-emscripten.wasm -P public/",
     "start": "react-scripts start",
-    "build": "npm run build-hextractor && cp -f public/hextractor/hext-emscripten.* ./public/ && react-scripts build",
+    "build-dev": "wget public/hextractor npm run build-hextractor && cp -f public/hextractor/hext-emscripten.* ./public/ && react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
