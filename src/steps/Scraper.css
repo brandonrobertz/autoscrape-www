@@ -127,3 +127,32 @@
 #header .header-link:hover {
   background-color: #eee;
 }
+
+div#toggle-builder:hover {
+  background-color: #b0e6b0;
+}
+div#toggle-builder {
+  border: 1px solid green;
+  border-radius: 5px;
+  padding: 1px 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.input-plan-viewer div.input-desc {
+  border-radius: 5px;
+  border: 1px solid #999999;
+  display: inline-block;
+  padding: 2px 7px;
+  margin: 5px;
+}
+
+.input-plan-viewer .input-desc .remove-input:hover {
+  color: black;
+}
+.input-plan-viewer .input-desc .remove-input {
+  margin-left: 10px;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}

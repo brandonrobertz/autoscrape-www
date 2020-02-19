@@ -13,6 +13,14 @@ class Scraper extends React.Component {
     this.defaultState = {
       scrapeId: null,
       showAdvanced: false,
+      showBuilder: false,
+      inputDesc: [],
+      currentInput: {
+        type: "text",
+        ith: "",
+        text: "",
+        check: true,
+      },
       // AutoScrape fields
       AS_backend: "selenium",
       AS_baseurl: "",
@@ -42,7 +50,8 @@ class Scraper extends React.Component {
   }
 
   handleChange = (event) => {
-    this.setState({[event.target.name]: event.target.value});
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    this.setState({[event.target.name]: value});
   }
 
   // we don't use submit, disable it here
@@ -57,6 +66,10 @@ class Scraper extends React.Component {
       return;
     }
     this.setState({showAdvanced: !this.state.showAdvanced});
+  }
+
+  toggleBuilder = (e) => {
+    this.setState({showBuilder: !this.state.showBuilder});
   }
 
   fetchFile = (file_id) => {
@@ -193,6 +206,128 @@ class Scraper extends React.Component {
     );
   }
 
+  onInputChange(name, event) {
+    const nextInput = this.state.currentInput;
+    const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+    nextInput[name] = value;
+    this.setState({
+      currentInput: nextInput
+    });
+  }
+
+  addInput = () => {
+    const inp = Object.assign({}, this.state.currentInput);
+    this.setState({
+      inputDesc: this.state.inputDesc.concat([inp]),
+      currentInput: {
+        type: "text",
+        ith: "",
+        text: "",
+        check: true,
+      },
+    });
+  }
+
+  removeInput(index) {
+    this.setState({
+      inputDesc: this.state.inputDesc.slice(index, 1)
+    });
+  }
+
+  inputBuilder() {
+    const inputs = this.state.inputDesc.map((i, ix) => {
+      if (i.type === "text") {
+        return (
+          <div key={`input-plan-${ix}`} className="input-desc">
+            Type "{i.text}" into { i.ith } text field
+            <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
+          </div>
+        );
+      } else if (i.type === "checkbox") {
+        return (
+          <div key={`input-plan-${ix}`} className="input-desc">
+            { i.check ? "Check" : "Uncheck"} {i.ith} checkbox
+            <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
+          </div>
+        );
+      } else if (i.type === "option select") {
+        return (
+          <div key={`input-plan-${ix}`} className="input-desc">
+            Choose "{i.text}" in {i.ith} option selector
+            <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
+          </div>
+        );
+      }
+      return null;
+    });
+    return (
+      <div id="input-builder">
+        <div className="col s12 input-plan-viewer">
+          { inputs }
+        </div>
+        <div className="col s3 field-input">
+          <label htmlFor="current-input-type" className="active">
+            Form field type
+          </label>
+          <select id="current-input-type"
+            onChange={this.onInputChange.bind(this, "type")}
+            value={this.state.currentInput.type}>
+            <option value="text">Text input</option>
+            <option value="checkbox">Checkbox</option>
+            <option value="option select">Option Selector</option>
+          </select>
+        </div>
+        <div className="col s2 field-input">
+          <label htmlFor="current-input-ith" className="active">
+            Which {this.state.currentInput.type}
+          </label>
+          <input id="current-input-ith"
+            type="text"
+            placeholder="1st"
+            onChange={this.onInputChange.bind(this, "ith")}
+          />
+        </div>
+        { this.selectorForType(this.state.currentInput.type) }
+        <div className="col s1">
+          <button type="button" onClick={this.addInput}>
+            Add
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  selectorForType(type) {
+    if (type === "text" || type === "option select") {
+      return (
+        <div className="col s5 field-input">
+          <label htmlFor="current-input-text" className="active">
+            { type === "text" ? "What to fill in" : "Option to select" }
+          </label>
+          <input id="current-input-text"
+            type="text"
+            placeholder="Enter text..."
+            onChange={this.onInputChange.bind(this, "text")}
+          />
+        </div>
+      );
+    }
+    else if (type === "checkbox") {
+      return (
+        <div className="col s5">
+          <label htmlFor="current-input-text">
+            <input id="current-input-text"
+              type="checkbox"
+              checked={this.state.currentInput.check}
+              onChange={this.onInputChange.bind(this, "check")}
+            />
+            <span>Check checkbox?</span>
+          </label>
+        </div>
+      );
+    }
+  }
+
   advancedControls() {
     if (!this.state.showAdvanced) return;
     /**
@@ -249,7 +384,7 @@ class Scraper extends React.Component {
               Next page button text
             </label>
           </div>
-          <div className="col s12 input-field">
+          <div className="col s9 input-field">
             <input
               id="input"
               name="AS_input"
@@ -261,6 +396,14 @@ class Scraper extends React.Component {
               Form input plan
             </label>
           </div>
+          <div className="col s3 input-field">
+            <div
+              id="toggle-builder"
+              onClick={this.toggleBuilder}>
+              Tell AutoScrape how to fill out search form...
+            </div>
+          </div>
+          { this.state.showBuilder && this.inputBuilder() }
         </div>
 
         <div className="row">
