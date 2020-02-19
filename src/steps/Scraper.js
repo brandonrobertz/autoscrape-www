@@ -7,6 +7,8 @@ import { SCRAPE_STATUS } from 'state/reducers/root';
 
 import 'steps/Scraper.css'
 
+const apiBase = process.env.REACT_APP_API_HOST || "http://localhost:5000";
+
 class Scraper extends React.Component {
   constructor(props) {
     super(props);
@@ -42,7 +44,7 @@ class Scraper extends React.Component {
       AS_save_screenshots: true,
       AS_remote_hub: "",
       AS_loglevel: "INFO",
-      AS_output: "http://localhost:5000/receive",
+      AS_output: `${apiBase}/receive`,
       AS_disable_style_saving: false,
     };
     this.baseUrlRef = React.createRef();

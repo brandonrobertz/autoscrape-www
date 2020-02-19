@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiBase = 'http://localhost:5000';
+const apiBase = process.env.REACT_APP_API_HOST || "http://localhost:5000";
 
 /**
  * Custom error handler for passing response objects

@@ -79,7 +79,7 @@ class BuildExtractor extends React.Component {
   render() {
     if (!this.props.scrape || !this.props.scrape.filesList) {
       return (
-        <div>
+        <div id="extract-data">
           <h2>This is where you'll build an extractor</h2>
           <p>
             You haven't completed a successful scrape, yet. Go back to the

@@ -55,7 +55,7 @@ class ExtractData extends React.Component {
     }
     if (this.props.documents && !this.props.hext) {
       return (
-        <div>
+        <div id="extract-data">
           <h2>This is where you'll download your extracted data</h2>
           <p>
             You haven't created an extractor, yet! Go back to the 'Build Extractor'
@@ -65,7 +65,7 @@ class ExtractData extends React.Component {
       );
     }
     return (
-      <div>
+      <div id="extract-data">
         <h2>This is where you'll download your extracted data</h2>
         <p>
           You haven't completed a successful scrape, yet. Go back to
