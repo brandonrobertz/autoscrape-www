@@ -21,6 +21,7 @@ class Scraper extends React.Component {
         text: "",
         check: true,
       },
+      materialzeInited: false,
       // AutoScrape fields
       AS_backend: "selenium",
       AS_baseurl: "",
@@ -533,7 +534,11 @@ class Scraper extends React.Component {
   }
 
   componentDidUpdate() {
+    if (this.state.materialzeInited) return;
     M.AutoInit();
+    this.setState({
+      materialzeInited: true,
+    });
   }
 
   componentDidMount() {
