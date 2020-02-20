@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const apiBase = process.env.REACT_APP_API_HOST;
-console.log("requests Scraper apiBase", apiBase);
+console.log("Scraper apiBase", apiBase);
 
 /**
  * Custom error handler for passing response objects

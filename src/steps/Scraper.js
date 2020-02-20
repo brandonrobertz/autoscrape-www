@@ -7,8 +7,8 @@ import { SCRAPE_STATUS } from 'state/reducers/root';
 
 import 'steps/Scraper.css'
 
-const apiBase = process.env.REACT_APP_API_HOST; // || "http://localhost:5000";
-console.log("Scraper apiBase", apiBase);
+const internalApiBase = process.env.REACT_APP_INTERNAL_API_HOST; // || "http://localhost:5000";
+console.log("Scraper internalApiBase", internalApiBase);
 
 class Scraper extends React.Component {
   constructor(props) {
@@ -45,7 +45,7 @@ class Scraper extends React.Component {
       AS_save_screenshots: true,
       AS_remote_hub: "",
       AS_loglevel: "INFO",
-      AS_output: `${apiBase}/receive`,
+      AS_output: `${internalApiBase}/receive`,
       AS_disable_style_saving: false,
     };
     this.baseUrlRef = React.createRef();
