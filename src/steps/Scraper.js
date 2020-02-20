@@ -7,7 +7,8 @@ import { SCRAPE_STATUS } from 'state/reducers/root';
 
 import 'steps/Scraper.css'
 
-const apiBase = process.env.REACT_APP_API_HOST || "http://localhost:5000";
+const apiBase = process.env.REACT_APP_API_HOST; // || "http://localhost:5000";
+console.log("Scraper apiBase", apiBase);
 
 class Scraper extends React.Component {
   constructor(props) {
