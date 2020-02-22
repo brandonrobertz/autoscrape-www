@@ -156,3 +156,8 @@ div#toggle-builder {
   font-size: 1rem;
   cursor: pointer;
 }
+
+/* materialize wants to display: none; all selects */
+#input-builder select#current-input-type {
+  display: block !important;
+}
