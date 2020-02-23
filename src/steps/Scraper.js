@@ -374,11 +374,11 @@ class Scraper extends React.Component {
       return (
         <div className="col s5">
           <label htmlFor="current-input-text">
-            Which date (MM-DD-YYYY)
+            Which date (YYYY-MM-DD)
           </label>
           <input id="current-input-text"
             type="text"
-            placeholder="MM-DD-YYYY"
+            placeholder="YYYY-MM-DD"
             value={this.state.currentInput.text}
             onChange={this.onInputChange.bind(this, "text")}
           />
