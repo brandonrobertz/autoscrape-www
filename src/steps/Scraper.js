@@ -215,6 +215,7 @@ class Scraper extends React.Component {
       "text input": "i",
       "checkbox": "c",
       "option select": "o",
+      "date input": "d",
     };
     const fullInputDesc = desc.map((i) => {
       const typeChr = typeChars[i.type];
@@ -289,7 +290,15 @@ class Scraper extends React.Component {
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
+      } else if (i.type === "date input") {
+        return (
+          <div key={`input-plan-${ix}`} className="input-desc">
+            Select "{i.text}" in {i.ith} date selector
+            <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
+          </div>
+        );
       }
+
       return null;
     });
     return (
@@ -307,6 +316,7 @@ class Scraper extends React.Component {
             <option value="text input">Text input</option>
             <option value="checkbox">Checkbox</option>
             <option value="option select">Option Selector</option>
+            <option value="date input">Date input</option>
           </select>
         </div>
         <div className="col s2 field-input">
@@ -315,7 +325,7 @@ class Scraper extends React.Component {
           </label>
           <input id="current-input-ith"
             type="text"
-            placeholder="1st"
+            placeholder="1"
             value={this.state.currentInput.ith}
             onChange={this.onInputChange.bind(this, "ith")}
           />
@@ -357,6 +367,21 @@ class Scraper extends React.Component {
             />
             <span>Check checkbox?</span>
           </label>
+        </div>
+      );
+    }
+    else if (type === "date input") {
+      return (
+        <div className="col s5">
+          <label htmlFor="current-input-text">
+            Which date (MM-DD-YYYY)
+          </label>
+          <input id="current-input-text"
+            type="text"
+            placeholder="MM-DD-YYYY"
+            value={this.state.currentInput.text}
+            onChange={this.onInputChange.bind(this, "text")}
+          />
         </div>
       );
     }
