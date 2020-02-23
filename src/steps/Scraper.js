@@ -293,7 +293,7 @@ class Scraper extends React.Component {
       } else if (i.type === "date input") {
         return (
           <div key={`input-plan-${ix}`} className="input-desc">
-            Select "{i.text}" date selector #{i.ith}
+            Select "{i.text}" in date selector #{i.ith}
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
@@ -374,11 +374,11 @@ class Scraper extends React.Component {
       return (
         <div className="col s5">
           <label htmlFor="current-input-text">
-            Which date (YYYY-MM-DD)
+            Which date
           </label>
           <input id="current-input-text"
             type="text"
-            placeholder="YYYY-MM-DD"
+            placeholder="MM-DD-YYYY"
             value={this.state.currentInput.text}
             onChange={this.onInputChange.bind(this, "text")}
           />
