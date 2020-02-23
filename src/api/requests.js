@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const apiBase = process.env.REACT_APP_API_HOST;
+import { apiBase } from 'config';
 
 /**
  * Custom error handler for passing response objects
