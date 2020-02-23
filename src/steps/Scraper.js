@@ -272,28 +272,28 @@ class Scraper extends React.Component {
       if (i.type === "text input") {
         return (
           <div key={`input-plan-${ix}`} className="input-desc">
-            Type "{i.text}" into { i.ith } text field
+            Type "{i.text}" into text field #{i.ith}
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
       } else if (i.type === "checkbox") {
         return (
           <div key={`input-plan-${ix}`} className="input-desc">
-            { i.check ? "Check" : "Uncheck"} {i.ith} checkbox
+            { i.check ? "Check" : "Uncheck"} checkbox #{i.ith}
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
       } else if (i.type === "option select") {
         return (
           <div key={`input-plan-${ix}`} className="input-desc">
-            Choose "{i.text}" in {i.ith} option selector
+            Choose "{i.text}" in option selector #{i.ith}
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
       } else if (i.type === "date input") {
         return (
           <div key={`input-plan-${ix}`} className="input-desc">
-            Select "{i.text}" in {i.ith} date selector
+            Select "{i.text}" date selector #{i.ith}
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
