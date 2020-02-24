@@ -22,6 +22,7 @@ class Scraper extends React.Component {
         check: true,
       },
       materialzeInited: false,
+      formComplete: false,
       // AutoScrape fields
       AS_backend: "selenium",
       AS_baseurl: "",
@@ -49,9 +50,19 @@ class Scraper extends React.Component {
     this.state = this.defaultState;
   }
 
+  isFormValid = () => {
+    if (!this.state.AS_baseurl) return false;
+    return true;
+  }
+
   handleChange = (event) => {
+    const name = event.target.name;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    this.setState({[event.target.name]: value});
+    const formComplete = this.isFormValid();
+    this.setState({
+      [event.target.name]: value,
+      formComplete: formComplete,
+    });
   }
 
   // we don't use submit, disable it here
@@ -501,6 +512,15 @@ class Scraper extends React.Component {
             <h3>miscellaneous Scrape</h3>
           </div>
           <div className="col s3 input-field">
+            <input id="maxdepth" name="AS_maxdepth"
+              onChange={this.handleChange}
+              value={this.state.AS_maxdepth}
+              className="active"
+              type="text" />
+            <label className="active"
+              htmlFor="maxdepth">Max crawl depth (clicks)</label>
+          </div>
+          <div className="col s3 input-field">
             <input id="form_submit_wait"
               name="AS_form_submit_wait"
               onChange={this.handleChange}
@@ -508,15 +528,6 @@ class Scraper extends React.Component {
               value={this.state.AS_form_submit_wait}
             />
             <label className="active" htmlFor="form_submit_wait">Page wait (secs)</label>
-          </div>
-          <div className="col s3 input-field">
-            <input id="maxdepth" name="AS_maxdepth"
-              onChange={this.handleChange}
-              value={this.state.AS_maxdepth}
-              className="active"
-              type="text" />
-            <label className="active"
-              htmlFor="maxdepth">Max click depth</label>
           </div>
         </div>
 
@@ -578,7 +589,9 @@ class Scraper extends React.Component {
         <button
           id="start-scrape"
           type="submit"
-          onClick={this.startScrape}>
+          onClick={this.startScrape}
+          disabled={!this.state.formComplete}
+        >
           Start
         </button>
       );
