@@ -378,7 +378,7 @@ class Scraper extends React.Component {
           </label>
           <input id="current-input-text"
             type="text"
-            placeholder="MM-DD-YYYY"
+            placeholder="YYYY-MM-DD"
             value={this.state.currentInput.text}
             onChange={this.onInputChange.bind(this, "text")}
           />
