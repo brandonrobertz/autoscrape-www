@@ -158,6 +158,7 @@ div#toggle-builder {
 }
 
 /* materialize wants to display: none; all selects */
+#input-builder select,
 #input-builder select#current-input-type {
   display: block !important;
 }
