@@ -60,7 +60,7 @@ class Scraper extends React.Component {
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     const formComplete = this.isFormValid();
     this.setState({
-      [event.target.name]: value,
+      [name]: value,
       formComplete: formComplete,
     });
   }
@@ -487,7 +487,7 @@ class Scraper extends React.Component {
             <input id="link_priority" name="AS_link_priority"
               onChange={this.handleChange}
               value={this.state.AS_link_priority}
-              placeholder='Case-sensitive texts, separated by comma (e.g.: Accept, More data)'
+              placeholder='Case-sensitive texts, separated by comma (e.g. Accept, More data)'
               type="text"
             />
             <label htmlFor="link_priority" className="active">
@@ -498,7 +498,7 @@ class Scraper extends React.Component {
             <input id="ignore_links" name="AS_ignore_links"
               onChange={this.handleChange}
               value={this.state.AS_ignore_links}
-              placeholder='Case-sensitive texts, separated by comma (e.g.: Logout)'
+              placeholder='Case-sensitive texts, separated by comma (e.g. Logout)'
               type="text"
             />
             <label htmlFor="ignore_links" className="active">
@@ -623,7 +623,7 @@ class Scraper extends React.Component {
                 name="AS_baseurl"
                 type="text"
                 required={true}
-                placeholder="Enter a base URL to scrape..."
+                placeholder="Enter a base URL to scrape, e.g. https://site.com/page"
                 ref={this.baseUrlRef}
               />
             </div>
