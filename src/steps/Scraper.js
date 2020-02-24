@@ -171,7 +171,7 @@ class Scraper extends React.Component {
         </div>
         { this.filesPageControls() }
         <div className="next">
-          <button type="button" onClick={this.nextStep}>Build Extractor</button>
+          <button type="button" onClick={this.nextStep}>Build Extractor &rarr;</button>
         </div>
       </div>
     );

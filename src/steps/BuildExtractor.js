@@ -71,7 +71,7 @@ class BuildExtractor extends React.Component {
         <button onClick={this.toggleShowHext}>
           { this.state.showHext ? "Hide extractor" : "Show extractor" }
         </button>
-        <button type="button" onClick={this.nextStep}>Download Data</button>
+        <button type="button" onClick={this.nextStep}>Download Data &rarr;</button>
       </div>
     );
   }
