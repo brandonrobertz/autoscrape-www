@@ -617,7 +617,7 @@ class Scraper extends React.Component {
           </div>
           { this.advancedControls() }
           <div id="main-controls" className="row">
-            <div className="col s8">
+            <div className="col s9">
               <input value={this.state.AS_baseurl}
                 onChange={this.handleChange}
                 name="AS_baseurl"
@@ -627,7 +627,7 @@ class Scraper extends React.Component {
                 ref={this.baseUrlRef}
               />
             </div>
-            <div className="col s4">
+            <div className="col s3">
               <div id="toggle-wrapper">
                 { this.scrapeControls() }
               </div>
