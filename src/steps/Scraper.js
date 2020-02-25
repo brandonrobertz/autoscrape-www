@@ -51,7 +51,9 @@ class Scraper extends React.Component {
   }
 
   isFormValid = () => {
-    if (!this.state.AS_baseurl) return false;
+    const baseurl = this.state.AS_baseurl;
+    if (!baseurl) return false;
+    if (!baseurl.startsWith("http")) return false;
     return true;
   }
 
