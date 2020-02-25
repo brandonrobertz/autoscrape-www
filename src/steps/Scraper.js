@@ -23,6 +23,7 @@ class Scraper extends React.Component {
       },
       materialzeInited: false,
       formComplete: false,
+      formIncompleteMessage: "",
       // AutoScrape fields
       AS_backend: "selenium",
       AS_baseurl: "",
@@ -61,14 +62,20 @@ class Scraper extends React.Component {
     const name = event.target.name;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
     let formComplete = this.state.formComplete;
-    if (name === "AS_baseurl" && !value) {
-      formComplete = false;
+    let formIncompleteMessage = "";
+    if (name === "AS_baseurl") {
+      if (!value) formComplete = false;
+      else if (!value.match(/https?:\/\/[^\\.]+\.[^\\.]+$/)) {
+        formComplete = false;
+        formIncompleteMessage = "You need a full url, including the 'http' or 'https'.";
+      }
     } else {
       formComplete = true;
     }
     this.setState({
       [name]: value,
       formComplete: formComplete,
+      formIncompleteMessage: formIncompleteMessage,
     });
   }
 
@@ -624,6 +631,11 @@ class Scraper extends React.Component {
           </div>
           { this.advancedControls() }
           <div id="main-controls" className="row">
+            { this.state.formIncompleteMessage &&
+              <div className="error">
+                { this.state.formIncompleteMessage }
+              </div>
+            }
             <div className="col s9">
               <input value={this.state.AS_baseurl}
                 onChange={this.handleChange}
