@@ -65,10 +65,10 @@ class Scraper extends React.Component {
     let formIncompleteMessage = "";
     if (name === "AS_baseurl") {
       if (!value) formComplete = false;
-      else if (!value.match(/https?:\/\/[^\\.]+\.[^\\.]+$/)) {
+      else if (!value.match(/https?:\/\/[^\\.]+\.[^\\.]+.*$/)) {
         formComplete = false;
         formIncompleteMessage = "You need a full url, including the 'http' or 'https'.";
-      } else {
+      } else if (value) {
         formIncompleteMessage = "";
         formComplete = true;
       }
