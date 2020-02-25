@@ -11,6 +11,12 @@ div#main {
   overflow-x: hidden;
 }
 
+#help-page-detailed {
+  padding: 0;
+  margin: 0;
+  max-width: 900px;
+}
+
 #walkthrough #image-container {
   margin: 0 auto;
   text-align: center;

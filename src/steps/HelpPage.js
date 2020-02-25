@@ -77,7 +77,7 @@ class HelpPage extends React.Component {
         text: "Then we continue to the download page.",
       }, {
         image: "/walkthrough/22-download-data.png",
-        text: <span>Here we find two download options: a spreadsheet (CSV) or as JSON. We're all done!<br/>This interface allows you to do scrapes of up to 25 pages for free. You can nagivate back and forth through the steps above without losing your scrape. Refreshing the page will clear everything.<br/>Feel free <a href="https://bxroberts.org/bio/#contact" target="_blank" rel="noopener noreferrer">to contact me</a> about this project.</span>,
+        text: <span>Here we find two download options: a spreadsheet (CSV) or as JSON. We're all done!<br/>This interface allows you to do scrapes of up to 50 pages for free. You can nagivate back and forth through the steps above without losing your scrape. Refreshing the page will clear everything.<br/><br/>You can find more <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">information about AutoScrape here</a>.<br/><br/>Feel free <a href="https://bxroberts.org/bio/#contact" target="_blank" rel="noopener noreferrer">to contact me</a> about this project.</span>,
     }]
     this.state = {
       walkthroughStep: 0,
@@ -122,7 +122,7 @@ class HelpPage extends React.Component {
               disabled={!this.state.walkthroughStep}
               onClick={this.prevWalkthroughPage}>Prev</button>
             <button type="button"
-              disabled={this.state.walkthroughStep === this.walkthrough.length}
+              disabled={this.state.walkthroughStep === this.walkthrough.length - 1}
               onClick={this.nextWalkthroughPage}>Next</button>
           </div>
         </div>
@@ -186,24 +186,6 @@ class HelpPage extends React.Component {
   }
 
   render() {
-    console.log("this.state.walkthroughStep", this.state.walkthroughStep);
-    if (this.state.walkthroughStep === this.walkthrough.length) {
-      return (
-        <div id="walkthrough">
-          <div id="bottom-bar">
-            { this.longformHelp() }
-            <div className="controls">
-              <button type="button"
-                disabled={!this.state.walkthroughStep}
-                onClick={this.prevWalkthroughPage}>Prev</button>
-              <button type="button"
-                disabled={this.state.walkthroughStep === (this.walkthrough.length + 1)}
-                onClick={this.nextWalkthroughPage}>Next</button>
-            </div>
-          </div>
-        </div>
-      );
-    }
     return this.renderWalkthrough();
   }
 }
