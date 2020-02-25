@@ -69,6 +69,7 @@ class Scraper extends React.Component {
         formComplete = false;
         formIncompleteMessage = "You need a full url, including the 'http' or 'https'.";
       } else {
+        formIncompleteMessage = "";
         formComplete = true;
       }
     } else {
