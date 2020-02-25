@@ -39,7 +39,14 @@
 .opened {
   border: 1px dashed #888888;
 }
-button {
+
+#main button {
   cursor: pointer;
   border-radius: 5px;
+}
+#main button:disabled {
+  color: #bbbbbb;
+  background-color: #efefef;
+  cursor: not-allowed;
+  border: 1px solid #dddddd;
 }

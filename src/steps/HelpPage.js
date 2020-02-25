@@ -7,37 +7,37 @@ class HelpPage extends React.Component {
     super(props);
     this.walkthrough = [{
         image: "/walkthrough/01-go-to-search-form.png",
-        text: <span>First, you want to pull up the search form you want to scrape. Make note of the URL, we'll need this later.<br/><br/><span className="warning"><span className="note">NOTE</span> If you don't need to interact with search forms, you can <span className="skip-link" onClick={this.jumpToExtractorStep}>skip to the extractor builder step by clicking here</span>.</span></span>,
+        text: <span>Welcome to the AutoScrape walkthrough. We're going to demonstrate scraping an interactive search form and extracting data. Below is an example site we're going to scrape.<br/><br/><span className="warning"><span className="note">NOTE</span> If you don't need to interact with search forms, you can <span className="skip-link" onClick={this.jumpToExtractorStep}>skip to the extractor builder step by clicking here</span>.</span></span>,
       }, {
         image: "/walkthrough/02-open-options.png",
-        text: "Back in the AutoScrape UI, click the 'Open Options' button. A dropdown will appear.",
+        text: "Back in the AutoScrape UI, we click the \"Open Options\" button. A dropdown will appear.",
       }, {
         image: "/walkthrough/03-need-to-fill-form-text.png",
-        text: "Below, you'll find the 'Form text' field. We're going to find some unique text that AutoScrape can use to identify the form you want to scrape and paste it here.",
+        text: "In the options menu, we'll find the \"Form text\" field. We're going to find some unique text that AutoScrape can use to identify the form we want to scrape and paste it here.",
       }, {
         image: "/walkthrough/04-copy-form-text.png",
-        text: "Here, we found a sentence that only appears inside the form and copied it. Do the same with the page you'd like to scrape.",
+        text: "Below, we copy a sentence that only appears inside the form ...",
       }, {
         image: "/walkthrough/05-paste-form-text.png",
-        text: "Paste the text in the 'Form text' field.",
-      }, {
-        image: "/walkthrough/06-need-to-fill-next.png",
-        text: "Next, we're going to fill the 'Next page button text' field.",
+        text: "... and paste it in the \"Form text\" field.",
       }, {
         image: "/walkthrough/07-submit-form.png",
-        text: "To find the next page button text, you might need to submit your form. That's what we're doing here.",
+        text: "To figure out how you'd manually click through results pages, you might need to submit your form. That's what we're doing here.",
+      }, {
+        image: "/walkthrough/06-need-to-fill-next.png",
+        text: "Now, we're going to fill the \"Next page button text\" field.",
       }, {
         image: "/walkthrough/08-find-next-button-text.png",
-        text: "At the bottom of the results page, we can see a next button. Its text is 'Next'. Case is important here.",
+        text: "At the bottom of the results page, we can see a \"Next\" button. This is case sensitive.",
       }, {
         image: "/walkthrough/09-paste-next-text.png",
-        text: "Back in the AutoScrape UI, we paste our next button text into the field. Now AutoScrape will be able to find and click any next buttons on results pages.",
+        text: "Back in the AutoScrape UI, we paste \"Next\" into the \"Next page button text\" field. Now AutoScrape will be able to click that button to get all results pages.",
       }, {
         image: "/walkthrough/09-open-form-filler-builder.png",
         text: "Now we're going to tell AutoScrape how to fill out the form. To do this, open the search form filler button. A dropdown menu will appear.",
       }, {
         image: "/walkthrough/10a-form-input-types.png",
-        text: "Back on the site we want to scrape, we can see all the inputs on the left. In this case, I want to set the first date field with a specific date.",
+        text: "Back on the site we want to scrape, we can see all the inputs on the left. In this case, We want to set the first date field with a specific date.",
       }, {
         image: "/walkthrough/10b-form-input-types-annotated.png",
         text: "AutoScrape sees form fields based on their type and their position. Here's a breakdown of how AutoScrape views the current search form. You can see that the date field we want to fill out is the first date input field.",
@@ -46,10 +46,10 @@ class HelpPage extends React.Component {
         text: "In the form filler UI, we select the date input, first date input and a specific date to fill in YYYY-MM-DD format.",
       }, {
         image: "/walkthrough/12-input-added.png",
-        text: "Once you've clicked 'Add' the input is saved. You can delete it by clicking the X. You can also add more fields.",
+        text: "Once you've clicked \"Add\" the input is saved. You can delete it by clicking the X. You can also add more fields.",
       }, {
         image: "/walkthrough/13-add-url.png",
-        text: "Finally, we paste the URL to the search form into the URL input field and click 'Start'. The scrape will begin.",
+        text: "Finally, we paste the URL of the search form (from the first slide) into the main URL input field and click \"Start\". The scrape will begin.",
       }, {
         image: "/walkthrough/14.png",
         text: "AutoScrape will output information about what's going on. If there are other people using AutoScrape, you may have to wait for their scrapes to complete before yours will start...",
@@ -58,30 +58,29 @@ class HelpPage extends React.Component {
         text: "Once AutoScrape is running, it will output screenshots of the current page that's being visited.",
       }, {
         image: "/walkthrough/16-scrape-complete-click-build-extractor.png",
-        text: "Once the scrape is complete, the UI will display a list of files scraped. This is just informational. Click the 'Build Extractor' button to continue.",
+        text: "When the scrape is complete, the UI will display a list of files scraped. This is just informational. Click the \"Build Extractor\" button (bottom) or tab (up top) to continue.",
       }, {
         name: "build-extractor-step",
         image: "/walkthrough/17-load-builder-find-records.png",
-        text: "This is the build extractor page. AutoScrape will render the crawled pages. Find one with results that you'd like to scrape on it.",
+        text: "This is the build extractor page. AutoScrape will load the fetched pages in a frame. You can navigate through the pages by clicking \"Previous\" and \"Next\". Find a result page.",
       }, {
         image: "/walkthrough/18-add-and-name-first-column.png",
-        text: "Find the first record on the page. If there's only one, that's fine. Click the first value you'd like to extract for that record and give it a label. This will become the first column of your data. In the example above, the column header will be 'name' and the first row's value will be 'VARIOUS VENDORS - STATE CONTRACTS'. The second will be 'RESERVED'.",
+        text: "Find the first record on the page you'd like to extract then click the first value inside that record. This will become your first column. Give it a label in the menu. In the example below, I chose \"name\", which will become the column header. The first row's value will be \"VARIOUS VENDORS - STATE CONTRACTS\". The second will be \"RESERVED\".",
       }, {
         image: "/walkthrough/19-optional.png",
-        text: "Here, we've added all the values in the first record that we'd like to be extracted as columns in our final data. In this last description column, that hasn't been saved yet, we've marked it as optional. By default, AutoScrape's extractor does strict matching. So if a record appears that is missing one of the fields you've marked, it will not be extracted. Marking a field optional will allow the record to be extracted with blank values.",
+        text: "Here, we've added all the values in the first record that we'd like to be extracted as columns in our final data. In this last description column, that hasn't been saved yet, we've marked it as optional. By default, AutoScrape's extractor does strict matching. So if a web page has records with missing values, the ones missing the values will not be extracted. Marking a field optional will allow such records to be extracted with blank values.",
       }, {
         image: "/walkthrough/20-builder-complete.png",
-        text: "When done, click the orange play button above. This will close the builder.",
+        text: "Now that we're done, we click the orange play button at the top of the screen. This will close the builder.",
       }, {
         image: "/walkthrough/21-go-to-download.png",
-        text: "Continue to the download page.",
+        text: "Then we continue to the download page.",
       }, {
         image: "/walkthrough/22-download-data.png",
-        text: "Now you can download your extracted data as a spreadsheet (CSV) or as JSON. You're all done!",
+        text: <span>Here we find two download options: a spreadsheet (CSV) or as JSON. We're all done!<br/>This interface allows you to do scrapes of up to 25 pages for free. You can nagivate back and forth through the steps above without losing your scrape. Refreshing the page will clear everything.<br/>Feel free <a href="https://bxroberts.org/bio/#contact" target="_blank" rel="noopener noreferrer">to contact me</a> about this project.</span>,
     }]
     this.state = {
       walkthroughStep: 0,
-      showWalkthrough: true,
     };
   }
 
@@ -103,7 +102,7 @@ class HelpPage extends React.Component {
   }
 
   nextWalkthroughPage = () => {
-    if (this.state.walkthroughStep === this.walkthrough.length) return;
+    if (this.state.walkthroughStep === this.walkthrough.length - 1) return;
     this.setState({
       walkthroughStep: this.state.walkthroughStep + 1
     });
@@ -114,10 +113,6 @@ class HelpPage extends React.Component {
     const data = this.walkthrough[stepIndex];
     return (
       <div id="walkthrough">
-        <div id="image-container">
-          <img src={ data.image }
-            alt="AutoScrape Walkthrough Screenshot" />
-        </div>
         <div id="bottom-bar">
           <div className="text">
             { data.text }
@@ -131,13 +126,17 @@ class HelpPage extends React.Component {
               onClick={this.nextWalkthroughPage}>Next</button>
           </div>
         </div>
+        <div id="image-container">
+          <img src={ data.image }
+            alt="AutoScrape Walkthrough Screenshot" />
+        </div>
       </div>
     );
   }
 
   longformHelp() {
     return (
-      <div id="help-page">
+      <div id="help-page-detailed">
         <h1>Help!</h1>
         <p>
           AutoScrape works in three basic phases:
@@ -187,10 +186,25 @@ class HelpPage extends React.Component {
   }
 
   render() {
-    if (this.state.showWalkthrough) {
-      return this.renderWalkthrough();
+    console.log("this.state.walkthroughStep", this.state.walkthroughStep);
+    if (this.state.walkthroughStep === this.walkthrough.length) {
+      return (
+        <div id="walkthrough">
+          <div id="bottom-bar">
+            { this.longformHelp() }
+            <div className="controls">
+              <button type="button"
+                disabled={!this.state.walkthroughStep}
+                onClick={this.prevWalkthroughPage}>Prev</button>
+              <button type="button"
+                disabled={this.state.walkthroughStep === (this.walkthrough.length + 1)}
+                onClick={this.nextWalkthroughPage}>Next</button>
+            </div>
+          </div>
+        </div>
+      );
     }
-    return this.longformHelp();
+    return this.renderWalkthrough();
   }
 }
 

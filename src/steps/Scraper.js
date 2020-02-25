@@ -58,7 +58,12 @@ class Scraper extends React.Component {
   handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
-    const formComplete = this.isFormValid();
+    let formComplete = this.state.formComplete;
+    if (name === "AS_baseurl" && !value) {
+      formComplete = false;
+    } else {
+      formComplete = true;
+    }
     this.setState({
       [name]: value,
       formComplete: formComplete,
