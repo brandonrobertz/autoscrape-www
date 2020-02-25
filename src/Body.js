@@ -81,7 +81,7 @@ class Body extends React.Component {
     } else if (this.props.step === "extract") {
       return <div id="main"><ExtractData /></div>;
     } else if (this.props.step === "help-page") {
-      return <div id="main"><HelpPage /></div>;
+      return <div id="help-page-wrapper"><HelpPage /></div>;
     } else {
       return (
         <div id="main">

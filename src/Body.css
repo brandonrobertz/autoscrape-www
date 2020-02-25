@@ -3,6 +3,7 @@
   margin: 0 auto;
   padding: 25px 15px;
 }
+#help-page-wrapper h1, #help-page-wrapper h2,
 #main h1, #main h2 {
   text-align: center;
 }
@@ -40,10 +41,12 @@
   border: 1px dashed #888888;
 }
 
+#help-page-wrapper button,
 #main button {
   cursor: pointer;
   border-radius: 5px;
 }
+#help-page-wrapper button:disabled,
 #main button:disabled {
   color: #bbbbbb;
   background-color: #efefef;

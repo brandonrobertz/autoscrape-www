@@ -66,9 +66,11 @@
   text-align: center;
 }
 
+#help-page-wrapper button:hover,
 #main button:hover {
   background-color: #eeeeee;
 }
+#help-page-wrapper button,
 #main button {
   font-size: 0.9rem;
   border: 1px solid black;
