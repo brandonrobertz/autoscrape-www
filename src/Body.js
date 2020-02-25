@@ -54,10 +54,10 @@ class Body extends React.Component {
           AutoScrape is an <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">open-source</a>, programming-free web scraper for interactive sites.
         </p>
         <p>
-          This version of AutoScrape is alpha software and is available for a limited time, for testing. Everything scraped will be logged for testing purposes, but not shared publicly. Each scrape session will be limited to 25 pages. For larger scrapes, you can <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">run the code yourself</a>.
+          Never used AutoScrape? Check out the <a href="#help" onClick={this.helpPage}>step-by-step walkthrough</a>.
         </p>
         <p>
-          Don't know how to use AutoScrape? There's a <a href="https://www.youtube.com/watch?v=D0Mchcf6THE" target="_blank" rel="noopener noreferrer">30-second walkthrough</a> on YouTube or you can read the <a href="#help" onClick={this.helpPage}>help page</a>.
+          This version of AutoScrape is alpha software and is available for a limited time, for testing. Everything scraped will be logged for testing purposes, but not shared publicly. Each scrape session will be limited to 25 pages. For larger scrapes, you can <a href="https://github.com/brandonrobertz/autoscrape-py" target="_blank" rel="noopener noreferrer">run the code yourself</a>.
         </p>
         <p>
           AutoScrape was written by <a href="https://bxroberts.org" target="_blank" rel="noopener noreferrer">Brandon Roberts</a>.
