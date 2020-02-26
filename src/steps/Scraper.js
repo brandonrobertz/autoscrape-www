@@ -38,6 +38,7 @@ class Scraper extends React.Component {
       AS_show_browser: false,
       AS_driver: "Firefox",
       AS_form_submit_natural_click: false,
+      AS_result_page_links: "",
       AS_link_priority: "",
       AS_keep_filename: false,
       AS_ignore_links: "",
@@ -113,7 +114,12 @@ class Scraper extends React.Component {
     Object.keys(this.state).forEach((k) => {
       if (!k.startsWith("AS_")) return;
       const name = k.replace("AS_", "");
-      if (name === "AS_ignore_links" || name === "AS_link_priority") {
+      const is_link_list = (
+           name === "AS_ignore_links"
+        || name === "AS_link_priority"
+        || name === "AS_result_page_links"
+      );
+      if (is_link_list) {
         data[name] = this.state[k].replace(",", "|");
       } else {
         data[name] = this.state[k];
@@ -499,6 +505,17 @@ class Scraper extends React.Component {
         <div className="row">
           <div className="col s12 input-field section">
             <h3>Link Clicking</h3>
+          </div>
+          <div className="col s12 input-field">
+            <input id="result_page_links" name="AS_result_page_links"
+              onChange={this.handleChange}
+              value={this.state.AS_result_page_links}
+              placeholder='Links to click on result pages. Case-sensitive, separated by comma (e.g. More, View Page)'
+              type="text"
+            />
+            <label htmlFor="result_page_links" className="active">
+              Links to click on result pages
+            </label>
           </div>
           <div className="col s12 input-field">
             <input id="link_priority" name="AS_link_priority"
