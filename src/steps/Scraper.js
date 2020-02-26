@@ -115,9 +115,9 @@ class Scraper extends React.Component {
       if (!k.startsWith("AS_")) return;
       const name = k.replace("AS_", "");
       const is_link_list = (
-           name === "AS_ignore_links"
-        || name === "AS_link_priority"
-        || name === "AS_result_page_links"
+           name === "ignore_links"
+        || name === "link_priority"
+        || name === "result_page_links"
       );
       if (is_link_list) {
         data[name] = this.state[k].replace(",", "|");
