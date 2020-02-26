@@ -504,13 +504,13 @@ class Scraper extends React.Component {
 
         <div className="row">
           <div className="col s12 input-field section">
-            <h3>Link Clicking</h3>
+            <h3>Link Clicking (Text or Regex)</h3>
           </div>
           <div className="col s12 input-field">
             <input id="result_page_links" name="AS_result_page_links"
               onChange={this.handleChange}
               value={this.state.AS_result_page_links}
-              placeholder='Links to click on result pages. Case-sensitive, separated by comma (e.g. More, View Page)'
+              placeholder='Links to click on result pages. Case-sensitive, separated by comma (e.g. View Page).'
               type="text"
             />
             <label htmlFor="result_page_links" className="active">
