@@ -645,7 +645,7 @@ class Scraper extends React.Component {
           <div className="row">
             <div className="advanced-wrapper">
               <button className="advanced" type="button" onClick={this.toggleAdvanced}>
-                {!this.state.showAdvanced ? 'Show Options 🔧' : 'Hide Options ✖'}
+                {!this.state.showAdvanced ? 'Show Form Interaction Options 🔧' : 'Hide Options ✖'}
               </button>
             </div>
           </div>
