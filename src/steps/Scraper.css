@@ -173,3 +173,24 @@ div#toggle-builder {
   margin: 0 auto;
   text-align: center;
 }
+
+.info {
+  font-size: 12px;
+  max-width: 300px;
+  margin: 0 auto;
+  padding: 10px;
+  color: #555555;
+  border: 1px dashed #bbbbbb;
+  text-align: left;
+}
+
+.info:before {
+  content: "!";
+  font-size: 3.0em;
+  text-align: left;
+  display: inline-block;
+  float: left;
+  padding-right: 20px;
+  padding-left: 10px;
+  color: #888888;
+}

@@ -644,8 +644,11 @@ class Scraper extends React.Component {
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <div className="row">
             <div className="advanced-wrapper">
+              {!this.state.showAdvanced &&
+                <p class="info">By default, AutoScrape will crawl a website.
+                Use options menu to fill out forms and perform more complicated scrapes.</p> }<br/>
               <button className="advanced" type="button" onClick={this.toggleAdvanced}>
-                {!this.state.showAdvanced ? 'Show Form Interaction Options 🔧' : 'Hide Options ✖'}
+                {!this.state.showAdvanced ? 'Show Options 🔧' : 'Hide Options ✖'}
               </button>
             </div>
           </div>
