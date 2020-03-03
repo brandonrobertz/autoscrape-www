@@ -52,6 +52,7 @@ export const rootReducer = (state, action) => {
     case "SCRAPE_CANCELLED":
       return update(state, {
         scrape: {
+          id: null,
           status: SCRAPE_STATUS.FAILURE,
           message: "Scrape cancelled.",
         }
@@ -59,7 +60,7 @@ export const rootReducer = (state, action) => {
     case "SCRAPE_FAILED":
       return update(state, {
         scrape: {
-          id: action.payload.id,
+          id: null,
           status: SCRAPE_STATUS.FAILURE,
           message: "Scrape failed.",
         }
