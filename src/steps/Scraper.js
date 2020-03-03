@@ -650,7 +650,7 @@ class Scraper extends React.Component {
           <div className="row">
             <div className="advanced-wrapper">
               {!this.state.showAdvanced &&
-                <p class="info">By default, AutoScrape will crawl a website.
+                <p className="info">By default, AutoScrape will crawl a website.
                 Use the options menu to fill out forms and perform more complicated scrapes.</p> }<br/>
               <button className="advanced" type="button" onClick={this.toggleAdvanced}>
                 {!this.state.showAdvanced ? 'Show Options 🔧' : 'Hide Options ✖'}
