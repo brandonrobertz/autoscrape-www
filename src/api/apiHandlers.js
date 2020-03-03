@@ -100,16 +100,18 @@ function* scrapeHandler(action) {
 
         for(let i = 0; i < filesList.data.length; i++) {
           const fileInfo = filesList.data[i];
-          // skip screenshots/downloads
-          if (fileInfo.fileclass !== "crawl_pages" &&
-              fileInfo.fileclass !== "data_pages")
-              continue;
 
           // fetch the file data
           const fid = fileInfo.id;
           const result = yield call(api.fetchFile, {
             id: data.id, file_id: fid
           });
+          filesList.data[i].data = atob(result.data.data)
+
+          // skip screenshots/downloads for the documents structure
+          if (fileInfo.fileclass !== "crawl_pages" &&
+              fileInfo.fileclass !== "data_pages")
+              continue;
 
           // extract extension and add to HTML/CSS data
           const matches = fileInfo.name.match(/(.*)\.([^\\.]{3,})$/);

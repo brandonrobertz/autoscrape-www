@@ -4,6 +4,7 @@ import M from 'materialize-css';
 
 import store from 'state/store';
 import { SCRAPE_STATUS } from 'state/reducers/root';
+import DownloadHTML from 'steps/DownloadHTML'
 
 import 'steps/Scraper.css'
 
@@ -205,6 +206,7 @@ class Scraper extends React.Component {
         </div>
         { this.filesPageControls() }
         <div className="next">
+          <DownloadHTML filesList={this.props.scrape.filesList} />
           <button type="button" onClick={this.nextStep}>Build Extractor &rarr;</button>
         </div>
       </div>

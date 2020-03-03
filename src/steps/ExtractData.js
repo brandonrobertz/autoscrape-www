@@ -5,6 +5,7 @@ import Papa from 'papaparse'
 
 import 'steps/ExtractData.css'
 
+
 class ExtractData extends React.Component {
   extractAll = () => {
     const hext = this.props.hext;
