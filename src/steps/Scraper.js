@@ -39,7 +39,7 @@ class Scraper extends React.Component {
       AS_driver: "Firefox",
       AS_form_submit_natural_click: false,
       AS_result_page_links: "",
-      AS_link_priority: "",
+      AS_only_links: "",
       AS_keep_filename: false,
       AS_ignore_links: "",
       AS_form_match: "",
@@ -116,7 +116,7 @@ class Scraper extends React.Component {
       const name = k.replace("AS_", "");
       const is_link_list = (
            name === "ignore_links"
-        || name === "link_priority"
+        || name === "only_links"
         || name === "result_page_links"
       );
       if (is_link_list) {
@@ -518,14 +518,14 @@ class Scraper extends React.Component {
             </label>
           </div>
           <div className="col s12 input-field">
-            <input id="link_priority" name="AS_link_priority"
+            <input id="only_links" name="AS_only_links"
               onChange={this.handleChange}
-              value={this.state.AS_link_priority}
+              value={this.state.AS_only_links}
               placeholder='Case-sensitive texts, separated by comma (e.g. Accept, More data)'
               type="text"
             />
-            <label htmlFor="link_priority" className="active">
-              Click matching link text first
+            <label htmlFor="only_links" className="active">
+              Only click matching link text (whitelist)
             </label>
           </div>
           <div className="col s12 input-field">
@@ -536,7 +536,7 @@ class Scraper extends React.Component {
               type="text"
             />
             <label htmlFor="ignore_links" className="active">
-              Ignore matching link text
+              Ignore matching link text (blacklist)
             </label>
           </div>
         </div>
