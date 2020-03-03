@@ -194,3 +194,8 @@ div#toggle-builder {
   padding-left: 10px;
   color: #888888;
 }
+
+.link-options-desc {
+  color: #444444;
+  font-size: 0.9rem;
+}

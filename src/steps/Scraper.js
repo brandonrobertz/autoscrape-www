@@ -500,12 +500,6 @@ class Scraper extends React.Component {
             </div>
           </div>
           { this.state.showBuilder && this.inputBuilder() }
-        </div>
-
-        <div className="row">
-          <div className="col s12 input-field section">
-            <h3>Link Clicking (Text or Regex)</h3>
-          </div>
           <div className="col s12 input-field">
             <input id="result_page_links" name="AS_result_page_links"
               onChange={this.handleChange}
@@ -514,8 +508,19 @@ class Scraper extends React.Component {
               type="text"
             />
             <label htmlFor="result_page_links" className="active">
-              Links to click on result pages
+              Links to click on result pages (whitelist)
             </label>
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col s12 input-field section">
+            <h3>Link Clicking (Text or Regex)</h3>
+            <p className="link-options-desc">
+              These options control link clicking <b>before submitting forms</b>. Any
+              rules applied here will not be used on results pages. Use these options to
+              perform basic crawls or for instructing AutoScrape how to get to a search form.
+            </p>
           </div>
           <div className="col s12 input-field">
             <input id="only_links" name="AS_only_links"
