@@ -256,13 +256,13 @@ class Scraper extends React.Component {
     const fullInputDesc = desc.map((i) => {
       const typeChr = typeChars[i.type];
       const ith = Number.parseInt(i.ith.replace(/[^0-9]+/, '')) - 1;
-      let value = i.text;
+      let value = i.text.replace(",", "\\,");
       if (i.type === "checkbox") {
         value = this.capitalize(`${i.check}`);
       }
       const code = `${typeChr}:${ith}:${value}`;
       return code;
-    }).join(";");
+    }).join(",");
     return fullInputDesc;
   }
 
@@ -506,7 +506,7 @@ class Scraper extends React.Component {
             <input id="result_page_links" name="AS_result_page_links"
               onChange={this.handleChange}
               value={this.state.AS_result_page_links}
-              placeholder='Links to click on result pages. Case-sensitive, separated by comma (e.g. View Page).'
+              placeholder='Link text to click on result pages. Case-sensitive, separated by comma (e.g. View Page).'
               type="text"
             />
             <label htmlFor="result_page_links" className="active">
