@@ -1,5 +1,6 @@
 import React from "react"
 import { connect } from 'react-redux'
+import { saveAs } from 'file-saver'
 import M from 'materialize-css';
 
 import store from 'state/store';
@@ -14,6 +15,7 @@ class Scraper extends React.Component {
     this.defaultState = {
       scrapeId: null,
       showAdvanced: false,
+      showLoadSave: false,
       showBuilder: false,
       inputDesc: [],
       currentInput: {
@@ -50,6 +52,7 @@ class Scraper extends React.Component {
       AS_disable_style_saving: false,
     };
     this.baseUrlRef = React.createRef();
+    this.loadConfigInput = React.createRef();
     this.state = this.defaultState;
   }
 
@@ -96,6 +99,15 @@ class Scraper extends React.Component {
       return;
     }
     this.setState({showAdvanced: !this.state.showAdvanced});
+  }
+
+  toggleLoadSave = (e) => {
+    e.preventDefault();
+    // don't toggle on enter (detail contains click count)
+    if (e.detail === 0) {
+      return;
+    }
+    this.setState({showLoadSave: !this.state.showLoadSave});
   }
 
   toggleBuilder = (e) => {
@@ -610,6 +622,85 @@ class Scraper extends React.Component {
     );
   }
 
+  saveConfig = (e) => {
+    e.preventDefault();
+    const config = {
+      inputDesc: this.state.inputDesc,
+      AS_backend: this.state.AS_backend,
+      AS_baseurl: this.state.AS_baseurl,
+      AS_form_submit_wait: this.state.AS_form_submit_wait,
+      AS_input: this.state.AS_input,
+      AS_save_graph: this.state.AS_save_graph,
+      AS_load_images: this.state.AS_load_images,
+      AS_maxdepth: this.state.AS_maxdepth,
+      AS_formdepth: this.state.AS_formdepth,
+      AS_next_match: this.state.AS_next_match,
+      AS_leave_host: this.state.AS_leave_host,
+      AS_show_browser: this.state.AS_show_browser,
+      AS_driver: this.state.AS_driver,
+      AS_form_submit_natural_click: this.state.AS_form_submit_natural_click,
+      AS_result_page_links: this.state.AS_result_page_links,
+      AS_only_links: this.state.AS_only_links,
+      AS_keep_filename: this.state.AS_keep_filename,
+      AS_ignore_links: this.state.AS_ignore_links,
+      AS_form_match: this.state.AS_form_match,
+      AS_save_screenshots: this.state.AS_save_screenshots,
+      AS_remote_hub: this.state.AS_remote_hub,
+      AS_loglevel: this.state.AS_loglevel,
+      AS_disable_style_saving: this.state.AS_disable_style_saving,
+    };
+    const strData = JSON.stringify(config);
+    const blob = new Blob([strData]);
+    const now = (new Date()).getTime();
+    saveAs(blob, `autoscrape-config-${now}.json`)
+  }
+
+  handleFileRead = (filereader, e) => {
+    const text = filereader.result;
+    const jsonData = JSON.parse(text);
+    const newState = this.state;
+    Object.keys(jsonData).forEach((key) => {
+      newState[key] = jsonData[key];
+    });
+    newState.showLoadSave = false;
+    this.setState(newState);
+  }
+
+  loadConfig = (e) => {
+    e.preventDefault();
+    const file = this.loadConfigInput.current.files[0];
+    const filereader = new FileReader();
+    filereader.onloadend = this.handleFileRead.bind(this, filereader);
+    filereader.readAsText(file);
+  }
+
+  loadSave() {
+    if (!this.state.showLoadSave) return;
+    return (
+      <div id="load-save">
+        <button onClick={this.toggleLoadSave} className="close">
+          Close [X]
+        </button>
+        <div className="inner">
+          <h2>Load/Save Scrape Config</h2>
+          <p>
+            Using this dialog, you can save your current scrape configuration or
+            load a previously saved one. This will not load your previous data,
+            but it will load the parameters you used to perform a scrape
+            so it can be re-ran.
+          </p>
+          <div className="center">
+            <form onSubmit={this.loadConfig}>
+              <input type="file" accept=".json" ref={this.loadConfigInput} />
+              <input type="submit" value="Load Saved Config" />
+            </form>
+            <button onClick={this.saveConfig}>Save Current Config</button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   componentDidUpdate() {
     if (this.state.materialzeInited) return;
     M.AutoInit();
@@ -648,6 +739,7 @@ class Scraper extends React.Component {
   render() {
     return (
       <div id="main">
+        { this.loadSave() }
         <form onSubmit={this.handleSubmit} onChange={this.handleChange}>
           <div className="row">
             <div className="advanced-wrapper">
@@ -656,6 +748,9 @@ class Scraper extends React.Component {
                 Use the options menu to fill out forms and perform more complicated scrapes.</p> }<br/>
               <button className="advanced" type="button" onClick={this.toggleAdvanced}>
                 {!this.state.showAdvanced ? 'Show Options 🔧' : 'Hide Options ✖'}
+              </button>
+              <button className="advanced" type="button" onClick={this.toggleLoadSave}>
+                Load/Save <span role="img" aria-label="Floppy disk">💾</span>
               </button>
             </div>
           </div>
