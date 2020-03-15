@@ -2,6 +2,50 @@ import React from 'react'
 
 import 'steps/HelpPage.css'
 
+class LoadableImage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loaded: false,
+    };
+  }
+
+  handleImageLoaded() {
+    this.setState({
+      loaded: true,
+    });
+  }
+
+  handleImageErrored() {
+    this.setState({
+      loaded: false
+    });
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // reset the loading state if we get a new image prop
+    if (prevProps.src !== this.props.src) {
+      this.setState({
+        loaded: false
+      });
+    }
+  }
+
+  render() {
+    const loadClass = this.state.loaded ? "loaded" : "loading";
+    return (
+      <div>
+        <img className={loadClass}
+          src={ this.props.src }
+          onLoad={this.handleImageLoaded.bind(this)}
+          onError={this.handleImageErrored.bind(this)}
+          alt="AutoScrape Walkthrough Screenshot" />
+        { !this.state.loaded && <span>Loading...</span> }
+      </div>
+    );
+  }
+}
+
 class HelpPage extends React.Component {
   constructor(props) {
     super(props);
@@ -127,8 +171,7 @@ class HelpPage extends React.Component {
           </div>
         </div>
         <div id="image-container">
-          <img src={ data.image }
-            alt="AutoScrape Walkthrough Screenshot" />
+          <LoadableImage src={data.image} />
         </div>
       </div>
     );
