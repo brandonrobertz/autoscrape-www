@@ -150,7 +150,7 @@ function* scrapeHandler(action) {
         break;
       }
       const progResponse = yield call(api.pollProgress, data);
-      if (progResponse.message == "STARTED") {
+      if (progResponse.message === "STARTED") {
         yield put({type: `${base}_RUNNING`, payload: data});
       }
       yield call(sleep, 5000);
