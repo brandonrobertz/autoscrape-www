@@ -663,6 +663,7 @@ class Scraper extends React.Component {
       newState[key] = jsonData[key];
     });
     newState.showLoadSave = false;
+    newState.formComplete = true;
     this.setState(newState);
   }
 

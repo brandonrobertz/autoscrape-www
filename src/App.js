@@ -9,7 +9,7 @@ import 'App.css';
 
 const App = () => {
   return (
-  <div>
+    <div id="autoscrape-www">
       <HeaderNav />
       <Body />
     </div>
