@@ -149,9 +149,11 @@ function* scrapeHandler(action) {
         yield put({type: `${base}_FAILED`, payload: data});
         break;
       }
+      const progResponse = yield call(api.pollProgress, data);
+      if (progResponse.message == "STARTED") {
+        yield put({type: `${base}_RUNNING`, payload: data});
+      }
       yield call(sleep, 5000);
-      yield put({type: `${base}_RUNNING`, payload: data});
-      yield call(api.pollProgress, data);
     }
   } catch (error) {
     console.error(error);
