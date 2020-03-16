@@ -49,6 +49,7 @@ class Scraper extends React.Component {
       AS_save_screenshots: true,
       AS_remote_hub: "",
       AS_loglevel: "INFO",
+      AS_page_timeout: "30",
       AS_disable_style_saving: false,
     };
     this.baseUrlRef = React.createRef();
@@ -582,6 +583,15 @@ class Scraper extends React.Component {
             />
             <label className="active" htmlFor="form_submit_wait">Page wait (secs)</label>
           </div>
+          <div className="col s3 input-field">
+            <input id="page_timeout"
+              name="AS_page_timeout"
+              onChange={this.handleChange}
+              type="text"
+              value={this.state.AS_page_timeout}
+            />
+            <label className="active" htmlFor="page_timeout">Page timeout (secs)</label>
+          </div>
         </div>
 
         <div className="row">
@@ -629,6 +639,7 @@ class Scraper extends React.Component {
       AS_backend: this.state.AS_backend,
       AS_baseurl: this.state.AS_baseurl,
       AS_form_submit_wait: this.state.AS_form_submit_wait,
+      AS_page_timeout: this.state.AS_page_timeout,
       AS_input: this.state.AS_input,
       AS_save_graph: this.state.AS_save_graph,
       AS_load_images: this.state.AS_load_images,
