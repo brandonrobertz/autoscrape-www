@@ -265,6 +265,7 @@ class Scraper extends React.Component {
       "checkbox": "c",
       "option select": "o",
       "date input": "d",
+      "radio": "r",
     };
     const fullInputDesc = desc.map((i) => {
       const typeChr = typeChars[i.type];
@@ -272,6 +273,8 @@ class Scraper extends React.Component {
       let value = i.text.replace(",", "\\,");
       if (i.type === "checkbox") {
         value = this.capitalize(`${i.check}`);
+      } else if (i.type === "radio") {
+        value = Number.parseInt(value.replace(/[^0-9]+/, '')) - 1;
       }
       const code = `${typeChr}:${ith}:${value}`;
       return code;
@@ -346,8 +349,14 @@ class Scraper extends React.Component {
             <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
           </div>
         );
+      } else if (i.type === "radio") {
+        return (
+          <div key={`input-plan-${ix}`} className="input-desc">
+            In radio checkbox group #{i.ith} select radio option #{i.text}
+            <span className="remove-input" onClick={this.removeInput.bind(this, ix)}>x</span>
+          </div>
+        );
       }
-
       return null;
     });
     return (
@@ -366,6 +375,7 @@ class Scraper extends React.Component {
             <option value="checkbox">Checkbox</option>
             <option value="option select">Option Selector</option>
             <option value="date input">Date input</option>
+            <option value="radio">Radio checkbox</option>
           </select>
         </div>
         <div className="col s2 field-input">
@@ -374,7 +384,7 @@ class Scraper extends React.Component {
           </label>
           <input id="current-input-ith"
             type="text"
-            placeholder="1"
+            placeholder="e.g., 1"
             value={this.state.currentInput.ith}
             onChange={this.onInputChange.bind(this, "ith")}
           />
@@ -427,7 +437,21 @@ class Scraper extends React.Component {
           </label>
           <input id="current-input-text"
             type="text"
-            placeholder="YYYY-MM-DD"
+            placeholder="e.g., YYYY-MM-DD"
+            value={this.state.currentInput.text}
+            onChange={this.onInputChange.bind(this, "text")}
+          />
+        </div>
+      );
+    } else if (type === "radio") {
+      return (
+        <div className="col s5 field-input">
+          <label htmlFor="current-input-text" className="active">
+            Which option?
+          </label>
+          <input id="current-input-text"
+            type="text"
+            placeholder="e.g., 1"
             value={this.state.currentInput.text}
             onChange={this.onInputChange.bind(this, "text")}
           />
