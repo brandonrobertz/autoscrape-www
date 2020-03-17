@@ -611,7 +611,7 @@ class Scraper extends React.Component {
                 onChange={this.handleChange}
                 value={this.state.AS_load_images}
                 type="checkbox" />
-              <span>Load images (faster, usually not necessary)</span>
+              <span>Load images (slow, usually not necessary)</span>
             </label>
           </div>
           <div className="col s5">
