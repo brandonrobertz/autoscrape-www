@@ -35,7 +35,7 @@ class Scraper extends React.Component {
       AS_save_graph: false,
       AS_load_images: false,
       AS_maxdepth: "2",
-      AS_formdepth: "100",
+      AS_formdepth: "50",
       AS_next_match: "",
       AS_leave_host: false,
       AS_show_browser: false,
@@ -438,16 +438,6 @@ class Scraper extends React.Component {
 
   advancedControls() {
     if (!this.state.showAdvanced) return;
-    /**
-     * <div className="col s3 input-field">
-     *   <input id="formdepth" name="AS_formdepth"
-     *     onChange={this.handleChange}
-     *     value={this.state.AS_formdepth} type="text" />
-     *   <label htmlFor="formdepth" className="active">
-     *     Max results pages
-     *   </label>
-     * </div>
-     */
     return (
       <div id="advanced-controls">
         <h2>AutoScrape Options</h2>
@@ -557,6 +547,14 @@ class Scraper extends React.Component {
             />
             <label htmlFor="ignore_links" className="active">
               Ignore matching link text (blacklist)
+            </label>
+          </div>
+          <div className="col s3 input-field">
+            <input id="formdepth" name="AS_formdepth"
+              onChange={this.handleChange}
+              value={this.state.AS_formdepth} type="text" />
+            <label htmlFor="formdepth" className="active">
+              Max results pages
             </label>
           </div>
         </div>
