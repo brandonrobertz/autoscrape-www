@@ -35,7 +35,7 @@ class Scraper extends React.Component {
       AS_save_graph: false,
       AS_load_images: false,
       AS_maxdepth: "2",
-      AS_formdepth: "10",
+      AS_formdepth: "100",
       AS_next_match: "",
       AS_leave_host: false,
       AS_show_browser: false,
