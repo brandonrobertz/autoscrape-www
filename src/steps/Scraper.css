@@ -176,7 +176,7 @@ div#toggle-builder {
 
 .info {
   font-size: 12px;
-  max-width: 400px;
+  max-width: 500px;
   margin: 0 auto;
   padding: 10px;
   color: #555555;
@@ -186,7 +186,7 @@ div#toggle-builder {
 
 .info:before {
   content: "!";
-  font-size: 3.0em;
+  font-size: 2.0em;
   text-align: left;
   display: inline-block;
   float: left;
