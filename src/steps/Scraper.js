@@ -161,10 +161,6 @@ class Scraper extends React.Component {
     });
   }
 
-  reset = () => {
-    this.setState(this.defaultState);
-  }
-
   filesPageControls() {
     return null;
     //return (
@@ -750,7 +746,6 @@ class Scraper extends React.Component {
   }
 
   scrapeControls = () => {
-    //<button id="reset-scrape" onClick={this.reset}>Reset Options</button>
     if (!this.props.scrape || !this.props.scrape.status) {
       return (
         <button

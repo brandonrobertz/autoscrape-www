@@ -39,7 +39,6 @@ class BuildExtractor extends React.Component {
     this.iframeRef.current.contentWindow.postMessage(data, '*');
   }
 
-
   clearHext = () => {
     store.dispatch({
       type: "HEXT_CLEAR_REQUESTED",
@@ -61,7 +60,6 @@ class BuildExtractor extends React.Component {
     });
   }
 
-
   showHextControl() {
     return (
       <div className="hext-complete-controls">
@@ -74,6 +72,34 @@ class BuildExtractor extends React.Component {
         <button type="button" onClick={this.nextStep}>Download Data &rarr;</button>
       </div>
     );
+  }
+
+  formatHTML(code) {
+    console.log("formatHTML", code);
+    const whitespace = "  ";
+    let currentIndent = 0;
+    let char = null;
+    let nextChar = null;
+
+    const resultList = [];
+    for(let pos=0; pos <= code.length; pos++) {
+      char = code.substr(pos, 1);
+      nextChar = code.substr(pos+1, 1);
+
+      // If opening tag, add newline character and indention
+      if(char === '<' && nextChar !== '/') {
+        resultList.push('\n' + whitespace.repeat(currentIndent));
+        currentIndent++;
+      }
+      // if Closing tag, add newline and indention
+      else if(char === '<' && nextChar === '/') {
+        // If there're more closing tags than opening
+        if(--currentIndent < 0) currentIndent = 0;
+        resultList.push('\n' + whitespace.repeat(currentIndent));
+      }
+      resultList.push(char);
+    }
+    return resultList.join("");
   }
 
   render() {
@@ -98,7 +124,7 @@ class BuildExtractor extends React.Component {
           </p>
           <div className="hext-template">
             { this.showHextControl() }
-            { this.state.showHext && <pre>{this.props.hext}</pre> }
+            { this.state.showHext && <pre>{this.formatHTML(this.props.hext)}</pre> }
           </div>
         </div>
       );
