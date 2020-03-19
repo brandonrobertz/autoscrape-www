@@ -702,6 +702,7 @@ class Scraper extends React.Component {
 
   loadConfig = (e) => {
     e.preventDefault();
+    if (!this.loadConfigInput.current.files[0]) return;
     const file = this.loadConfigInput.current.files[0];
     const filereader = new FileReader();
     filereader.onloadend = this.handleFileRead.bind(this, filereader);
