@@ -617,7 +617,7 @@ class Scraper extends React.Component {
             <label>
               <input id="leave_host" name="AS_leave_host"
                 onChange={this.handleChange}
-                value={this.state.AS_leave_host}
+                defaultChecked={this.state.AS_leave_host}
                 type="checkbox" />
               <span>Leave host</span>
             </label>
@@ -627,7 +627,7 @@ class Scraper extends React.Component {
               <input name="AS_keep_filename"
                 id="keep_filename"
                 onChange={this.handleChange}
-                value={this.state.AS_keep_filename}
+                defaultChecked={this.state.AS_keep_filename}
                 type="checkbox" />
               <span>Save filenames, not hashes (might cause missing HTML pages)</span>
             </label>
@@ -637,7 +637,7 @@ class Scraper extends React.Component {
               <input name="AS_load_images"
                 id="load_images"
                 onChange={this.handleChange}
-                value={this.state.AS_load_images}
+                defaultChecked={this.state.AS_load_images}
                 type="checkbox" />
               <span>Load images (slow, usually not necessary)</span>
             </label>
@@ -648,7 +648,7 @@ class Scraper extends React.Component {
                 id="form_submit_natural_click"
                 name="AS_form_submit_natural_click"
                 onChange={this.handleChange}
-                value={this.state.AS_form_submit_natural_click}
+                defaultChecked={this.state.AS_form_submit_natural_click}
                 type="checkbox"
               />
               <span>Simulate natural click on submit (required for some poorly programmed sites)</span>
