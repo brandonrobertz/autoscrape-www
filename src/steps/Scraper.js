@@ -613,7 +613,7 @@ class Scraper extends React.Component {
         </div>
 
         <div className="row">
-          <div className="col s2">
+          <div className="col s6">
             <label>
               <input id="leave_host" name="AS_leave_host"
                 onChange={this.handleChange}
@@ -622,7 +622,17 @@ class Scraper extends React.Component {
               <span>Leave host</span>
             </label>
           </div>
-          <div className="col s5">
+          <div className="col s6">
+            <label>
+              <input name="AS_keep_filename"
+                id="keep_filename"
+                onChange={this.handleChange}
+                value={this.state.AS_keep_filename}
+                type="checkbox" />
+              <span>Save filenames, not hashes (might cause missing HTML pages)</span>
+            </label>
+          </div>
+          <div className="col s6">
             <label>
               <input name="AS_load_images"
                 id="load_images"
@@ -632,7 +642,7 @@ class Scraper extends React.Component {
               <span>Load images (slow, usually not necessary)</span>
             </label>
           </div>
-          <div className="col s5">
+          <div className="col s6">
             <label>
               <input
                 id="form_submit_natural_click"
@@ -665,12 +675,12 @@ class Scraper extends React.Component {
       AS_formdepth: this.state.AS_formdepth,
       AS_next_match: this.state.AS_next_match,
       AS_leave_host: this.state.AS_leave_host,
+      AS_keep_filename: this.state.AS_keep_filename,
       AS_show_browser: this.state.AS_show_browser,
       AS_driver: this.state.AS_driver,
       AS_form_submit_natural_click: this.state.AS_form_submit_natural_click,
       AS_result_page_links: this.state.AS_result_page_links,
       AS_only_links: this.state.AS_only_links,
-      AS_keep_filename: this.state.AS_keep_filename,
       AS_ignore_links: this.state.AS_ignore_links,
       AS_form_match: this.state.AS_form_match,
       AS_save_screenshots: this.state.AS_save_screenshots,
