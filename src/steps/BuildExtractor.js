@@ -31,8 +31,6 @@ class BuildExtractor extends React.Component {
   sendFilesList = (scrape) => {
     if (!scrape || !scrape.filesList) return;
     const data = {documents: scrape.documents};
-    console.log("this.iframeRef", this.iframeRef);
-    console.log("this.iframeRef.current", this.iframeRef.current);
     // we can't do this right now, we will get another chance
     // once the DOM is loaded
     if (!this.iframeRef.current) return;
@@ -75,7 +73,6 @@ class BuildExtractor extends React.Component {
   }
 
   formatHTML(code) {
-    console.log("formatHTML", code);
     const whitespace = "  ";
     let currentIndent = 0;
     let char = null;
