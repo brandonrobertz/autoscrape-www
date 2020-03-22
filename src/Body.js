@@ -1,4 +1,5 @@
 import React from 'react'
+import { Redirect, Route, Switch } from 'react-router'
 import { connect } from 'react-redux'
 
 import Scraper from 'steps/Scraper'
@@ -67,34 +68,27 @@ class Body extends React.Component {
   }
 
   render() {
-    if (this.props.step === "scraper") {
-      return (
-        <div id="main">
-          { this.infoBox() }
-          <div>
+    return (
+      <div id="main">
+        <Switch>
+          <Route exact path="/scrape/:scrapeId?">
             <Scraper />
-          </div>
-        </div>
-      );
-    } else if (this.props.step === "build-extractor") {
-      return <div id="main"><BuildExtractor /></div>;
-    } else if (this.props.step === "extract") {
-      return <div id="main"><ExtractData /></div>;
-    } else if (this.props.step === "help-page") {
-      return <div id="help-page-wrapper"><HelpPage /></div>;
-    } else {
-      return (
-        <div id="main">
-          <h1>Something went wrong!</h1>
-          <p>
-            Please refresh the page to restart the app.
-          </p>
-          <p>
-            If you see anything interesting in the developer tools tab (F12 on Windows), you can <a href="https://github.com/brandonrobertz/autoscrape-www/issues" target="_blank" rel="noopener noreferrer">file a GitHub issue here</a>.
-          </p>
-        </div>
-      );
-    }
+          </Route>
+          <Route exact path="/build-extractor">
+            <BuildExtractor />
+          </Route>
+          <Route exact path="/download-data">
+            <ExtractData />
+          </Route>
+          <Route exact path="/help">
+            <HelpPage />
+          </Route>
+          <Route>
+            <Redirect to="/scrape" />
+          </Route>
+        </Switch>
+      </div>
+    );
   }
 }
 

@@ -4,7 +4,7 @@ import { saveAs } from 'file-saver'
 import M from 'materialize-css';
 
 import store from 'state/store';
-import { SCRAPE_STATUS } from 'state/reducers/root';
+import { SCRAPE_STATUS } from 'state/reducers/scrape';
 import DownloadHTML from 'steps/DownloadHTML'
 
 import 'steps/Scraper.css'
