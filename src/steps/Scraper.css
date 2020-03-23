@@ -108,6 +108,10 @@
 #files-list td {
   vertical-align: top;
 }
+#files-list-wrapper {
+  max-height: 50vh;
+  overflow-y: scroll;
+}
 
 #page-controls {
   text-align: center;
