@@ -51,7 +51,7 @@ class BuildExtractor extends React.Component {
   }
 
   nextStep() {
-    history.push("/extract");
+    history.push("/download-data");
   }
 
   showHextControl() {

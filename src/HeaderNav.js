@@ -12,7 +12,11 @@ function mapStateToProps(state) {
 
 class _HeaderTab extends React.Component {
   navigateTo = () => {
-    history.push(`/${this.props.stepName}`);
+    let where = `/${this.props.stepName}`;
+    if (this.props.stepName === "scrape" && this.props.scrape && this.props.scrape.id) {
+      where = `${where}/${this.props.scrape.id}`;
+    }
+    history.push(where);
   }
 
   render() {
