@@ -72,6 +72,9 @@ class Body extends React.Component {
     return (
       <div id="main">
         <Switch>
+          <Route exact path="/">
+            <Scraper />
+          </Route>
           <Route exact path="/scrape">
             <Scraper />
           </Route>
