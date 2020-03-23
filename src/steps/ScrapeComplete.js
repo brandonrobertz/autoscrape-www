@@ -61,6 +61,10 @@ class ScrapeComplete extends React.Component {
             A list of all the scraped files are below. You can start extracting data
             from them by continuing to the build extractor step.
           </p>
+          <p>
+            If you just want a copy of all the files gathered during the crawl,
+            scroll to the bottom of the page and click Download ZIP.
+          </p>
           <div id="files-list-wrapper">
             <table id="files-list">
               <thead>

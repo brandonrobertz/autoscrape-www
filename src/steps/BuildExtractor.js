@@ -30,8 +30,8 @@ class BuildExtractor extends React.Component {
   }
 
   sendFilesList = (scrape) => {
-    if (!scrape || !scrape.filesList) return;
-    const data = {documents: scrape.documents};
+    if (!scrape || !scrape.documents) return;
+    const data = { documents: scrape.documents };
     // we can't do this right now, we will get another chance
     // once the DOM is loaded
     if (!this.iframeRef.current) return;
@@ -96,7 +96,8 @@ class BuildExtractor extends React.Component {
   }
 
   render() {
-    if (!this.props.scrape || !this.props.scrape.filesList) {
+    if (!this.props.scrape || !this.props.scrape.documents ||
+        !this.props.scrape.documents.length) {
       return (
         <div id="extract-data">
           <h2>This is where you'll build an extractor</h2>

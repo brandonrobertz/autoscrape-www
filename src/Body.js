@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch } from 'react-router'
+import { Redirect, Route, Switch } from 'react-router'
 import { connect } from 'react-redux'
 
 import Scraper from 'steps/Scraper'
@@ -73,7 +73,7 @@ class Body extends React.Component {
       <div id="main">
         <Switch>
           <Route exact path="/">
-            <Scraper />
+            <Redirect to="/scrape" />
           </Route>
           <Route exact path="/scrape">
             <Scraper />
