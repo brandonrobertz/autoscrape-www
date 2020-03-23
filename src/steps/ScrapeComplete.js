@@ -63,7 +63,7 @@ class ScrapeComplete extends React.Component {
           </p>
           <p>
             If you just want a copy of all the files gathered during the crawl,
-            scroll to the bottom of the page and click Download ZIP.
+            click the 'Download Files (ZIP)' button below.
           </p>
           <div id="files-list-wrapper">
             <table id="files-list">
