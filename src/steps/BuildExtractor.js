@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import store from 'state/store';
+import history from 'state/history';
 
 import 'steps/BuildExtractor.css';
 
@@ -50,12 +51,7 @@ class BuildExtractor extends React.Component {
   }
 
   nextStep() {
-    store.dispatch({
-      type: "CHANGE_STEP",
-      payload: {
-        step: "extract",
-      }
-    });
+    history.push("/extract");
   }
 
   showHextControl() {

@@ -10,6 +10,7 @@ export const hextReducer = (state, action) => {
       return action.payload;
 
     case "HEXT_CLEAR_REQUESTED":
+    case "CLEAR_SCRAPE":
       return null;
 
     default:

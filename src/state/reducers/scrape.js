@@ -6,6 +6,7 @@ export const SCRAPE_STATUS = {
   FAILURE: "FAILURE",
   SUCCESS: "SUCCESS",
   RUNNING: "RUNNING",
+  LOADING: "LOADING",
   PENDING: "PENDING",
 };
 
@@ -17,6 +18,9 @@ export const scrapeReducer = (state, action) => {
   switch(action.type) {
     case "CHANGE_STEP":
       return update(state, action.payload.step);
+
+    case "CLEAR_SCRAPE":
+      return initialState;
 
     case "SCRAPE_PENDING":
       return update(state, {
@@ -30,6 +34,12 @@ export const scrapeReducer = (state, action) => {
       runningScrapeState.status = SCRAPE_STATUS.RUNNING;
       runningScrapeState.message = "Scrape running...";
       return update(state, runningScrapeState);
+
+    case "SCRAPE_NET_ERROR":
+      return update(state, {
+        status: SCRAPE_STATUS.RUNNING,
+        message: "Network issue or other connection error. Waiting for reconnect..."
+      });
 
     case "SCRAPE_SUCCESS":
       return update(state, {
@@ -52,6 +62,16 @@ export const scrapeReducer = (state, action) => {
         id: null,
         status: SCRAPE_STATUS.FAILURE,
         message: "Scrape failed.",
+      });
+
+    case "LOAD_SCRAPE_REQUESTED":
+      return update(state, {
+        status: SCRAPE_STATUS.LOADING,
+      });
+
+    case "LOAD_SCRAPE_PENDING":
+      return update(state, {
+        status: SCRAPE_STATUS.LOADING,
       });
 
     default:

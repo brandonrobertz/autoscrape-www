@@ -1,8 +1,9 @@
 import React from 'react'
-import { Redirect, Route, Switch } from 'react-router'
+import { Route, Switch } from 'react-router'
 import { connect } from 'react-redux'
 
 import Scraper from 'steps/Scraper'
+import ScrapeComplete from 'steps/ScrapeComplete'
 import BuildExtractor from 'steps/BuildExtractor'
 import ExtractData from 'steps/ExtractData'
 import HelpPage from 'steps/HelpPage'
@@ -71,7 +72,7 @@ class Body extends React.Component {
     return (
       <div id="main">
         <Switch>
-          <Route exact path="/scrape/:scrapeId?">
+          <Route exact path="/scrape">
             <Scraper />
           </Route>
           <Route exact path="/build-extractor">
@@ -83,8 +84,8 @@ class Body extends React.Component {
           <Route exact path="/help">
             <HelpPage />
           </Route>
-          <Route>
-            <Redirect to="/scrape" />
+          <Route exact path="/scrape/:scrapeId">
+            <ScrapeComplete />
           </Route>
         </Switch>
       </div>

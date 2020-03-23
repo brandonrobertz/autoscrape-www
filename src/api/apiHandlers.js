@@ -81,6 +81,89 @@ function* sleep(time) {
   yield new Promise(resolve => setTimeout(resolve, time));
 }
 
+/**
+ * Load a successfully completed scrape. Accepts
+ * scrapeId as parameter and yields the following:
+ *
+ * {
+ *   type: "LOAD_SCRAPE_SUCCESS",
+ *   payload: {
+ *     documents: [{
+ *       name: "file.ext",
+ *       html: "<!doctype...",
+ *       css: "CSS HERE",
+ *     }, ...],
+ *     filesList: [{
+ *       name: "file.ext",
+ *       data: "FILE DATA HERE",
+ *       size: 188273,
+ *       classname: "data-pages",
+ *     }, ...],
+ *   }
+ * }
+ */
+function* loadScrape(action) {
+  const scrapeId = action.payload;
+  const data = {
+    id: scrapeId,
+    filesList: [],
+    documents: [],
+  };
+  const filesList = yield call(api.fetchFilesList, {
+    id: scrapeId
+  });
+
+  // filename => html, css
+  const htmlAndCSS = {};
+
+  for(let i = 0; i < filesList.data.length; i++) {
+    const fileInfo = filesList.data[i];
+
+    // fetch the file data
+    const fid = fileInfo.id;
+    const result = yield call(api.fetchFile, {
+      id: scrapeId, file_id: fid
+    });
+    filesList.data[i].data = atob(result.data.data)
+
+    // skip screenshots/downloads for the documents structure
+    if (fileInfo.fileclass !== "crawl_pages" &&
+        fileInfo.fileclass !== "data_pages")
+        continue;
+
+    // extract extension and add to HTML/CSS data
+    const matches = fileInfo.name.match(/(.*)\.([^\\.]{3,})$/);
+    let extension = matches[2];
+    if (extension !== "css") {
+      extension = "html";
+    }
+    let filename = fileInfo.name;
+    // AutoScrape saves CSS as [path].html.css
+    if (fileInfo.name.endsWith(".css")) {
+      filename = matches[1];
+    }
+    if (!htmlAndCSS[filename]) {
+      htmlAndCSS[filename] = {
+        name: filename
+      };
+    }
+    htmlAndCSS[filename][extension] = atob(result.data.data);
+  }
+
+  const documents = Object.keys(htmlAndCSS).map((filename) => {
+    const doc = htmlAndCSS[filename]
+    return {
+      name: filename,
+      html: doc.html,
+      css: doc.css,
+    };
+  });
+
+  data.filesList = filesList.data;
+  data.documents = documents;
+  yield put({type: `SCRAPE_SUCCESS`, payload: data});
+}
+
 function* scrapeHandler(action) {
   const base = "SCRAPE"
   const initialResponse = yield call(api.startScrape, action.payload);
@@ -90,60 +173,25 @@ function* scrapeHandler(action) {
   yield put({type: `${base}_PENDING`, payload: data});
   try {
     while (true) {
-      const response = yield call(api.pollProgress, data);
+      let response = null;
+      try {
+        response = yield call(api.pollProgress, data);
+      } catch (error) {
+        if (error.message !== "Network Error") {
+          console.error("Poll Progress Error", error);
+          throw error;
+        }
+        // ignore these and hope for best
+        yield put({
+          type: `${base}_NET_ERROR`,
+          payload: data
+        });
+        yield call(sleep, 5000);
+        continue;
+      }
       data = update(data, response);
       if (response.message === "SUCCESS") {
-        const filesList = yield call(api.fetchFilesList, data);
-
-        // filename => html, css
-        const htmlAndCSS = {};
-
-        for(let i = 0; i < filesList.data.length; i++) {
-          const fileInfo = filesList.data[i];
-
-          // fetch the file data
-          const fid = fileInfo.id;
-          const result = yield call(api.fetchFile, {
-            id: data.id, file_id: fid
-          });
-          filesList.data[i].data = atob(result.data.data)
-
-          // skip screenshots/downloads for the documents structure
-          if (fileInfo.fileclass !== "crawl_pages" &&
-              fileInfo.fileclass !== "data_pages")
-              continue;
-
-          // extract extension and add to HTML/CSS data
-          const matches = fileInfo.name.match(/(.*)\.([^\\.]{3,})$/);
-          let extension = matches[2];
-          if (extension !== "css") {
-            extension = "html";
-          }
-          let filename = fileInfo.name;
-          // AutoScrape saves CSS as [path].html.css
-          if (fileInfo.name.endsWith(".css")) {
-            filename = matches[1];
-          }
-          if (!htmlAndCSS[filename]) {
-            htmlAndCSS[filename] = {
-              name: filename
-            };
-          }
-          htmlAndCSS[filename][extension] = atob(result.data.data);
-        }
-
-        const documents = Object.keys(htmlAndCSS).map((filename) => {
-          const doc = htmlAndCSS[filename]
-          return {
-            name: filename,
-            html: doc.html,
-            css: doc.css,
-          };
-        });
-
-        data.filesList = filesList.data;
-        data.documents = documents;
-        yield put({type: `${base}_SUCCESS`, payload: data});
+        yield call(loadScrape, {payload: data.id});
         break;
       } else if (response.message === "FAILURE") {
         yield put({type: `${base}_FAILED`, payload: data});
@@ -156,7 +204,6 @@ function* scrapeHandler(action) {
       yield call(sleep, 5000);
     }
   } catch (error) {
-    console.error(error);
     yield put({
       type: `${base}_FAILED`,
       payload: {
@@ -181,7 +228,12 @@ function* watchScrape() {
   });
 }
 
+function* watchLoadScrape() {
+  yield takeEvery(`LOAD_SCRAPE_REQUESTED`, loadScrape);
+}
+
 watchers.push(fork(watchScrape));
+watchers.push(fork(watchLoadScrape));
 
 export default function* root() {
   yield all(watchers)

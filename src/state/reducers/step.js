@@ -6,6 +6,9 @@ export const stepReducer = (state, action) => {
   }
 
   switch(action.type) {
+    case "CLEAR_SCRAPE":
+      return initialState;
+
     case "CHANGE_STEP":
       return action.payload.step;
 

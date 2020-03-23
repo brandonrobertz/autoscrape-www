@@ -1,11 +1,12 @@
 import React from 'react'
 import { render } from 'react-dom'
-import { Provider } from 'react-redux';
+import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'connected-react-router'
 
 import App from 'App'
 import rootSaga from 'api/apiHandlers'
-import store, { history } from 'state/store';
+import store from 'state/store'
+import history from 'state/history'
 
 import 'index.css'
 

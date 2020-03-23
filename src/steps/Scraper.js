@@ -1,11 +1,14 @@
 import React from "react"
 import { connect } from 'react-redux'
+import { withRouter, Redirect } from 'react-router'
 import { saveAs } from 'file-saver'
-import M from 'materialize-css';
+import M from 'materialize-css'
 
 import store from 'state/store';
-import { SCRAPE_STATUS } from 'state/reducers/scrape';
-import DownloadHTML from 'steps/DownloadHTML'
+import history from 'state/history';
+import { SCRAPE_STATUS } from 'state/reducers/scrape'
+//import DownloadHTML from 'steps/DownloadHTML'
+//import ScrapeComplete from 'steps/ScrapeComplete'
 
 import 'steps/Scraper.css'
 
@@ -115,14 +118,6 @@ class Scraper extends React.Component {
     this.setState({showBuilder: !this.state.showBuilder});
   }
 
-  fetchFile = (file_id) => {
-    const id = this.state.scrapeId;
-    const url = `${this.state.AS_baseurl}/files/data/${id}/${file_id}`
-    return fetch(url).then((response) => {
-      return response.json();
-    });
-  }
-
   autoscrapeData = () => {
     const data = {};
     Object.keys(this.state).forEach((k) => {
@@ -174,52 +169,7 @@ class Scraper extends React.Component {
   }
 
   nextStep() {
-    store.dispatch({
-      type: "CHANGE_STEP",
-      payload: {
-        step: "build-extractor",
-      }
-    });
-  }
-
-  scrapeComplete() {
-    if (this.props.scrape.status !== SCRAPE_STATUS.SUCCESS) return;
-
-    const rows = this.props.scrape.filesList.map((item, ix) => {
-      return (<tr key={`file-row-${ix}`} className="file-row">
-        <td data-content="name">{item.name}</td>
-        <td data-content="fileclass">{item.fileclass}</td>
-        <td data-content="timestamp">{item.timestamp}</td>
-      </tr>);
-    });
-    return (
-      <div id="complete">
-        <h2>Scrape Complete</h2>
-        <p>
-          A list of all the scraped files are below. You can start extracting data
-          from them by continuing to the build extractor step.
-        </p>
-        <div id="files-list-wrapper">
-          <table id="files-list">
-            <thead>
-              <tr>
-                <th>Filename</th>
-                <th>Class</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              { rows }
-            </tbody>
-          </table>
-        </div>
-        { this.filesPageControls() }
-        <div className="next">
-          <DownloadHTML filesList={this.props.scrape.filesList} />
-          <button type="button" onClick={this.nextStep}>Build Extractor &rarr;</button>
-        </div>
-      </div>
-    );
+    history.push("/build-extractor")
   }
 
   scrapeScreenshot() {
@@ -742,17 +692,20 @@ class Scraper extends React.Component {
     );
   }
 
-  componentDidUpdate() {
-    if (this.state.materialzeInited) return;
-    M.AutoInit();
-    this.setState({
-      materialzeInited: true,
-    });
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (!this.state.materialzeInited) {
+      M.AutoInit();
+      this.setState({
+        materialzeInited: true,
+      });
+    }
   }
 
   componentDidMount() {
-    M.AutoInit();
-    this.baseUrlRef.current.focus();
+    if (!this.state.materialzeInited && this.baseUrlRef && this.baseUrlRef.current) {
+      M.AutoInit();
+      this.baseUrlRef.current.focus();
+    }
   }
 
   scrapeControls = () => {
@@ -777,6 +730,9 @@ class Scraper extends React.Component {
   }
 
   render() {
+    if (this.props.scrape && this.props.scrape.status === SCRAPE_STATUS.SUCCESS) {
+      return (<Redirect to={`/scrape/${this.props.scrape.id}`} />);
+    }
     return (
       <div id="main">
         { this.loadSave() }
@@ -823,7 +779,6 @@ class Scraper extends React.Component {
           </div>
           { this.scrapeStatus() }
         </form>
-        { this.scrapeComplete() }
       </div>
     );
   }
@@ -834,4 +789,4 @@ function mapStateToProps(state) {
   return { step, scrape };
 }
 
-export default connect(mapStateToProps, {})(Scraper);
+export default withRouter(connect(mapStateToProps, {})(Scraper));
