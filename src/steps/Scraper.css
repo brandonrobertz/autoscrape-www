@@ -109,7 +109,7 @@
   vertical-align: top;
 }
 #files-list-wrapper {
-  max-height: 50vh;
+  max-height: 45vh;
   overflow-y: scroll;
 }
 
