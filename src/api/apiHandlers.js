@@ -149,13 +149,23 @@ function* loadScrape(action) {
     documents: [],
   };
 
-  // TODO: paginate (not yet supported on backend)
-  const listResult = yield call(api.fetchFilesList, {
-    id: scrapeId
-  });
-
+  let page = 1;
   const maxResults = 100;
-  const results = listResult.data.slice(0, maxResults);
+  const results = [];
+  while (results.length < maxResults) {
+    const listResult = yield call(api.fetchFilesList, {
+      id: scrapeId,
+      page: page,
+    });
+    listResult.data.forEach((rec) => {
+      results.push(rec);
+    });
+    if (!listResult.has_next) {
+      break;
+    }
+    page += 1;
+  }
+
   const htmlAndCSS = {};
 
   for (let fileInfo of results) {
@@ -256,12 +266,25 @@ function* scrapeHandler(action) {
  */
 function* buildZip(action) {
   const { scrapeId } = action.payload;
-  const listResult = yield call(api.fetchFilesList, {
-    id: scrapeId
-  });
-  const filesList = listResult.data;
+
+  let page = 1;
+  const results = [];
+  while (true) {
+    const listResult = yield call(api.fetchFilesList, {
+      id: scrapeId,
+      page: page,
+    });
+    listResult.data.forEach((rec) => {
+      results.push(rec);
+    });
+    if (!listResult.has_next) {
+      break;
+    }
+    page += 1;
+  }
+
   const zip = new JSZip();
-  for (let file of filesList) {
+  for (let file of results) {
     const filename = `autoscrape-data/${file.name}`;
     const fileResponse = yield call(api.fetchFile, {
       id: scrapeId, file_id: file.id
@@ -289,34 +312,43 @@ function* buildZip(action) {
  */
 function* extractData(action) {
   const { scrapeId, hext, format } = action.payload;
-  const listResult = yield call(api.fetchFilesList, {
-    id: scrapeId
-  });
-  const filesList = listResult.data;
 
+  let page = 1;
   const records = [];
-  for (let file of filesList) {
-    // only extract from results pages
-    if (file.fileclass !== "data_pages" && file.fileclass !== "crawl_pages") {
-      continue;
-    }
-    // exclude CSS pages. HTML should remain
-    const ext = file.name.match(/(.*)\.([^\\.]{3,})$/)[2];
-    if (ext === "css") {
-      continue;
+  while (true) {
+    const listResult = yield call(api.fetchFilesList, {
+      id: scrapeId,
+      page: page,
+    });
+    for (let file of listResult.data) {
+      // only extract from results pages
+      if (file.fileclass !== "data_pages" && file.fileclass !== "crawl_pages") {
+        continue;
+      }
+      // exclude CSS pages. HTML should remain
+      const ext = file.name.match(/(.*)\.([^\\.]{3,})$/)[2];
+      if (ext === "css") {
+        continue;
+      }
+
+      const fileResponse = yield call(api.fetchFile, {
+        id: scrapeId, file_id: file.id
+      });
+      const html = atob(fileResponse.data.data);
+      const parsedHtml = new window.Module.Html(html);
+      const rule = new window.Module.Rule(hext);
+      const results = rule.extract(parsedHtml);
+      // simply skip files with no results
+      if (!results) return;
+      results.forEach((r) => records.push(r));
     }
 
-    const fileResponse = yield call(api.fetchFile, {
-      id: scrapeId, file_id: file.id
-    });
-    const html = atob(fileResponse.data.data);
-    const parsedHtml = new window.Module.Html(html);
-    const rule = new window.Module.Rule(hext);
-    const results = rule.extract(parsedHtml);
-    // simply skip files with no results
-    if (!results) return;
-    results.forEach((r) => records.push(r));
-  };
+    if (!listResult.has_next) {
+      break;
+    }
+
+    page += 1;
+  }
 
   let strData = null;
   if (format === "json") {
@@ -341,7 +373,7 @@ function* watchScrape() {
 }
 
 function* watchLoadScrape() {
-  yield takeEvery(`LOAD_SCRAPE_REQUESTED`, loadScrape);
+  yield takeLatest("LOAD_SCRAPE_REQUESTED", loadScrape);
 }
 
 function* watchBuildZip() {
@@ -353,7 +385,6 @@ function* watchExtractData() {
 }
 
 watchers.push(fork(watchScrape));
-watchers.push(fork(watchLoadScrape));
 watchers.push(fork(watchLoadScrape));
 watchers.push(fork(watchBuildZip));
 watchers.push(fork(watchExtractData));

@@ -57,7 +57,8 @@ export const fetchFile = (data) => {
 };
 
 export const fetchFilesList = (data) => {
-  const url = `${apiBase}/files/list/${data.id}`;
+  const page = data.page || 1;
+  const url = `${apiBase}/files/list/${data.id}?page=${page}`;
   return axios.get(url)
     .then((response) => response.data)
     .catch(handleError);
