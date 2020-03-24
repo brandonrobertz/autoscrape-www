@@ -341,6 +341,7 @@ function* buildZip(action) {
  */
 function* extractData(action) {
   const { scrapeId, hext, format } = action.payload;
+  const rule = new window.Module.Rule(hext);
 
   let page = 1;
   const records = [];
@@ -377,7 +378,6 @@ function* extractData(action) {
         payload: `Extracting data from ${file.name}`
       });
       const parsedHtml = new window.Module.Html(html);
-      const rule = new window.Module.Rule(hext);
       const results = rule.extract(parsedHtml);
       // simply skip files with no results
       if (!results) return;
