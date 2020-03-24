@@ -101,7 +101,10 @@ class ScrapeComplete extends React.Component {
   //}
 
   componentDidMount(a, b, c) {
-    if (this.scrape && this.scrape.status === SCRAPE_STATUS.LOADING) {
+    const scrape = this.props.scrape;
+    if (scrape.status === SCRAPE_STATUS.LOADING) {
+      return;
+    } else if (scrape.filesList && scrape.filesList.length) {
       return;
     }
     const scrapeId = this.props.match.params.scrapeId;;
