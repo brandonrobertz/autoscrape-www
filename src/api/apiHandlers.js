@@ -1,6 +1,9 @@
 import { call, cancelled, put, fork, race, take, takeLatest, takeEvery, all } from 'redux-saga/effects';
 import objectAssignDeep from "object-assign-deep";
 import * as api from 'api/requests';
+import { saveAs } from 'file-saver'
+import JSZip from 'jszip'
+import Papa from 'papaparse'
 
 import { update } from 'state/util'
 
@@ -82,8 +85,44 @@ function* sleep(time) {
 }
 
 /**
- * Load a successfully completed scrape. Accepts
- * scrapeId as parameter and yields the following:
+ * Take a full file (with parsed data and fileclass, etc) and do
+ * the necessary parsing to place it into a HTML-and-CSS
+ * data structure, keyed by file. This is used for building
+ * the document data structure.
+ *
+ * This doesn't replace htmlAndCSS, it adds entries to it.
+ */
+function recordToHtmlCss(file, htmlAndCSS) {
+  // skip screenshots/downloads for the documents structure
+  if (file.fileclass !== "crawl_pages" &&
+      file.fileclass !== "data_pages")
+      return;
+
+  // extract extension and add to HTML/CSS data
+  const matches = file.name.match(/(.*)\.([^\\.]{3,})$/);
+  let extension = matches[2];
+  if (extension !== "css") {
+    extension = "html";
+  }
+  let filename = file.name;
+  // AutoScrape saves CSS as [path].html.css
+  if (file.name.endsWith(".css")) {
+    filename = matches[1];
+  }
+  if (!htmlAndCSS[filename]) {
+    htmlAndCSS[filename] = {
+      name: filename
+    };
+  }
+  htmlAndCSS[filename][extension] = file.data;
+}
+
+/**
+ * Load the first hundred files of a scrape for showing
+ * some scrape files and building templates. If the HTML
+ * your're wanting to build a template for doesn't appear in the
+ * first 100 results, your scrape is probably wrong.
+ * Accepts scrapeId as parameter and yields the following:
  *
  * {
  *   type: "LOAD_SCRAPE_SUCCESS",
@@ -109,58 +148,43 @@ function* loadScrape(action) {
     filesList: [],
     documents: [],
   };
-  const filesList = yield call(api.fetchFilesList, {
+
+  // TODO: paginate (not yet supported on backend)
+  const listResult = yield call(api.fetchFilesList, {
     id: scrapeId
   });
 
-  // filename => html, css
+  const maxResults = 100;
+  const results = listResult.data.slice(0, maxResults);
   const htmlAndCSS = {};
 
-  for(let i = 0; i < filesList.data.length; i++) {
-    const fileInfo = filesList.data[i];
-
-    // fetch the file data
-    const fid = fileInfo.id;
-    const result = yield call(api.fetchFile, {
-      id: scrapeId, file_id: fid
+  for (let fileInfo of results) {
+    const fileResponse = yield call(api.fetchFile, {
+      id: scrapeId, file_id: fileInfo.id
     });
-    filesList.data[i].data = atob(result.data.data)
 
-    // skip screenshots/downloads for the documents structure
-    if (fileInfo.fileclass !== "crawl_pages" &&
-        fileInfo.fileclass !== "data_pages")
-        continue;
+    const file = fileResponse.data;
+    const parsedData = atob(file.data);
+    const fullFile = {
+      ...file,
+      data: parsedData,
+    };
 
-    // extract extension and add to HTML/CSS data
-    const matches = fileInfo.name.match(/(.*)\.([^\\.]{3,})$/);
-    let extension = matches[2];
-    if (extension !== "css") {
-      extension = "html";
-    }
-    let filename = fileInfo.name;
-    // AutoScrape saves CSS as [path].html.css
-    if (fileInfo.name.endsWith(".css")) {
-      filename = matches[1];
-    }
-    if (!htmlAndCSS[filename]) {
-      htmlAndCSS[filename] = {
-        name: filename
-      };
-    }
-    htmlAndCSS[filename][extension] = atob(result.data.data);
+    data.filesList.push(fullFile);
+    recordToHtmlCss(fullFile, htmlAndCSS);
   }
 
-  const documents = Object.keys(htmlAndCSS).map((filename) => {
-    const doc = htmlAndCSS[filename]
-    return {
+  // build our documents set with HTML and CSS available in the same list
+  // position, for building extraction template
+  Object.keys(htmlAndCSS).forEach((filename) => {
+    const doc = htmlAndCSS[filename];
+    data.documents.push({
       name: filename,
       html: doc.html,
       css: doc.css,
-    };
+    });
   });
 
-  data.filesList = filesList.data;
-  data.documents = documents;
   yield put({type: `SCRAPE_SUCCESS`, payload: data});
 }
 
@@ -172,6 +196,7 @@ function* scrapeHandler(action) {
   };
   yield put({type: `${base}_PENDING`, payload: data});
   try {
+    // poll until we're good or get a definite scrape failure
     while (true) {
       let response = null;
       try {
@@ -189,7 +214,9 @@ function* scrapeHandler(action) {
         yield call(sleep, 5000);
         continue;
       }
+
       data = update(data, response);
+
       if (response.message === "SUCCESS") {
         yield call(loadScrape, {payload: data.id});
         break;
@@ -219,6 +246,91 @@ function* scrapeHandler(action) {
   }
 }
 
+/**
+ * Build a zip file. This will pull the full files list (not just
+ * the first 100) and will build the ZIP without also storing
+ * every file in memory. Will pop a saveAs on completion.
+ *
+ * Payload params:
+ * { scrapeId: "scrape-id-here" }
+ */
+function* buildZip(action) {
+  const { scrapeId } = action.payload;
+  const listResult = yield call(api.fetchFilesList, {
+    id: scrapeId
+  });
+  const filesList = listResult.data;
+  const zip = new JSZip();
+  for (let file of filesList) {
+    const filename = `autoscrape-data/${file.name}`;
+    const fileResponse = yield call(api.fetchFile, {
+      id: scrapeId, file_id: file.id
+    });
+    const parsedData = atob(fileResponse.data.data);
+    zip.file(filename, parsedData, {binary: true});
+  }
+  zip.generateAsync({type:"blob"}).then(blob => {
+    const now = (new Date()).getTime();
+    saveAs(blob, `autoscrape-data-${now}.zip`);
+  });
+}
+
+/**
+ * Extract data from HTML and build a specified output format.
+ * Pops saveAs when complete. This pulls all files, not just
+ * first 100.
+ *
+ * Payload:
+ *   {
+ *     hext: "hext-template-here",
+ *     scrapeId: "scrape-id",
+ *     format: "csv|json",
+ *   }
+ */
+function* extractData(action) {
+  const { scrapeId, hext, format } = action.payload;
+  const listResult = yield call(api.fetchFilesList, {
+    id: scrapeId
+  });
+  const filesList = listResult.data;
+
+  const records = [];
+  for (let file of filesList) {
+    // only extract from results pages
+    if (file.fileclass !== "data_pages" && file.fileclass !== "crawl_pages") {
+      continue;
+    }
+    // exclude CSS pages. HTML should remain
+    const ext = file.name.match(/(.*)\.([^\\.]{3,})$/)[2];
+    if (ext === "css") {
+      continue;
+    }
+
+    const fileResponse = yield call(api.fetchFile, {
+      id: scrapeId, file_id: file.id
+    });
+    const html = atob(fileResponse.data.data);
+    const parsedHtml = new window.Module.Html(html);
+    const rule = new window.Module.Rule(hext);
+    const results = rule.extract(parsedHtml);
+    // simply skip files with no results
+    if (!results) return;
+    results.forEach((r) => records.push(r));
+  };
+
+  let strData = null;
+  if (format === "json") {
+    strData = JSON.stringify(records);
+  } else if (format === "csv") {
+    strData = Papa.unparse(records);
+  }
+
+  const blob = new Blob([strData]);
+  const now = (new Date()).getTime();
+  saveAs(blob, `autoscrape-data-${now}.${format}`)
+}
+
+
 function* watchScrape() {
   yield takeEvery("SCRAPE_REQUESTED", function* (...args) {
     yield race({
@@ -232,8 +344,19 @@ function* watchLoadScrape() {
   yield takeEvery(`LOAD_SCRAPE_REQUESTED`, loadScrape);
 }
 
+function* watchBuildZip() {
+  yield takeEvery("BUILD_ZIP_REQUESTED", buildZip);
+}
+
+function* watchExtractData() {
+  yield takeEvery("EXTRACT_DATA_REQUESTED", extractData);
+}
+
 watchers.push(fork(watchScrape));
 watchers.push(fork(watchLoadScrape));
+watchers.push(fork(watchLoadScrape));
+watchers.push(fork(watchBuildZip));
+watchers.push(fork(watchExtractData));
 
 export default function* root() {
   yield all(watchers)

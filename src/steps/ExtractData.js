@@ -1,38 +1,20 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { saveAs } from 'file-saver'
-import Papa from 'papaparse'
+import store from 'state/store'
 
 import 'steps/ExtractData.css'
 
 
 class ExtractData extends React.Component {
-  extractAll = () => {
-    const hext = this.props.hext;
-    const documents = this.props.scrape.documents;
-    return documents.map((doc) => {
-      const html = doc.html;
-      const parsedHtml = new window.Module.Html(html);
-      const rule = new window.Module.Rule(hext);
-      const results = rule.extract(parsedHtml);
-      return results;
-    }).filter(x => x).flat();
-  }
-
-  downloadJSON = () => {
-    const records = this.extractAll();
-    const strData = JSON.stringify(records);
-    const blob = new Blob([strData]);
-    const now = (new Date()).getTime();
-    saveAs(blob, `autoscrape-data-${now}.json`)
-  }
-
-  downloadCSV = () => {
-    const records = this.extractAll();
-    const csv = Papa.unparse(records);
-    const blob = new Blob([csv]);
-    const now = (new Date()).getTime();
-    saveAs(blob, `autoscrape-data-${now}.csv`)
+  extractData(format) {
+    store.dispatch({
+      type: "EXTRACT_DATA_REQUESTED",
+      payload: {
+        scrapeId: this.props.scrape.id,
+        format: format,
+        hext: this.props.hext,
+      }
+    });
   }
 
   render() {
@@ -44,10 +26,10 @@ class ExtractData extends React.Component {
             Click an output format below to download your extracted data.
           </p>
           <div className="downloads">
-            <span className="json" onClick={this.downloadJSON}>
+            <span className="json" onClick={this.extractData.bind(this, "json")}>
               <img src="/json-icon.svg" alt="Download Data (JSON)" />
             </span>
-            <span className="csv" onClick={this.downloadCSV}>
+            <span className="csv" onClick={this.extractData.bind(this, "csv")}>
               <img src="/csv-icon.svg" alt="Download Spreadsheet (CSV)" />
             </span>
           </div>

@@ -54,12 +54,19 @@ class ScrapeComplete extends React.Component {
           <h2>Scrape Complete</h2>
           <p>
             <a href={`/scrape/${this.props.scrape.id}`}>
-              Here's a persistent link to this successful scrape.
+              Here's a persistent link to this scrape.
             </a>
           </p>
           <p>
-            A list of all the scraped files are below. You can start extracting data
-            from them by continuing to the build extractor step.
+            Here's a list of (up to 100) of the files found during your scrape.
+            This includes the web pages visited, the styles from each, screenshots
+            taken during scraping, and any documents found.
+          </p>
+          <p>
+            If you want to extract structured data (like a spreadsheet), you
+            need to build an extractor, first. An extractor shows AutoScrape what
+            a record (one of the rows in the spreadsheet you'd like to build)
+            looks like. You can do this in the 'Build Extractor' step.
           </p>
           <p>
             If you just want a copy of all the files gathered during the crawl,
@@ -82,7 +89,7 @@ class ScrapeComplete extends React.Component {
           { this.filesPageControls() }
           <div className="next">
             <button type="button" onClick={this.clearScrape}>Start New Scrape</button>
-            <DownloadHTML filesList={this.props.scrape.filesList} />
+            <DownloadHTML scrapeId={this.props.scrape.id} />
             <button type="button" onClick={this.nextStep}>Build Extractor &rarr;</button>
           </div>
         </div>
