@@ -377,11 +377,11 @@ function* watchLoadScrape() {
 }
 
 function* watchBuildZip() {
-  yield takeEvery("BUILD_ZIP_REQUESTED", buildZip);
+  yield takeLatest("BUILD_ZIP_REQUESTED", buildZip);
 }
 
 function* watchExtractData() {
-  yield takeEvery("EXTRACT_DATA_REQUESTED", extractData);
+  yield takeLatest("EXTRACT_DATA_REQUESTED", extractData);
 }
 
 watchers.push(fork(watchScrape));

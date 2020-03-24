@@ -64,7 +64,7 @@ class ScrapeComplete extends React.Component {
           </p>
           <p>
             If you want to extract structured data (like a spreadsheet), you
-            need to build an extractor, first. An extractor shows AutoScrape what
+            need to build an extractor first. An extractor shows AutoScrape what
             a record (one of the rows in the spreadsheet you'd like to build)
             looks like. You can do this in the 'Build Extractor' step.
           </p>
