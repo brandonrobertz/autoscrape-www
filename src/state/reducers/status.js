@@ -11,6 +11,12 @@ export const statusReducer = (state, action) => {
   }
 
   switch(action.type) {
+    case "LOAD_SCRAPE_REQUESTED":
+    case "LOAD_SCRAPE_PENDING":
+      return {
+        status: "Loading scrape..."
+      };
+
     case "BUILD_ZIP_REQUESTED":
       return {
         status: "Building ZIP..."
@@ -27,6 +33,7 @@ export const statusReducer = (state, action) => {
         details: action.payload
       });
 
+    case "SCRAPE_SUCCESS":
     case "HEXT_CLEAR_REQUESTED":
     case "CLEAR_STATUS":
     case "CLEAR_SCRAPE":

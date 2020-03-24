@@ -35,7 +35,7 @@ class ScrapeComplete extends React.Component {
 
   render() {
     if (this.props.scrape.status === SCRAPE_STATUS.LOADING) {
-      return <span className="center">Loading data...</span>;
+      return null;
     } else if (this.props.scrape.status !== SCRAPE_STATUS.SUCCESS) {
       return null;
     }

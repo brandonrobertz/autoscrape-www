@@ -153,6 +153,10 @@ function* loadScrape(action) {
   const maxResults = 100;
   const results = [];
   while (results.length < maxResults) {
+    yield put({
+      type: "UPDATE_STATUS_DETAILS",
+      payload: `Fetching files list page ${page}`
+    });
     const listResult = yield call(api.fetchFilesList, {
       id: scrapeId,
       page: page,
@@ -169,6 +173,11 @@ function* loadScrape(action) {
   const htmlAndCSS = {};
 
   for (let fileInfo of results) {
+    yield put({
+      type: "UPDATE_STATUS_DETAILS",
+      payload: `Downloading ${fileInfo.name}`
+    });
+
     const fileResponse = yield call(api.fetchFile, {
       id: scrapeId, file_id: fileInfo.id
     });
@@ -186,6 +195,10 @@ function* loadScrape(action) {
 
   // build our documents set with HTML and CSS available in the same list
   // position, for building extraction template
+  yield put({
+    type: "UPDATE_STATUS_DETAILS",
+    payload: "Parsing HTML and CSS files..."
+  });
   Object.keys(htmlAndCSS).forEach((filename) => {
     const doc = htmlAndCSS[filename];
     data.documents.push({
