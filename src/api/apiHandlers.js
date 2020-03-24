@@ -270,6 +270,11 @@ function* buildZip(action) {
   let page = 1;
   const results = [];
   while (true) {
+    yield put({
+      type: "UPDATE_STATUS_DETAILS",
+      payload: `Fetching files list page ${page}`
+    });
+
     const listResult = yield call(api.fetchFilesList, {
       id: scrapeId,
       page: page,
@@ -286,16 +291,27 @@ function* buildZip(action) {
   const zip = new JSZip();
   for (let file of results) {
     const filename = `autoscrape-data/${file.name}`;
+    yield put({
+      type: "UPDATE_STATUS_DETAILS",
+      payload: `Zipping ${filename}`
+    });
+
     const fileResponse = yield call(api.fetchFile, {
       id: scrapeId, file_id: file.id
     });
     const parsedData = atob(fileResponse.data.data);
     zip.file(filename, parsedData, {binary: true});
   }
+  yield put({
+    type: "UPDATE_STATUS_DETAILS",
+    payload: `Generating ZIP...`
+  });
+
   zip.generateAsync({type:"blob"}).then(blob => {
     const now = (new Date()).getTime();
     saveAs(blob, `autoscrape-data-${now}.zip`);
   });
+  yield put({type: "CLEAR_STATUS"});
 }
 
 /**
@@ -316,6 +332,10 @@ function* extractData(action) {
   let page = 1;
   const records = [];
   while (true) {
+    yield put({
+      type: "UPDATE_STATUS_DETAILS",
+      payload: `Fetching files list page ${page}`
+    });
     const listResult = yield call(api.fetchFilesList, {
       id: scrapeId,
       page: page,
@@ -331,10 +351,18 @@ function* extractData(action) {
         continue;
       }
 
+      yield put({
+        type: "UPDATE_STATUS_DETAILS",
+        payload: `Fetching ${file.name}`
+      });
       const fileResponse = yield call(api.fetchFile, {
         id: scrapeId, file_id: file.id
       });
       const html = atob(fileResponse.data.data);
+      yield put({
+        type: "UPDATE_STATUS_DETAILS",
+        payload: `Extracting data from ${file.name}`
+      });
       const parsedHtml = new window.Module.Html(html);
       const rule = new window.Module.Rule(hext);
       const results = rule.extract(parsedHtml);
@@ -350,6 +378,10 @@ function* extractData(action) {
     page += 1;
   }
 
+  yield put({
+    type: "UPDATE_STATUS_DETAILS",
+    payload: `Converting data to ${format}`
+  });
   let strData = null;
   if (format === "json") {
     strData = JSON.stringify(records);
@@ -360,6 +392,7 @@ function* extractData(action) {
   const blob = new Blob([strData]);
   const now = (new Date()).getTime();
   saveAs(blob, `autoscrape-data-${now}.${format}`)
+  yield put({type: "CLEAR_STATUS"});
 }
 
 

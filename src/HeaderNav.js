@@ -5,11 +5,6 @@ import history from 'state/history'
 
 import 'HeaderNav.css'
 
-function mapStateToProps(state) {
-  const { scrape, hext } = state;
-  return { scrape, hext };
-}
-
 class _HeaderTab extends React.Component {
   navigateTo = () => {
     let where = `/${this.props.stepName}`;
@@ -26,6 +21,11 @@ class _HeaderTab extends React.Component {
       </button>
     );
   }
+}
+
+function mapStateToProps(state) {
+  const { scrape, hext } = state;
+  return { scrape, hext };
 }
 
 const HeaderTab = connect(mapStateToProps, {})(_HeaderTab);

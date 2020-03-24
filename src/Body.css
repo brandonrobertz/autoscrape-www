@@ -1,10 +1,12 @@
 #main {
   max-width: 900px;
   margin: 0 auto;
-  padding: 25px 15px;
+  padding: 15px;
 }
 #help-page-wrapper h1, #help-page-wrapper h2,
 #main h1, #main h2 {
+  padding-top: 0;
+  margin-top: 0;
   text-align: center;
 }
 
@@ -57,4 +59,11 @@
   background-color: #efefef;
   cursor: not-allowed;
   border: 1px solid #dddddd;
+}
+
+#status {
+  font-size: 12px;
+  padding: 5px;
+  border: 1px solid rgba(255, 255, 0, 0.3);
+  background-color: rgba(255, 255, 0, 0.1);
 }
