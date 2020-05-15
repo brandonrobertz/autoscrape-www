@@ -27,7 +27,7 @@
     "datatransfer-files-promise": "^1.2.0",
     "file-saver": "^2.0.2",
     "history": "^4.10.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "jszip": "^3.2.2",
     "materialize-css": "^1.0.0-rc.2",
     "object-assign-deep": "^0.4.0",
