@@ -331,7 +331,7 @@ class Scraper extends React.Component {
           </label>
           <input id="current-input-ith"
             type="text"
-            placeholder="e.g., 1"
+            placeholder="e.g., 1st, 3"
             value={this.state.currentInput.ith}
             onChange={this.onInputChange.bind(this, "ith")}
           />
@@ -453,7 +453,7 @@ class Scraper extends React.Component {
               Text we can use to get to next result page
             </label>
           </div>
-          <div className="col s9 input-field">
+          <div className="col s8 input-field">
             <input
               id="input"
               name="AS_input"
@@ -465,7 +465,7 @@ class Scraper extends React.Component {
               Form input plan (use the builder to the right)
             </label>
           </div>
-          <div className="col s3 input-field">
+          <div className="col s4 input-field">
             <div
               id="toggle-builder"
               onClick={this.toggleBuilder}>
@@ -484,7 +484,8 @@ class Scraper extends React.Component {
               type="text"
             />
             <label htmlFor="result_page_links" className="active">
-              Click only these links on result pages (case-sensitive, separated by comma)
+              Click only these links on result pages (case-sensitive,
+              separated by comma)
             </label>
           </div>
 
