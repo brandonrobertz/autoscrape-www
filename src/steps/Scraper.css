@@ -19,10 +19,14 @@
 }
 #main #advanced-controls h2,
 #main #advanced-controls h3 {
-  font-size: 0.8rem;
+  font-size: 1.5rem;
   text-transform: uppercase;
   font-weight: bold;
 }
+#main #advanced-controls h3 {
+  color: #999999;
+}
+
 #main .advanced-wrapper {
   text-align: center;
 }
@@ -33,7 +37,7 @@
   border-radius: 10px;
   background-color: white;
   color: #777777;
-  font-size: 1rem;
+  /*font-size: 1rem;*/
   font-family: monospace;
 }
 
@@ -57,7 +61,6 @@
   max-width: 30%;
 }
 #complete {
-  font-size: 13px;
 }
 #complete p {
   text-align: center;
@@ -72,7 +75,7 @@
 }
 #help-page-wrapper button,
 #main button {
-  font-size: 0.9rem;
+  /*font-size: 0.9rem;*/
   border: 1px solid black;
   background-color: white;
   padding: 0.4rem;
@@ -82,7 +85,7 @@
 
 #toggle-wrapper {
   vertical-align: middle;
-  font-size: 25px;
+  /*font-size: 25px;*/
 }
 
 #toggle-wrapper button {
@@ -97,7 +100,7 @@
   /*display: flex-inline;*/
 }
 #sub-controls-menu {
-  font-size: 11px;
+  /*font-size: 11px;*/
 }
 
 #files-list {
@@ -159,11 +162,15 @@ div#toggle-builder {
 .input-plan-viewer .input-desc .remove-input {
   margin-left: 10px;
   font-weight: bold;
-  font-size: 1rem;
+  /*font-size: 1rem;*/
   cursor: pointer;
 }
 
 /* materialize wants to display: none; all selects */
+#input-builder {
+  font-size: 0.85rem;
+}
+
 #input-builder select,
 #input-builder select#current-input-type {
   display: block !important;
@@ -201,7 +208,7 @@ div#toggle-builder {
 
 .link-options-desc {
   color: #444444;
-  font-size: 0.9rem;
+  /*font-size: 0.9rem;*/
 }
 
 #load-save {
@@ -244,5 +251,5 @@ div#toggle-builder {
   color: #333333;
 }
 #main input {
-  font-size: 0.9em;
+  font-size: 0.95em;
 }

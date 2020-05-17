@@ -325,7 +325,7 @@ class Scraper extends React.Component {
             <option value="radio">Radio checkbox</option>
           </select>
         </div>
-        <div className="col s2 field-input">
+        <div className="col s3 field-input">
           <label htmlFor="current-input-ith" className="active">
             Which {this.state.currentInput.type}
           </label>
@@ -349,7 +349,7 @@ class Scraper extends React.Component {
   selectorForType(type) {
     if (type === "text input" || type === "option select") {
       return (
-        <div className="col s5 field-input">
+        <div className="col s4 field-input">
           <label htmlFor="current-input-text" className="active">
             { type === "text input" ? "What to fill in" : "Option to select" }
           </label>
@@ -508,9 +508,10 @@ class Scraper extends React.Component {
           <div className="col s12 input-field section">
             <h3>Link Clicking (Text or Regex)</h3>
             <p className="link-options-desc">
-              These options control link clicking <b>before submitting forms</b>. Any
-              rules applied here will not be used on results pages. Use these options to
-              perform basic crawls or for instructing AutoScrape how to get to a search form.
+              These options control link clicking <b>before submitting
+              forms</b>. Any rules applied here will not be used on results
+              pages. Use these options to perform basic crawls or for
+              instructing AutoScrape how to get to a search form.
             </p>
           </div>
           <div className="col s12 input-field">
