@@ -37,13 +37,13 @@ class Scraper extends React.Component {
       AS_input: "",
       AS_save_graph: false,
       AS_load_images: false,
-      AS_maxdepth: "2",
-      AS_formdepth: "50",
+      AS_maxdepth: "",
+      AS_formdepth: "",
       AS_next_match: "",
       AS_leave_host: false,
       AS_show_browser: false,
       AS_driver: "Firefox",
-      AS_form_submit_natural_click: false,
+      //AS_form_submit_natural_click: false,
       AS_result_page_links: "",
       AS_only_links: "",
       AS_keep_filename: false,
@@ -52,8 +52,9 @@ class Scraper extends React.Component {
       AS_save_screenshots: true,
       AS_remote_hub: "",
       AS_loglevel: "INFO",
-      AS_page_timeout: "30",
+      AS_page_timeout: "60",
       AS_disable_style_saving: false,
+      AS_form_submit_button_selector: "",
     };
     this.baseUrlRef = React.createRef();
     this.loadConfigInput = React.createRef();
@@ -354,7 +355,7 @@ class Scraper extends React.Component {
           </label>
           <input id="current-input-text"
             type="text"
-            placeholder="Enter text..."
+            placeholder="E.g., John Smith"
             value={this.state.currentInput.text}
             onChange={this.onInputChange.bind(this, "text")}
           />
@@ -436,20 +437,20 @@ class Scraper extends React.Component {
             <input name="AS_form_match"
               id="form_match"
               onChange={this.handleChange}
-              placeholder="Unique text can we use to find your form (e.g. Search candidates here)"
+              placeholder="e.g., Search for candidates"
               value={this.state.AS_form_match} type="text" />
             <label className="active" htmlFor="form_match">
-              Form text
+              Unique text can we use to find your form
             </label>
           </div>
           <div className="col s12 input-field">
             <input name="AS_next_match"
               id="next_match"
               onChange={this.handleChange}
-              placeholder="Text can we use to find next page buttons"
+              placeholder="e.g., Next Page ->"
               value={this.state.AS_next_match} type="text" />
             <label className="active" htmlFor="next_match">
-              Next page button text
+              Text we can use to get to next result page
             </label>
           </div>
           <div className="col s9 input-field">
@@ -458,10 +459,10 @@ class Scraper extends React.Component {
               name="AS_input"
               value={this.state.AS_input}
               onChange={this.handleChange}
-              placeholder="Use the builder to the right..."
+              placeholder=""
               type="text" />
             <label className="active" htmlFor="input">
-              Form input plan
+              Form input plan (use the builder to the right)
             </label>
           </div>
           <div className="col s3 input-field">
@@ -479,13 +480,28 @@ class Scraper extends React.Component {
             <input id="result_page_links" name="AS_result_page_links"
               onChange={this.handleChange}
               value={this.state.AS_result_page_links}
-              placeholder='Link text to click on result pages. Case-sensitive, separated by comma (e.g. View Page).'
+              placeholder='e.g., view details'
               type="text"
             />
             <label htmlFor="result_page_links" className="active">
-              Links to click on result pages (whitelist)
+              Click only these links on result pages (case-sensitive, separated by comma)
             </label>
           </div>
+
+          <div className="col s12 input-field">
+            <input
+              id="form_submit_button_selector"
+              name="AS_form_submit_button_selector"
+              onChange={this.handleChange}
+              defaultChecked={this.state.AS_form_submit_button_selector}
+              type="text"
+            />
+            <label htmlFor="form_submit_button_selector" className="active">
+              XPath selector to submit button
+             (use this if AutoScrape can't find submit button)
+            </label>
+          </div>
+
         </div>
 
         <div className="row">
@@ -501,30 +517,31 @@ class Scraper extends React.Component {
             <input id="only_links" name="AS_only_links"
               onChange={this.handleChange}
               value={this.state.AS_only_links}
-              placeholder='Case-sensitive texts, separated by comma (e.g. Accept, More data)'
+              placeholder='e.g. Accept Terms'
               type="text"
             />
             <label htmlFor="only_links" className="active">
-              Only click matching link text (whitelist)
+              Link whitelist: only click matching text
             </label>
           </div>
           <div className="col s12 input-field">
             <input id="ignore_links" name="AS_ignore_links"
               onChange={this.handleChange}
               value={this.state.AS_ignore_links}
-              placeholder='Case-sensitive texts, separated by comma (e.g. Logout)'
+              placeholder='e.g. Logout, Leave site'
               type="text"
             />
             <label htmlFor="ignore_links" className="active">
-              Ignore matching link text (blacklist)
+              Link blacklist: ignore matching text
             </label>
           </div>
-          <div className="col s3 input-field">
+          <div className="col s4 input-field">
             <input id="formdepth" name="AS_formdepth"
+              placeholder=""
               onChange={this.handleChange}
               value={this.state.AS_formdepth} type="text" />
             <label htmlFor="formdepth" className="active">
-              Max results pages
+              Maximum results pages
             </label>
           </div>
         </div>
@@ -534,31 +551,41 @@ class Scraper extends React.Component {
             <h3>miscellaneous Scrape</h3>
           </div>
           <div className="col s3 input-field">
-            <input id="maxdepth" name="AS_maxdepth"
+            <input id="maxdepth"
+              name="AS_maxdepth"
+              type="text"
+              placeholder=""
               onChange={this.handleChange}
               value={this.state.AS_maxdepth}
-              className="active"
-              type="text" />
+            />
             <label className="active"
-              htmlFor="maxdepth">Max crawl depth (clicks)</label>
+              htmlFor="maxdepth">
+              Limit crawl depth
+            </label>
           </div>
-          <div className="col s3 input-field">
+          <div className="col s4 input-field">
             <input id="form_submit_wait"
               name="AS_form_submit_wait"
-              onChange={this.handleChange}
               type="text"
+              placeholder=""
+              onChange={this.handleChange}
               value={this.state.AS_form_submit_wait}
             />
-            <label className="active" htmlFor="form_submit_wait">Page wait (secs)</label>
+            <label className="active" htmlFor="form_submit_wait">
+              Wait after submit (secs)
+            </label>
           </div>
-          <div className="col s3 input-field">
+          <div className="col s4 input-field">
             <input id="page_timeout"
               name="AS_page_timeout"
-              onChange={this.handleChange}
               type="text"
+              placeholder=""
+              onChange={this.handleChange}
               value={this.state.AS_page_timeout}
             />
-            <label className="active" htmlFor="page_timeout">Page timeout (secs)</label>
+            <label className="active" htmlFor="page_timeout">
+              Page timeout (secs)
+            </label>
           </div>
         </div>
 
@@ -592,6 +619,7 @@ class Scraper extends React.Component {
               <span>Load images (slow, usually not necessary)</span>
             </label>
           </div>
+          {/*
           <div className="col s6">
             <label>
               <input
@@ -603,7 +631,7 @@ class Scraper extends React.Component {
               />
               <span>Simulate natural click on submit (required for some poorly programmed sites)</span>
             </label>
-          </div>
+          </div>*/}
         </div>
 
       </div>

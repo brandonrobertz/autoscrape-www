@@ -230,11 +230,19 @@ div#toggle-builder {
   margin: 0;
 }
 #load-save input[type="submit"] {
-  font-size: 0.9rem;
+  /*font-size: 0.9rem;*/
   border: 1px solid black;
   background-color: white;
   padding: 0.4rem;
   margin: 30px;
   min-width: 75px;
   border-radius: 5px;
+}
+
+#main label {
+  font-size: 1.2em;
+  color: #333333;
+}
+#main input {
+  font-size: 0.9em;
 }
