@@ -62,6 +62,7 @@ export const scrapeReducer = (state, action) => {
         id: null,
         status: SCRAPE_STATUS.FAILURE,
         message: "Scrape failed.",
+        traceback: action.payload.traceback,
       });
 
     case "LOAD_SCRAPE_REQUESTED":

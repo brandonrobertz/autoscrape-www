@@ -197,6 +197,8 @@ class Scraper extends React.Component {
         <span id="scrape-status">
           {this.props.scrape.message}
         </span>
+        { this.props.scrape.traceback  &&
+          <div id="traceback"><pre>{this.props.scrape.traceback}</pre></div> }
         { this.scrapeScreenshot() }
       </div>
     );

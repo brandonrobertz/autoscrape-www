@@ -68,6 +68,11 @@
 #complete .next {
   text-align: center;
 }
+#traceback {
+  text-align: left;
+  font-size: 0.7em;
+  overflow-x: scroll;
+}
 
 #help-page-wrapper button:hover,
 #main button:hover {
