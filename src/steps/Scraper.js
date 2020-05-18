@@ -54,11 +54,11 @@ class Scraper extends React.Component {
       AS_loglevel: "INFO",
       AS_page_timeout: "60",
       AS_disable_style_saving: false,
-      AS_form_submit_button_selector: "",
+      AS_form_submit_button_selector: "brandon",
     };
     this.baseUrlRef = React.createRef();
     this.loadConfigInput = React.createRef();
-    this.state = this.defaultState;
+    this.state = Object.assign({}, this.defaultState);
   }
 
   isFormValid = () => {
@@ -210,7 +210,7 @@ class Scraper extends React.Component {
     const typeChars = {
       "text input": "i",
       "checkbox": "c",
-      "option select": "o",
+      "option select": "s",
       "date input": "d",
       "radio": "r",
     };
@@ -494,7 +494,8 @@ class Scraper extends React.Component {
               id="form_submit_button_selector"
               name="AS_form_submit_button_selector"
               onChange={this.handleChange}
-              defaultChecked={this.state.AS_form_submit_button_selector}
+              placeholder=""
+              value={this.state.AS_form_submit_button_selector}
               type="text"
             />
             <label htmlFor="form_submit_button_selector" className="active">
@@ -667,6 +668,7 @@ class Scraper extends React.Component {
       AS_remote_hub: this.state.AS_remote_hub,
       AS_loglevel: this.state.AS_loglevel,
       AS_disable_style_saving: this.state.AS_disable_style_saving,
+      AS_form_submit_button_selector: this.state.AS_form_submit_button_selector,
     };
     const strData = JSON.stringify(config);
     const blob = new Blob([strData]);
@@ -674,10 +676,14 @@ class Scraper extends React.Component {
     saveAs(blob, `autoscrape-config-${now}.json`)
   }
 
-  handleFileRead = (filereader, e) => {
+  /**
+   * Do the actual import of config values from saved
+   * JSON config file.
+   */
+  loadConfigFromFile = (filereader, e) => {
     const text = filereader.result;
     const jsonData = JSON.parse(text);
-    const newState = this.state;
+    const newState = Object.assign({}, this.defaultState);
     Object.keys(jsonData).forEach((key) => {
       newState[key] = jsonData[key];
     });
@@ -686,12 +692,16 @@ class Scraper extends React.Component {
     this.setState(newState);
   }
 
+  /**
+   * Setup JSON file load, run loader (loadConfigFromFile)
+   * once it's loaded.
+   */
   loadConfig = (e) => {
     e.preventDefault();
     if (!this.loadConfigInput.current.files[0]) return;
     const file = this.loadConfigInput.current.files[0];
     const filereader = new FileReader();
-    filereader.onloadend = this.handleFileRead.bind(this, filereader);
+    filereader.onloadend = this.loadConfigFromFile.bind(this, filereader);
     filereader.readAsText(file);
   }
 
