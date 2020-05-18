@@ -349,7 +349,7 @@ class Scraper extends React.Component {
   selectorForType(type) {
     if (type === "text input" || type === "option select") {
       return (
-        <div className="col s4 field-input">
+        <div className="col s3 field-input">
           <label htmlFor="current-input-text" className="active">
             { type === "text input" ? "What to fill in" : "Option to select" }
           </label>
@@ -364,7 +364,7 @@ class Scraper extends React.Component {
     }
     else if (type === "checkbox") {
       return (
-        <div className="col s5">
+        <div className="col s3">
           <label htmlFor="current-input-text">
             <input id="current-input-text"
               type="checkbox"
@@ -378,7 +378,7 @@ class Scraper extends React.Component {
     }
     else if (type === "date input") {
       return (
-        <div className="col s5">
+        <div className="col s3">
           <label htmlFor="current-input-text">
             Which date
           </label>
@@ -392,7 +392,7 @@ class Scraper extends React.Component {
       );
     } else if (type === "radio") {
       return (
-        <div className="col s5 field-input">
+        <div className="col s3 field-input">
           <label htmlFor="current-input-text" className="active">
             Which option?
           </label>
