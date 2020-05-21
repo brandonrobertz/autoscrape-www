@@ -54,7 +54,7 @@ class Scraper extends React.Component {
       AS_loglevel: "INFO",
       AS_page_timeout: "60",
       AS_disable_style_saving: false,
-      AS_form_submit_button_selector: "brandon",
+      AS_form_submit_button_selector: "",
     };
     this.baseUrlRef = React.createRef();
     this.loadConfigInput = React.createRef();
